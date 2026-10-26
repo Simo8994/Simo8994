@@ -1,0 +1,207 @@
+"""Build the apartment from casa.json (cm) in Blender and render a Cycles view.
+Usage: python3 render.py x,y,z,tx,ty,tz fov /abs/out.png [samples] [w] [h]"""
+import bpy, bmesh, json, math, sys
+from mathutils import Vector
+args = sys.argv[1:]
+cam = [float(v) for v in args[0].split(',')]; FOV = float(args[1]); OUT = args[2]
+SAMPLES = int(args[3]) if len(args) > 3 else 96; W = int(args[4]) if len(args) > 4 else 1280; H = int(args[5]) if len(args) > 5 else 800
+import os
+rows = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'casa.json')))
+bpy.ops.wm.read_factory_settings(use_empty=True)
+sc = bpy.context.scene; S = 0.01
+
+def node_mat(name, base, rough=0.5, metal=0.0, transm=0.0, emit=None, tex=None, scale=1.0):
+    m = bpy.data.materials.new(name); m.use_nodes = True
+    nt = m.node_tree; b = nt.nodes['Principled BSDF']
+    b.inputs['Base Color'].default_value = (*base, 1); b.inputs['Roughness'].default_value = rough; b.inputs['Metallic'].default_value = metal
+    if transm: b.inputs['Transmission Weight'].default_value = transm; b.inputs['IOR'].default_value = 1.45
+    if emit: b.inputs['Emission Color'].default_value = (*emit, 1); b.inputs['Emission Strength'].default_value = 6
+    if tex:
+        tc = nt.nodes.new('ShaderNodeTexCoord'); mp = nt.nodes.new('ShaderNodeMapping'); mp.inputs['Scale'].default_value = (scale, scale, scale)
+        nt.links.new(tc.outputs['Object'], mp.inputs['Vector'])
+        cr = nt.nodes.new('ShaderNodeValToRGB')
+        if tex in ('oak', 'walnut'):
+            wv = nt.nodes.new('ShaderNodeTexWave'); wv.bands_direction = 'X' if tex == 'oak' else 'Z'
+            wv.inputs['Scale'].default_value = 9.0; wv.inputs['Distortion'].default_value = 2.5; wv.inputs['Detail'].default_value = 4
+            nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 40
+            mix = nt.nodes.new('ShaderNodeMath'); mix.operation = 'MULTIPLY'
+            nt.links.new(mp.outputs['Vector'], wv.inputs['Vector']); nt.links.new(mp.outputs['Vector'], nz.inputs['Vector'])
+            nt.links.new(wv.outputs['Fac'], mix.inputs[0]); nt.links.new(nz.outputs['Fac'], mix.inputs[1]); nt.links.new(mix.outputs[0], cr.inputs['Fac'])
+            if tex == 'oak': cr.color_ramp.elements[0].color = (0.50, 0.33, 0.19, 1); cr.color_ramp.elements[1].color = (0.66, 0.47, 0.29, 1)
+            else: cr.color_ramp.elements[0].color = (0.15, 0.075, 0.035, 1); cr.color_ramp.elements[1].color = (0.25, 0.135, 0.065, 1)
+        elif tex == 'marble':
+            nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 3; nz.inputs['Detail'].default_value = 12; nz.inputs['Distortion'].default_value = 3
+            nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
+            cr.color_ramp.elements[0].position = 0.495; cr.color_ramp.elements[0].color = (0.62, 0.61, 0.6, 1)
+            cr.color_ramp.elements[1].position = 0.505; cr.color_ramp.elements[1].color = (0.93, 0.92, 0.9, 1)
+        elif tex == 'grass':
+            nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 60
+            nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
+            cr.color_ramp.elements[0].color = (0.06, 0.16, 0.03, 1); cr.color_ramp.elements[1].color = (0.18, 0.35, 0.08, 1)
+        nt.links.new(cr.outputs['Color'], b.inputs['Base Color'])
+    return m
+
+def srgb(h):
+    c = [((h >> s) & 255) / 255 for s in (16, 8, 0)]
+    return tuple(x / 12.92 if x <= 0.04045 else ((x + 0.055) / 1.055) ** 2.4 for x in c)
+MAT = {
+ 'oak': node_mat('oak', (0.6, 0.45, 0.3), 0.45, tex='oak', scale=1.2), 'walnut': node_mat('walnut', (0.2, 0.1, 0.05), 0.42, tex='walnut', scale=2),
+ 'marble': node_mat('marble', (0.9, 0.9, 0.88), 0.12, tex='marble', scale=1.5), 'beige': node_mat('beige', srgb(0xd8cab3), 0.55),
+ 'anthr': node_mat('anthr', srgb(0x35373a), 0.5), 'black': node_mat('black', srgb(0x111112), 0.18, 0.3), 'steel': node_mat('steel', (0.75, 0.76, 0.78), 0.22, 1.0),
+ 'white': node_mat('white', srgb(0xf1efea), 0.5), 'ceramic': node_mat('ceramic', (0.95, 0.95, 0.94), 0.08), 'wall': node_mat('wall', srgb(0xf2f0ec), 0.85),
+ 'fabric': node_mat('fabric', srgb(0x8e8e8b), 0.95), 'boucle': node_mat('boucle', srgb(0xefebe4), 1.0), 'pillow': node_mat('pillow', srgb(0x93a38a), 1.0),
+ 'rug': node_mat('rug', srgb(0xb3a894), 1.0), 'linen': node_mat('linen', srgb(0xeae4d8), 0.95), 'glass': node_mat('glass', (1, 1, 1), 0.0, transm=1.0),
+ 'frame': node_mat('frame', srgb(0x3a3029), 0.45), 'grass': node_mat('grass', (0.1, 0.25, 0.05), 0.95, tex='grass', scale=1), 'paving': node_mat('paving', srgb(0xcfc7b8), 0.85),
+ 'hedge': node_mat('hedge', srgb(0x2f5a2a), 0.9), 'led': node_mat('led', (1, 0.85, 0.6), 0.5, emit=(1, 0.75, 0.45)), 'tv': node_mat('tv', (0.01, 0.01, 0.012), 0.08, 0.2),
+ 'red': node_mat('red', srgb(0xb8634a), 0.8), 'pot': node_mat('pot', srgb(0xb06a4a), 0.7), 'leaf': node_mat('leaf', srgb(0x2f6a2c), 0.6), 'grey': node_mat('grey', srgb(0xd9d7d1), 0.6),
+ 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gyp': node_mat('gyp', srgb(0xefede8), 0.85),
+}
+coll = sc.collection
+def mesh_obj(name, verts, faces, mat):
+    me = bpy.data.meshes.new(name); me.from_pydata(verts, [], faces); me.update()
+    ob = bpy.data.objects.new(name, me); ob.data.materials.append(MAT[mat] if isinstance(mat, str) else mat); coll.objects.link(ob); return ob
+def box(x0, y0, z0, x1, y1, z1, mat, name='b'):
+    if x1 - x0 < 0.05 or y1 - y0 < 0.05 or z1 - z0 < 0.05: return
+    v = [(x * S, y * S, z * S) for z in (z0, z1) for y in (y0, y1) for x in (x0, x1)]
+    f = [(0, 2, 3, 1), (4, 5, 7, 6), (0, 1, 5, 4), (2, 6, 7, 3), (0, 4, 6, 2), (1, 3, 7, 5)]
+    return mesh_obj(name, v, f, mat)
+def cyl_pts(p0, p1, r, mat, k=16, r1=None):
+    r1 = r if r1 is None else r1
+    a = Vector(p0) * S; b = Vector(p1) * S; d = (b - a).normalized()
+    t = Vector((0, 0, 1)) if abs(d.z) < 0.9 else Vector((1, 0, 0)); u = d.cross(t).normalized(); w = d.cross(u)
+    v = [tuple(c + (rr * S) * (math.cos(2 * math.pi * i / k) * u + math.sin(2 * math.pi * i / k) * w)) for c, rr in ((a, r), (b, r1)) for i in range(k)]
+    f = [tuple(range(k - 1, -1, -1)), tuple(range(k, 2 * k))] + [(i, (i + 1) % k, k + (i + 1) % k, k + i) for i in range(k)]
+    ob = mesh_obj('c', v, f, mat)
+    for p in ob.data.polygons: p.use_smooth = True
+    return ob
+def arc_wall(cx, cy, r, a0, a1, z0, z1, t, mat, n=20):
+    v = []; f = []
+    for i in range(n + 1):
+        a = a0 + (a1 - a0) * i / n
+        for rr in (r, r + t):
+            for z in (z0, z1): v.append(((cx + rr * math.cos(a)) * S, (cy + rr * math.sin(a)) * S, z * S))
+    for i in range(n):
+        o = i * 4; p = o + 4
+        f += [(o, p, p + 1, o + 1), (o + 2, o + 3, p + 3, p + 2), (o + 1, p + 1, p + 3, o + 3), (o, o + 2, p + 2, p)]
+    f += [(0, 1, 3, 2), (n * 4, n * 4 + 2, n * 4 + 3, n * 4 + 1)]
+    ob = mesh_obj('arc', v, f, mat)
+    for p in ob.data.polygons: p.use_smooth = True
+
+RULES = [['LED','led'],['Parete_TV_Cartongesso','gyp'],['Matrimoniale_Cuscini','linen'],['Poltrona','pink'],['Tappeto_Gioco','sage'],['Termo','anthr'],['Divano','fabric'],['Chaise','fabric'],['Cuscin','pillow'],['Tappeto','rug'],
+ ['Comodino','white'],['Testiera','white'],['Armadio_Matrimoniale','white'],['Matrimoniale_Letto','linen'],['Ingresso_Bianc','white'],['Armadio_L','white'],['Pavimento_Bagno','grey'],['Pavimento','oak'],
+ ['Penisola_Top','marble'],['Top','marble'],['Penisola','anthr'],['Piano_Induzione','black'],['Dispensa','beige'],['Colonna','walnut'],['Pensil','walnut'],['Mensola','walnut'],['Mobiletto','walnut'],['Mobile_Lavabo','walnut'],
+ ['Base','beige'],['Zoccolo','anthr'],['TV_','tv'],['Controparete','gyp'],['Prato','grass'],['Terrazza','paving'],['Marciapiede','paving'],['Vialetto','paving'],['Area_Pranzo','paving'],['Siepe','hedge'],
+ ['Lavabo','ceramic'],['WC','ceramic'],['Bidet','ceramic'],['Doccia','ceramic'],['Lavatrice','ceramic'],['Quadro','red'],['Lettino','white'],['Fasciatoio','white'],['Libreria','white'],['Cassettiera','walnut']]
+def mat_for(n):
+    for k, m in RULES:
+        if k in n: return m
+    return 'grey'
+OPEN = [[-13,294.5,0,411,100,240],[-13,63,0,163,100,240],[207,560,324,573,0,240],[179,-165,192,-65,0,240],[450,560,550,573,0,240],[640,560,740,573,0,240],[845,560,945,573,0,240],[1204,100,1217,200,100,200],
+ [432,50,445,130,0,210],[660,143,740,156,0,210],[850,250,930,263,0,210],[934,63,946,143,0,210],[522,40,602,53,0,210],[840,143,920,156,0,210]]
+portals = []
+def wall(n, x0, y0, x1, y1):
+    horiz = (x1 - x0) >= (y1 - y0)
+    ops = sorted([(max(o[0], x0), min(o[2], x1), o[4], o[5]) if horiz else (max(o[1], y0), min(o[3], y1), o[4], o[5]) for o in OPEN if o[0] < x1 - .5 and o[2] > x0 + .5 and o[1] < y1 - .5 and o[3] > y0 + .5])
+    cur = x0 if horiz else y0; end = x1 if horiz else y1
+    seg = (lambda a, b, za, zb: box(a, y0, za, b, y1, zb, 'wall')) if horiz else (lambda a, b, za, zb: box(x0, a, za, x1, b, zb, 'wall'))
+    ext = n.startswith(('Parete_Ovest', 'Parete_Nord', 'Parete_Est_Esterna', 'Parete_Gradino'))
+    for a, b, s, h in ops:
+        seg(cur, a, 0, 270); seg(a, b, 0, s); seg(a, b, h, 270)
+        if ext:
+            if horiz: box(a, (y0+y1)/2-.4, s, b, (y0+y1)/2+.4, h, 'glass'); [box(*q, 'frame') for q in ((a, y0+3, s, a+5, y1-3, h), (b-5, y0+3, s, b, y1-3, h), (a, y0+3, h-5, b, y1-3, h), (a, y0+3, s, b, y1-3, s+4))]
+            else: box((x0+x1)/2-.4, a, s, (x0+x1)/2+.4, b, h, 'glass'); [box(*q, 'frame') for q in ((x0+3, a, s, x1-3, a+5, h), (x0+3, b-5, s, x1-3, b, h), (x0+3, a, h-5, x1-3, b, h), (x0+3, a, s, x1-3, b, s+4))]
+            portals.append((horiz, a, b, s, h, x0, y0, x1, y1))
+        cur = b
+    seg(cur, end, 0, 270)
+
+TC = (262, 365)
+for g, n, x0, y0, z0, x1, y1, z1 in rows:
+    if n.startswith('Parete') and 'TV' not in n: wall(n, x0, y0, x1, y1); continue
+    if n.startswith('Albero'):
+        cx, cy = (x0+x1)/2, (y0+y1)/2; cyl_pts((cx, cy, 0), (cx, cy, 200), 10, 'frame')
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=3, radius=1.5, location=(cx*S, cy*S, 3.0)); bpy.context.object.data.materials.append(MAT['hedge']); continue
+    if 'Rotondo' in n:
+        cx, cy = (x0+x1)/2, (y0+y1)/2; cyl_pts((cx, cy, 72), (cx, cy, 76), 55, 'walnut', 64); cyl_pts((cx, cy, 3), (cx, cy, 72), 6, 'anthr'); cyl_pts((cx, cy, 0), (cx, cy, 3), 25, 'anthr', 40); continue
+    if 'Termo' in n:
+        alx = (x1-x0) > (y1-y0); fx = (y0+y1)/2 if alx else (x0+x1)/2; a0 = (x0 if alx else y0) + 2; a1 = (x1 if alx else y1) - 2
+        P = (lambda t, z: (t, fx, z)) if alx else (lambda t, z: (fx, t, z))
+        for c in (a0, a1): cyl_pts(P(c, 18), P(c, 202), 2, 'anthr', 12)
+        z = 26
+        while z < 199: cyl_pts(P(a0, z), P(a1, z), 1.25, 'anthr', 8); z += 7
+        continue
+    if n.startswith('Sedia'):
+        sx, sy = (x0+x1)/2, (y0+y1)/2; dx, dy = sx-TC[0], sy-TC[1]; ang = math.atan2(dy, dx)
+        cyl_pts((sx, sy, 42), (sx, sy, 49), 23, 'boucle', 40)
+        arc_wall(sx, sy, 20, ang - math.radians(100), ang + math.radians(100), 49, 78, 4, 'boucle')
+        for a in (45, 135, 225, 315):
+            la = math.radians(a); cyl_pts((sx+math.cos(la)*15, sy+math.sin(la)*15, 0), (sx+math.cos(la)*13, sy+math.sin(la)*13, 42), 1.0, 'walnut', 10, 1.4)
+        continue
+    if 'Cappa' in n:
+        box(x0, y0, z0, x1, y1, z1, 'black'); box(x0+2, y0+2, z0-.5, x1-2, y1-2, z0, 'led'); top = ((x0+x1)/2, (y0+y1)/2, 267)
+        for px, py in ((x0+2, y0+4), (x1-2, y0+4), (x0+2, y1-4), (x1-2, y1-4)): cyl_pts((px, py, z1), top, .25, 'steel', 6)
+        cyl_pts((top[0], top[1], 266.5), (top[0], top[1], 270), 6, 'steel', 24); continue
+    if n.startswith('Boiserie'):
+        box(362, y0, 0, 364, y1, 270, 'anthr'); y = y0 + 2
+        while y + 4 <= y1: box(359, y, 0, 362, y + 4, 270, 'walnut'); y += 7
+        continue
+    if n.startswith('Complemento'):
+        box(325, 522, 0, 364, 560, 93, 'walnut'); box(325, 558, 93, 364, 560, 232, 'anthr'); box(325, 522, 93, 327, 560, 232, 'walnut')
+        for z in (130, 165, 200): box(327, 524, z, 364, 558, z + 2, 'walnut')
+        continue
+    if 'Libreria_Ingresso' in n:
+        box(x0, y0, 0, x1, y0+2, 250, 'white'); box(x0, y1-2, 0, x1, y1, 250, 'white'); box(x0, y0, 0, x1, y1, 45, 'white')
+        for z in (85, 125, 165, 205, 248): box(x0+2, y0, z, x1, y1, z+2, 'white')
+        continue
+    if n.startswith('Lavello'): box(x0, y0, z0 - 1, x1, y1, z1 + .3, 'steel'); continue
+    box(x0, y0, z0, x1, y1, max(z1, z0 + .5), mat_for(n), n)
+# extra details
+for z in (140, 180): box(0, 419, z, 25, 523, z + 4, 'walnut'); box(.5, 421, z - .6, 2, 521, z, 'led')
+box(0, 525, 150, 62, 560, 270, 'walnut'); box(325, 525, 232, 364, 560, 270, 'walnut')
+cyl_pts((15, 460, 90), (15, 460, 120), .9, 'steel'); cyl_pts((15, 460, 120), (28, 460, 120), .9, 'steel')
+box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
+box(350, 155, 0, 352, 280, 270, 'walnut'); box(348, 160, 100, 350, 275, 172, 'tv'); box(349.5, 155, 0, 350, 157, 270, 'led'); box(349.5, 278, 0, 350, 280, 270, 'led')
+for x in (122, 182): box(x - .3, 499.5, 0, x + .3, 500, 270, 'seam')
+for y in (235, 290, 345, 400): box(754.5, y - .3, 0, 755, y + .3, 250, 'seam')
+for y in (-140, -90): box(386.5, y - .3, 0, 387, y + .3, 250, 'seam')
+for x in (1014, 1078, 1144): box(x - .3, 499.5, 0, x + .3, 500, 250, 'seam')
+box(540, 282, 45, 587, 434, 48, 'fabric')
+def plant(x, y, s=1.0):
+    cyl_pts((x, y, 0), (x, y, 34*s), 12*s, 'pot', 24, 15*s)
+    for i in range(14):
+        a = i * 2.39; r = (6 + (i % 4) * 4) * s
+        bpy.ops.mesh.primitive_uv_sphere_add(segments=16, ring_count=10, radius=(15 + (i % 3) * 4) * s * S, location=((x + math.cos(a)*r)*S, (y + math.sin(a)*r)*S, (55 + i*7)*s*S))
+        o = bpy.context.object; o.scale = (1, 0.7, 1.25); o.rotation_euler = (0.3*math.sin(i), 0.3*math.cos(i), a); o.data.materials.append(MAT['leaf'])
+        for p in o.data.polygons: p.use_smooth = True
+pass  # piante rimosse
+box(-13, -215, 270, 1217, 573, 275, 'wall')
+# world sky + sun
+w = bpy.data.worlds.new('w'); sc.world = w; w.use_nodes = True
+sky = w.node_tree.nodes.new('ShaderNodeTexSky'); sky.sky_type = 'MULTIPLE_SCATTERING' if hasattr(sky, 'sky_type') and 'MULTIPLE_SCATTERING' in [i.identifier for i in sky.bl_rna.properties['sky_type'].enum_items] else sky.sky_type
+sky.sun_elevation = math.radians(32); sky.sun_rotation = math.radians(215)
+bg = w.node_tree.nodes['Background']; bg.inputs['Strength'].default_value = 0.35; w.node_tree.links.new(sky.outputs['Color'], bg.inputs['Color'])
+sun = bpy.data.lights.new('sun', 'SUN'); sun.energy = 3.5; sun.angle = math.radians(1.5); sun.color = (1, 0.95, 0.88)
+so = bpy.data.objects.new('sun', sun); coll.objects.link(so); so.rotation_euler = (math.radians(58), 0, math.radians(215 - 90 + 180))
+for horiz, a, b, s, h, x0, y0, x1, y1 in portals:
+    L = bpy.data.lights.new('portal', 'AREA'); L.shape = 'RECTANGLE'; L.cycles.is_portal = True
+    o = bpy.data.objects.new('portal', L); coll.objects.link(o)
+    if horiz: L.size = (b-a)*S; L.size_y = (h-s)*S; o.location = ((a+b)/2*S, (y1+2)*S, (s+h)/2*S); o.rotation_euler = (math.radians(-90), 0, 0)
+    else:
+        L.size = (b-a)*S; L.size_y = (h-s)*S
+        if x0 < 100: o.location = ((x0-2)*S, (a+b)/2*S, (s+h)/2*S); o.rotation_euler = (math.radians(90), 0, math.radians(-90))
+        else: o.location = ((x1+2)*S, (a+b)/2*S, (s+h)/2*S); o.rotation_euler = (math.radians(90), 0, math.radians(90))
+for x, y, z, e in ((125, 324, 150, 6), (262, 365, 240, 10), (150, 150, 262, 12), (300, 220, 262, 8), (596, 350, 262, 14), (1015, 410, 262, 10), (312, -100, 262, 8), (1110, 150, 262, 8)):
+    L = bpy.data.lights.new('spot', 'POINT'); L.energy = e * 4; L.color = (1, 0.82, 0.62); L.shadow_soft_size = 0.08
+    o = bpy.data.objects.new('spot', L); coll.objects.link(o); o.location = (x*S, y*S, z*S)
+# camera
+c = bpy.data.cameras.new('cam'); c.sensor_fit = 'VERTICAL'; c.angle_y = math.radians(FOV)
+co = bpy.data.objects.new('cam', c); coll.objects.link(co); sc.camera = co
+co.location = Vector(cam[:3]) * S; co.rotation_euler = (Vector(cam[3:]) * S - co.location).to_track_quat('-Z', 'Y').to_euler()
+sc.render.engine = 'CYCLES'; sc.cycles.device = 'CPU'; sc.cycles.samples = SAMPLES; sc.cycles.use_denoising = True
+sc.cycles.max_bounces = 6; sc.cycles.diffuse_bounces = 3; sc.cycles.glossy_bounces = 3; sc.cycles.transmission_bounces = 6
+sc.render.resolution_x = W; sc.render.resolution_y = H; sc.render.resolution_percentage = 100
+try: sc.view_settings.view_transform = 'AgX'; sc.view_settings.look = 'AgX - Medium High Contrast'
+except Exception: sc.view_settings.view_transform = 'Filmic'
+sc.view_settings.exposure = 0.6
+sc.render.filepath = OUT; sc.render.threads_mode = 'AUTO'
+bpy.ops.render.render(write_still=True)
+print('DONE', OUT)
