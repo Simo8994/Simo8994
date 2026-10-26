@@ -125,9 +125,10 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if 'Termo' in n:
         alx = (x1-x0) > (y1-y0); fx = (y0+y1)/2 if alx else (x0+x1)/2; a0 = (x0 if alx else y0) + 2; a1 = (x1 if alx else y1) - 2
         P = (lambda t, z: (t, fx, z)) if alx else (lambda t, z: (fx, t, z))
-        for c in (a0, a1): cyl_pts(P(c, 18), P(c, 202), 2, 'anthr', 12)
+        tm = 'steel' if g == 'Zon' else 'anthr'
+        for c in (a0, a1): cyl_pts(P(c, 18), P(c, 202), 2, tm, 12)
         z = 26
-        while z < 199: cyl_pts(P(a0, z), P(a1, z), 1.25, 'anthr', 8); z += 7
+        while z < 199: cyl_pts(P(a0, z), P(a1, z), 1.25, tm, 8); z += 7
         continue
     if n.startswith('Sedia'):
         sx, sy = (x0+x1)/2, (y0+y1)/2; dx, dy = sx-TC[0], sy-TC[1]; ang = math.atan2(dy, dx)
