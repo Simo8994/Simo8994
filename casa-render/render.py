@@ -34,6 +34,12 @@ def node_mat(name, base, rough=0.5, metal=0.0, transm=0.0, emit=None, tex=None, 
             nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
             cr.color_ramp.elements[0].position = 0.495; cr.color_ramp.elements[0].color = (0.62, 0.61, 0.6, 1)
             cr.color_ramp.elements[1].position = 0.505; cr.color_ramp.elements[1].color = (0.93, 0.92, 0.9, 1)
+        elif tex == 'nero_oro':
+            nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 2.5; nz.inputs['Detail'].default_value = 14; nz.inputs['Distortion'].default_value = 4
+            nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
+            e = cr.color_ramp.elements; e[0].position = 0.0; e[0].color = (0.012, 0.011, 0.010, 1); e[1].position = 1.0; e[1].color = (0.02, 0.018, 0.016, 1)
+            for pos, col in ((0.492, (0.012, 0.011, 0.010, 1)), (0.5, (0.75, 0.52, 0.18, 1)), (0.508, (0.015, 0.013, 0.012, 1))):
+                el = e.new(pos); el.color = col
         elif tex == 'grass':
             nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 60
             nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
@@ -47,6 +53,7 @@ def srgb(h):
 MAT = {
  'oak': node_mat('oak', (0.6, 0.45, 0.3), 0.45, tex='oak', scale=1.2), 'walnut': node_mat('walnut', (0.2, 0.1, 0.05), 0.42, tex='walnut', scale=2),
  'marble': node_mat('marble', (0.9, 0.9, 0.88), 0.12, tex='marble', scale=1.5), 'beige': node_mat('beige', srgb(0xd8cab3), 0.55),
+ 'nero_oro': node_mat('nero_oro', (0.015, 0.013, 0.012), 0.1, tex='nero_oro', scale=0.8),
  'anthr': node_mat('anthr', srgb(0x35373a), 0.5), 'black': node_mat('black', srgb(0x111112), 0.18, 0.3), 'steel': node_mat('steel', (0.75, 0.76, 0.78), 0.22, 1.0),
  'white': node_mat('white', srgb(0xf1efea), 0.5), 'ceramic': node_mat('ceramic', (0.95, 0.95, 0.94), 0.08), 'wall': node_mat('wall', srgb(0xf2f0ec), 0.85),
  'fabric': node_mat('fabric', srgb(0x8e8e8b), 0.95), 'boucle': node_mat('boucle', srgb(0xefebe4), 1.0), 'pillow': node_mat('pillow', srgb(0x93a38a), 1.0),
@@ -89,7 +96,7 @@ def arc_wall(cx, cy, r, a0, a1, z0, z1, t, mat, n=20):
 
 RULES = [['LED','led'],['Parete_TV_Cartongesso','gyp'],['Matrimoniale_Cuscini','linen'],['Poltrona','pink'],['Tappeto_Gioco','sage'],['Termo','anthr'],['Divano','fabric'],['Chaise','fabric'],['Cuscin','pillow'],['Tappeto','rug'],
  ['Comodino','white'],['Testiera','white'],['Armadio_Matrimoniale','white'],['Matrimoniale_Letto','linen'],['Ingresso_Bianc','white'],['Armadio_L','white'],['Pavimento_Bagno','grey'],['Pavimento','oak'],
- ['Penisola_Top','marble'],['Top','marble'],['Penisola','anthr'],['Piano_Induzione','black'],['Dispensa','beige'],['Colonna','walnut'],['Pensil','walnut'],['Mensola','walnut'],['Mobiletto','walnut'],['Mobile_Lavabo','walnut'],
+ ['Penisola_Top','nero_oro'],['Top_Finestra','nero_oro'],['Top','marble'],['Penisola','anthr'],['Piano_Induzione','black'],['Dispensa','beige'],['Colonna','walnut'],['Pensil','walnut'],['Mensola','walnut'],['Mobiletto','walnut'],['Mobile_Lavabo','walnut'],
  ['Base','beige'],['Zoccolo','anthr'],['TV_','tv'],['Controparete','gyp'],['Prato','grass'],['Terrazza','paving'],['Marciapiede','paving'],['Vialetto','paving'],['Area_Pranzo','paving'],['Siepe','hedge'],
  ['Lavabo','ceramic'],['WC','ceramic'],['Bidet','ceramic'],['Doccia','ceramic'],['Lavatrice','ceramic'],['Quadro','red'],['Lettino','white'],['Fasciatoio','white'],['Libreria','white'],['Cassettiera','walnut']]
 def mat_for(n):
@@ -146,18 +153,22 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         while y + 4 <= y1: box(359, y, 0, 362, y + 4, 270, 'walnut'); y += 7
         continue
     if n.startswith('Complemento'):
-        box(325, 522, 0, 364, 560, 93, 'walnut'); box(325, 558, 93, 364, 560, 232, 'anthr'); box(325, 522, 93, 327, 560, 232, 'walnut')
-        for z in (130, 165, 200): box(327, 524, z, 364, 558, z + 2, 'walnut')
+        box(325, 522, 0, 364, 560, 89, 'beige'); box(325, 522, 89, 364, 560, 93, 'nero_oro'); box(325, 558, 93, 364, 560, 232, 'beige'); box(325, 522, 93, 327, 560, 232, 'beige')
+        for z in (130, 165, 200): box(327, 524, z, 364, 558, z + 2, 'beige')
         continue
     if 'Libreria_Ingresso' in n:
         box(x0, y0, 0, x1, y0+2, 250, 'white'); box(x0, y1-2, 0, x1, y1, 250, 'white'); box(x0, y0, 0, x1, y1, 45, 'white')
         for z in (85, 125, 165, 205, 248): box(x0+2, y0, z, x1, y1, z+2, 'white')
         continue
     if n.startswith('Lavello'): box(x0, y0, z0 - 1, x1, y1, z1 + .3, 'steel'); continue
-    box(x0, y0, z0, x1, y1, max(z1, z0 + .5), mat_for(n), n)
+    if n == 'Penisola_Base': x0 = 60
+    m = mat_for(n)
+    if 'Induzione' in n: m = 'black'
+    elif g == 'Cuc' and m in ('walnut', 'anthr'): m = 'beige'
+    box(x0, y0, z0, x1, y1, max(z1, z0 + .5), m, n)
 # extra details
-for z in (140, 180): box(0, 419, z, 25, 523, z + 4, 'walnut'); box(.5, 421, z - .6, 2, 521, z, 'led')
-box(0, 525, 150, 62, 560, 270, 'walnut'); box(325, 525, 232, 364, 560, 270, 'walnut')
+for z in (140, 180): box(0, 419, z, 25, 523, z + 4, 'beige'); box(.5, 421, z - .6, 2, 521, z, 'led')
+box(0, 525, 150, 62, 560, 270, 'beige'); box(325, 525, 232, 364, 560, 270, 'beige')
 cyl_pts((15, 460, 90), (15, 460, 120), .9, 'steel'); cyl_pts((15, 460, 120), (28, 460, 120), .9, 'steel')
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
 box(350, 155, 0, 352, 280, 270, 'walnut'); box(348, 160, 100, 350, 275, 172, 'tv'); box(349.5, 155, 0, 350, 157, 270, 'led'); box(349.5, 278, 0, 350, 280, 270, 'led')
