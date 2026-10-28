@@ -67,6 +67,7 @@ def srgb(h):
 MAT = {
  'oak': node_mat('oak', (0.6, 0.45, 0.3), 0.4, tex='parquet', scale=1.0), 'walnut': node_mat('walnut', (0.2, 0.1, 0.05), 0.42, tex='walnut', scale=2),
  'marble': node_mat('marble', (0.9, 0.9, 0.88), 0.12, tex='marble', scale=1.5), 'beige': node_mat('beige', srgb(0xd8cab3), 0.55),
+ 'tenda': node_mat('tenda', srgb(0xe3d9c8), 0.9),
  'nero': node_mat('nero', srgb(0x1c1c1c), 0.5), 'brass': node_mat('brass', srgb(0xb8893a), 0.3, 1.0),
  'nero_oro': node_mat('nero_oro', (0.015, 0.013, 0.012), 0.1, tex='nero_oro', scale=0.8),
  'anthr': node_mat('anthr', srgb(0x35373a), 0.5), 'black': node_mat('black', srgb(0x111112), 0.18, 0.3), 'steel': node_mat('steel', (0.75, 0.76, 0.78), 0.22, 1.0),
@@ -181,6 +182,23 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if 'Induzione' in n: m = 'black'
     elif g == 'Cuc' and m in ('walnut', 'anthr'): m = 'beige'
     box(x0, y0, z0, x1, y1, max(z1, z0 + .5), m, n)
+# blackout curtains (cream), open and gathered at the sides; wall: 'x' = wall at constant x, 'y' = constant y
+def curtain(wall, c, a, b, z0, z1, mat='tenda'):
+    n = max(2, int((b - a) / 2.5)); v = []; f = []
+    for i in range(n + 1):
+        t = a + (b - a) * i / n; d = c + 2 + 2 * math.sin(i * 2.5 * 2 * math.pi / 10)
+        for z in (z0, z1): v.append(((d, t, z) if wall == 'x' else (t, d, z)))
+    v = [(x * S, y * S, z * S) for x, y, z in v]
+    for i in range(n): f.append((2 * i, 2 * i + 2, 2 * i + 3, 2 * i + 1))
+    mesh_obj('Tenda', v, f, mat)
+def rod(wall, c, a, b, z=262):
+    p0, p1 = ((c + 6, a, z), (c + 6, b, z)) if wall == 'x' else ((a, c + 6, z), (b, c + 6, z)); cyl_pts(p0, p1, .8, 'nero')
+for wall, c, a, b, z0, p0, p1 in [('x', 0, 294.5, 411, 95, 279, 418),       # kitchen window (stops above worktop)
+                                  ('x', 0, 63, 163, 1, 45, 181),            # living window
+                                  ('x', 192, -165, -65, 1, -183, -47),      # entrance patio door
+                                  ('y', 550, 207, 324, 1, 190, 324)]:       # kitchen patio door (interior face y=560)
+    for q0, q1 in ((p0, a + 15), (b - 15, p1)): curtain(wall, c, q0, q1, z0, 266)
+    rod(wall, c, p0 - 3, p1 + 3)
 # extra details
 for z in (140, 180): box(0, 419, z, 25, 523, z + 4, 'beige'); box(.5, 421, z - .6, 2, 521, z, 'led')
 box(0, 525, 150, 62, 560, 270, 'beige'); box(325, 525, 232, 364, 560, 270, 'beige')
