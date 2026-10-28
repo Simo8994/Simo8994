@@ -53,15 +53,16 @@ def srgb(h):
 MAT = {
  'oak': node_mat('oak', (0.6, 0.45, 0.3), 0.45, tex='oak', scale=1.2), 'walnut': node_mat('walnut', (0.2, 0.1, 0.05), 0.42, tex='walnut', scale=2),
  'marble': node_mat('marble', (0.9, 0.9, 0.88), 0.12, tex='marble', scale=1.5), 'beige': node_mat('beige', srgb(0xd8cab3), 0.55),
+ 'nero': node_mat('nero', srgb(0x1c1c1c), 0.5), 'brass': node_mat('brass', srgb(0xb8893a), 0.3, 1.0),
  'nero_oro': node_mat('nero_oro', (0.015, 0.013, 0.012), 0.1, tex='nero_oro', scale=0.8),
  'anthr': node_mat('anthr', srgb(0x35373a), 0.5), 'black': node_mat('black', srgb(0x111112), 0.18, 0.3), 'steel': node_mat('steel', (0.75, 0.76, 0.78), 0.22, 1.0),
- 'white': node_mat('white', srgb(0xf1efea), 0.5), 'ceramic': node_mat('ceramic', (0.95, 0.95, 0.94), 0.08), 'wall': node_mat('wall', srgb(0xf2f0ec), 0.85),
- 'fabric': node_mat('fabric', srgb(0x8e8e8b), 0.95), 'boucle': node_mat('boucle', srgb(0xefebe4), 1.0), 'pillow': node_mat('pillow', srgb(0x93a38a), 1.0),
- 'rug': node_mat('rug', srgb(0xb3a894), 1.0), 'linen': node_mat('linen', srgb(0xeae4d8), 0.95), 'glass': node_mat('glass', (1, 1, 1), 0.0, transm=1.0),
+ 'white': node_mat('white', srgb(0xf1efea), 0.5), 'ceramic': node_mat('ceramic', (0.95, 0.95, 0.94), 0.08), 'wall': node_mat('wall', srgb(0xf2ede4), 0.85),
+ 'fabric': node_mat('fabric', srgb(0x9a938a), 0.95), 'boucle': node_mat('boucle', srgb(0xefebe4), 1.0), 'pillow': node_mat('pillow', srgb(0xa0623a), 1.0),
+ 'rug': node_mat('rug', srgb(0xe3d9c8), 1.0), 'linen': node_mat('linen', srgb(0xeae4d8), 0.95), 'glass': node_mat('glass', (1, 1, 1), 0.0, transm=1.0),
  'frame': node_mat('frame', srgb(0x3a3029), 0.45), 'grass': node_mat('grass', (0.1, 0.25, 0.05), 0.95, tex='grass', scale=1), 'paving': node_mat('paving', srgb(0xcfc7b8), 0.85),
  'hedge': node_mat('hedge', srgb(0x2f5a2a), 0.9), 'led': node_mat('led', (1, 0.85, 0.6), 0.5, emit=(1, 0.75, 0.45)), 'tv': node_mat('tv', (0.01, 0.01, 0.012), 0.08, 0.2),
- 'red': node_mat('red', srgb(0xb8634a), 0.8), 'pot': node_mat('pot', srgb(0xb06a4a), 0.7), 'leaf': node_mat('leaf', srgb(0x2f6a2c), 0.6), 'grey': node_mat('grey', srgb(0xd9d7d1), 0.6),
- 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gyp': node_mat('gyp', srgb(0xefede8), 0.85),
+ 'red': node_mat('red', srgb(0xa0623a), 0.8), 'pot': node_mat('pot', srgb(0xb06a4a), 0.7), 'leaf': node_mat('leaf', srgb(0x2f6a2c), 0.6), 'grey': node_mat('grey', srgb(0xd9d7d1), 0.6),
+ 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gyp': node_mat('gyp', srgb(0xc2b6a3), 0.85),
 }
 coll = sc.collection
 def mesh_obj(name, verts, faces, mat):
@@ -132,7 +133,7 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if 'Termo' in n:
         alx = (x1-x0) > (y1-y0); fx = (y0+y1)/2 if alx else (x0+x1)/2; a0 = (x0 if alx else y0) + 2; a1 = (x1 if alx else y1) - 2
         P = (lambda t, z: (t, fx, z)) if alx else (lambda t, z: (fx, t, z))
-        tm = 'steel' if g == 'Zon' else 'anthr'
+        tm = 'steel' if g == 'Zon' else 'nero'
         for c in (a0, a1): cyl_pts(P(c, 18), P(c, 202), 2, tm, 12)
         z = 26
         while z < 199: cyl_pts(P(a0, z), P(a1, z), 1.25, tm, 8); z += 7
@@ -146,10 +147,10 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         continue
     if 'Cappa' in n:
         box(x0, y0, z0, x1, y1, z1, 'black'); box(x0+2, y0+2, z0-.5, x1-2, y1-2, z0, 'led'); top = ((x0+x1)/2, (y0+y1)/2, 267)
-        for px, py in ((x0+2, y0+4), (x1-2, y0+4), (x0+2, y1-4), (x1-2, y1-4)): cyl_pts((px, py, z1), top, .25, 'steel', 6)
-        cyl_pts((top[0], top[1], 266.5), (top[0], top[1], 270), 6, 'steel', 24); continue
+        for px, py in ((x0+2, y0+4), (x1-2, y0+4), (x0+2, y1-4), (x1-2, y1-4)): cyl_pts((px, py, z1), top, .25, 'brass', 6)
+        cyl_pts((top[0], top[1], 266.5), (top[0], top[1], 270), 6, 'brass', 24); continue
     if n.startswith('Boiserie'):
-        box(362, y0, 0, 364, y1, 270, 'anthr'); y = y0 + 2
+        box(362, y0, 0, 364, y1, 270, 'nero'); y = y0 + 2
         while y + 4 <= y1: box(359, y, 0, 362, y + 4, 270, 'walnut'); y += 7
         continue
     if n.startswith('Complemento'):
