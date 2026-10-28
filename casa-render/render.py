@@ -212,7 +212,8 @@ if os.environ.get('CASA_VARIANT') == 'mia':
     box(60, 297, 84, 60.6, 500, 86, 'brass'); box(60, 355, 84, 157, 355.6, 86, 'brass'); box(157, 297, 84, 157.6, 355, 86, 'brass')
     cyl_pts((275, 240, 0), (275, 240, 38), 23, 'pillow', 48)
 # extra details
-for z in (140, 180): box(0, 419, z, 25, 523, z + 4, 'beige'); box(.5, 421, z - .6, 2, 521, z, 'led')
+box(0, 414, 150, 35, 525, 270, 'beige'); box(34.6, 468.8, 150, 35.2, 469.2, 270, 'nero'); box(2, 416, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
+box(0, 411, 90, 1.2, 560, 150, 'nero_oro')  # black-gold marble backsplash
 box(0, 525, 150, 62, 560, 270, 'beige'); box(325, 525, 232, 364, 560, 270, 'beige')
 cyl_pts((15, 460, 90), (15, 460, 120), .9, 'nero'); cyl_pts((15, 460, 120), (28, 460, 120), .9, 'nero')
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')

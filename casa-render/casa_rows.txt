@@ -5,7 +5,6 @@ Cuc|Base_Lavastoviglie|0,355,10,58,414,88
 Cuc|Base_Lavello_90|0,415,10,58,504,88
 Cuc|Base_Angolo|0,505,10,58,560,88
 Cuc|Lavello_Grande_80x45|8,420,90,53,500,90
-Cuc|Mensola_Design_1|0,419,140,25,523,144
 Sog|Pavimento_Zona_Giorno|0,0,-2,364,560,0
 Sog|Pavimento_Ingresso|192,-202,-2,432,0,0
 Sog|Pavimento_Passaggio_Corridoio|364,0,-2,432,143,0
