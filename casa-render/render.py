@@ -48,6 +48,13 @@ def node_mat(name, base, rough=0.5, metal=0.0, transm=0.0, emit=None, tex=None, 
             br.inputs['Mortar'].default_value = (0.22, 0.16, 0.10, 1)
             nt.links.new(mp.outputs['Vector'], br.inputs['Vector']); nt.links.new(cr.outputs['Color'], br.inputs['Color1']); nt.links.new(cr2.outputs['Color'], br.inputs['Color2'])
             nt.links.new(br.outputs['Color'], b.inputs['Base Color']); return m
+        elif tex == 'taj':
+            # Taj Mahal porcelain stoneware: warm cream base with soft, wide taupe-gold veins
+            nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 1.2; nz.inputs['Detail'].default_value = 6; nz.inputs['Distortion'].default_value = 1.5
+            nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
+            e = cr.color_ramp.elements; e[0].position = 0.0; e[0].color = (0.80, 0.75, 0.66, 1); e[1].position = 1.0; e[1].color = (0.77, 0.71, 0.61, 1)
+            for pos, col in ((0.47, (0.80, 0.75, 0.66, 1)), (0.5, (0.56, 0.47, 0.35, 1)), (0.53, (0.79, 0.73, 0.64, 1))):
+                el = e.new(pos); el.color = col
         elif tex == 'nero_oro':
             nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 1.5; nz.inputs['Detail'].default_value = 8; nz.inputs['Distortion'].default_value = 2.5
             nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
@@ -66,7 +73,8 @@ def srgb(h):
     return tuple(x / 12.92 if x <= 0.04045 else ((x + 0.055) / 1.055) ** 2.4 for x in c)
 MAT = {
  'oak': node_mat('oak', (0.6, 0.45, 0.3), 0.4, tex='parquet', scale=1.0), 'walnut': node_mat('walnut', (0.2, 0.1, 0.05), 0.42, tex='walnut', scale=2),
- 'marble': node_mat('marble', (0.9, 0.9, 0.88), 0.12, tex='marble', scale=1.5), 'beige': node_mat('beige', srgb(0xd8cab3), 0.55),
+ 'marble': node_mat('marble', (0.9, 0.9, 0.88), 0.12, tex='marble', scale=1.5), 'beige': node_mat('beige', srgb(0xcbbfae), 0.62),  # cashmere matte
+ 'taj': node_mat('taj', (0.8, 0.75, 0.66), 0.3, tex='taj', scale=1.0),
  'tenda': node_mat('tenda', srgb(0xe3d9c8), 0.9),
  'nero': node_mat('nero', srgb(0x1c1c1c), 0.5), 'brass': node_mat('brass', srgb(0xb8893a), 0.3, 1.0),
  'nero_oro': node_mat('nero_oro', (0.015, 0.013, 0.012), 0.1, tex='nero_oro', scale=0.8),
@@ -116,7 +124,7 @@ def arc_wall(cx, cy, r, a0, a1, z0, z1, t, mat, n=20):
 
 RULES = [['LED','led'],['Parete_TV_Cartongesso','gyp'],['Matrimoniale_Cuscini','linen'],['Poltrona','pink'],['Tappeto_Gioco','sage'],['Termo','anthr'],['Divano','fabric'],['Chaise','fabric'],['Cuscin','pillow'],['Tappeto','rug'],
  ['Comodino','white'],['Testiera','white'],['Armadio_Matrimoniale','white'],['Matrimoniale_Letto','linen'],['Ingresso_Bianc','white'],['Armadio_L','white'],['Pavimento_Bagno','grey'],['Pavimento','oak'],
- ['Penisola_Top','nero_oro'],['Top_Finestra','nero_oro'],['Top','marble'],['Penisola','anthr'],['Piano_Induzione','black'],['Dispensa','beige'],['Colonna','walnut'],['Pensil','walnut'],['Mensola','walnut'],['Mobiletto','walnut'],['Mobile_Lavabo','walnut'],
+ ['Penisola_Top','taj'],['Top','taj'],['Penisola','anthr'],['Piano_Induzione','black'],['Dispensa','beige'],['Colonna','walnut'],['Pensil','walnut'],['Mensola','walnut'],['Mobiletto','walnut'],['Mobile_Lavabo','walnut'],
  ['Base','beige'],['Zoccolo','anthr'],['TV_','tv'],['Controparete','gyp'],['Prato','grass'],['Terrazza','paving'],['Marciapiede','paving'],['Vialetto','paving'],['Area_Pranzo','paving'],['Siepe','hedge'],
  ['Lavabo','ceramic'],['WC','ceramic'],['Bidet','ceramic'],['Doccia','ceramic'],['Lavatrice','ceramic'],['Quadro','red'],['Lettino','white'],['Fasciatoio','white'],['Libreria','white'],['Cassettiera','walnut']]
 def mat_for(n):
@@ -180,7 +188,7 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         while y + 4 <= y1: box(359, y, 0, 362, y + 4, 270, 'walnut'); y += 7
         continue
     if n.startswith('Complemento'):
-        box(326, 522, 0, 364, 560, 89, 'beige'); box(326, 522, 89, 364, 560, 93, 'nero_oro')  # low 40 cm base with top
+        box(326, 522, 0, 364, 560, 89, 'beige'); box(326, 522, 89, 364, 560, 93, 'taj')  # low 40 cm base with top
         for z in (135, 175): box(328, 536, z, 364, 560, z + 3, 'beige')  # two light floating shelves, no tall unit
         continue
     if 'Libreria_Ingresso' in n:
@@ -213,9 +221,9 @@ if os.environ.get('CASA_VARIANT') == 'mia':
     cyl_pts((275, 240, 0), (275, 240, 38), 23, 'pillow', 48)
 # extra details
 box(0, 397, 150, 35, 525, 270, 'beige'); box(34.6, 460.8, 150, 35.2, 461.2, 270, 'nero'); box(2, 399, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
-box(0, 394.5, 90, 1.2, 560, 150, 'beige')  # beige glass backsplash, same tone as the fronts
-box(0, 525, 150, 62, 560, 270, 'beige')
-cyl_pts((15, 425, 90), (15, 425, 120), .9, 'nero'); cyl_pts((15, 425, 120), (28, 425, 120), .9, 'nero')
+box(0, 394.5, 90, 1.2, 560, 150, 'taj')  # Taj Mahal stoneware backsplash, same slab as the top
+box(0, 525, 150, 62, 560, 270, 'beige'); box(182, 525, 150, 222, 560, 270, 'beige')  # wall unit beside the oven column
+cyl_pts((15, 425, 90), (15, 425, 120), .9, 'white'); cyl_pts((15, 425, 120), (28, 425, 120), .9, 'white')
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
 box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
