@@ -34,6 +34,20 @@ def node_mat(name, base, rough=0.5, metal=0.0, transm=0.0, emit=None, tex=None, 
             nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
             cr.color_ramp.elements[0].position = 0.495; cr.color_ramp.elements[0].color = (0.62, 0.61, 0.6, 1)
             cr.color_ramp.elements[1].position = 0.505; cr.color_ramp.elements[1].color = (0.93, 0.92, 0.9, 1)
+        elif tex == 'parquet':
+            # oak strips 7x50 cm, straight lay, water-based varnish (pale, natural, satin)
+            wv = nt.nodes.new('ShaderNodeTexWave'); wv.bands_direction = 'Y'
+            wv.inputs['Scale'].default_value = 40; wv.inputs['Distortion'].default_value = 3; wv.inputs['Detail'].default_value = 4
+            nt.links.new(mp.outputs['Vector'], wv.inputs['Vector']); nt.links.new(wv.outputs['Fac'], cr.inputs['Fac'])
+            cr2 = nt.nodes.new('ShaderNodeValToRGB'); nt.links.new(wv.outputs['Fac'], cr2.inputs['Fac'])
+            cr.color_ramp.elements[0].color = (0.55, 0.42, 0.28, 1); cr.color_ramp.elements[1].color = (0.68, 0.54, 0.37, 1)
+            cr2.color_ramp.elements[0].color = (0.47, 0.35, 0.22, 1); cr2.color_ramp.elements[1].color = (0.60, 0.47, 0.31, 1)
+            br = nt.nodes.new('ShaderNodeTexBrick'); br.offset = 0.5
+            br.inputs['Scale'].default_value = 1; br.inputs['Mortar Size'].default_value = 0.0012
+            br.inputs['Brick Width'].default_value = 0.5; br.inputs['Row Height'].default_value = 0.07
+            br.inputs['Mortar'].default_value = (0.22, 0.16, 0.10, 1)
+            nt.links.new(mp.outputs['Vector'], br.inputs['Vector']); nt.links.new(cr.outputs['Color'], br.inputs['Color1']); nt.links.new(cr2.outputs['Color'], br.inputs['Color2'])
+            nt.links.new(br.outputs['Color'], b.inputs['Base Color']); return m
         elif tex == 'nero_oro':
             nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 2.5; nz.inputs['Detail'].default_value = 14; nz.inputs['Distortion'].default_value = 4
             nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
@@ -51,7 +65,7 @@ def srgb(h):
     c = [((h >> s) & 255) / 255 for s in (16, 8, 0)]
     return tuple(x / 12.92 if x <= 0.04045 else ((x + 0.055) / 1.055) ** 2.4 for x in c)
 MAT = {
- 'oak': node_mat('oak', (0.6, 0.45, 0.3), 0.45, tex='oak', scale=1.2), 'walnut': node_mat('walnut', (0.2, 0.1, 0.05), 0.42, tex='walnut', scale=2),
+ 'oak': node_mat('oak', (0.6, 0.45, 0.3), 0.4, tex='parquet', scale=1.0), 'walnut': node_mat('walnut', (0.2, 0.1, 0.05), 0.42, tex='walnut', scale=2),
  'marble': node_mat('marble', (0.9, 0.9, 0.88), 0.12, tex='marble', scale=1.5), 'beige': node_mat('beige', srgb(0xd8cab3), 0.55),
  'nero': node_mat('nero', srgb(0x1c1c1c), 0.5), 'brass': node_mat('brass', srgb(0xb8893a), 0.3, 1.0),
  'nero_oro': node_mat('nero_oro', (0.015, 0.013, 0.012), 0.1, tex='nero_oro', scale=0.8),
