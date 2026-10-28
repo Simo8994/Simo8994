@@ -48,6 +48,13 @@ def node_mat(name, base, rough=0.5, metal=0.0, transm=0.0, emit=None, tex=None, 
             br.inputs['Mortar'].default_value = (0.22, 0.16, 0.10, 1)
             nt.links.new(mp.outputs['Vector'], br.inputs['Vector']); nt.links.new(cr.outputs['Color'], br.inputs['Color1']); nt.links.new(cr2.outputs['Color'], br.inputs['Color2'])
             nt.links.new(br.outputs['Color'], b.inputs['Base Color']); return m
+        elif tex == 'golden_moon':
+            # HPL 'Golden Moon' approximated: warm ivory with few fine golden veins
+            nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 1.3; nz.inputs['Detail'].default_value = 7; nz.inputs['Distortion'].default_value = 2
+            nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
+            e = cr.color_ramp.elements; e[0].position = 0.0; e[0].color = (0.83, 0.78, 0.68, 1); e[1].position = 1.0; e[1].color = (0.80, 0.74, 0.63, 1)
+            for pos, col in ((0.494, (0.83, 0.78, 0.68, 1)), (0.5, (0.66, 0.48, 0.22, 1)), (0.506, (0.82, 0.76, 0.66, 1))):
+                el = e.new(pos); el.color = col
         elif tex == 'taj':
             # Taj Mahal porcelain stoneware: warm cream base with soft, wide taupe-gold veins
             nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 1.2; nz.inputs['Detail'].default_value = 6; nz.inputs['Distortion'].default_value = 1.5
@@ -74,7 +81,7 @@ def srgb(h):
 MAT = {
  'oak': node_mat('oak', (0.6, 0.45, 0.3), 0.4, tex='parquet', scale=1.0), 'walnut': node_mat('walnut', (0.2, 0.1, 0.05), 0.42, tex='walnut', scale=2),
  'marble': node_mat('marble', (0.9, 0.9, 0.88), 0.12, tex='marble', scale=1.5), 'beige': node_mat('beige', srgb(0xcbbfae), 0.62),  # cashmere matte
- 'taj': node_mat('taj', (0.8, 0.75, 0.66), 0.3, tex='taj', scale=1.0),
+ 'taj': node_mat('taj', (0.8, 0.75, 0.66), 0.35, tex='golden_moon', scale=1.0),  # HPL Golden Moon (approximation)
  'tenda': node_mat('tenda', srgb(0xe3d9c8), 0.9),
  'nero': node_mat('nero', srgb(0x1c1c1c), 0.5), 'brass': node_mat('brass', srgb(0xb8893a), 0.3, 1.0),
  'nero_oro': node_mat('nero_oro', (0.015, 0.013, 0.012), 0.1, tex='nero_oro', scale=0.8),
@@ -85,7 +92,7 @@ MAT = {
  'frame': node_mat('frame', srgb(0x3a3029), 0.45), 'grass': node_mat('grass', (0.1, 0.25, 0.05), 0.95, tex='grass', scale=1), 'paving': node_mat('paving', srgb(0xcfc7b8), 0.85),
  'hedge': node_mat('hedge', srgb(0x2f5a2a), 0.9), 'led': node_mat('led', (1, 0.85, 0.6), 0.5, emit=(1, 0.75, 0.45)), 'tv': node_mat('tv', (0.01, 0.01, 0.012), 0.08, 0.2),
  'red': node_mat('red', srgb(0xa0623a), 0.8), 'pot': node_mat('pot', srgb(0xb06a4a), 0.7), 'leaf': node_mat('leaf', srgb(0x2f6a2c), 0.6), 'grey': node_mat('grey', srgb(0xd9d7d1), 0.6),
- 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gola': node_mat('gola', srgb(0x8f8474), 0.45), 'gyp': node_mat('gyp', srgb(0xc2b6a3), 0.85),
+ 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gola': node_mat('gola', srgb(0x8c6a45), 0.35, 1.0), 'gyp': node_mat('gyp', srgb(0xc2b6a3), 0.85),
 }
 coll = sc.collection
 def mesh_obj(name, verts, faces, mat):
@@ -244,7 +251,7 @@ front('x', 58, 1, 380, 470, 10, 88, hs=(50,))               # sink base: U-shape
 front('x', 58, 1, 470, 530, 10, 88)                          # dishwasher panel
 front('x', 58, 1, 530, 560, 10, 88)                          # corner door
 # garden run (fronts face -y at y=500)
-front('y', 500, -1, 62, 122, 10, 88, hs=(36, 62))            # three drawers left of the oven
+front('y', 500, -1, 62, 122, 10, 88)                         # single door left of the oven
 front('y', 500, -1, 122, 182, 10, 88)                        # drawer under the ovens
 front('y', 500, -1, 122, 182, 190, 270, gola=False)          # door above the ovens (push-to-open)
 front('y', 500, -1, 182, 242, 10, 190, gola=False, vgola=(182.6, 185.5))   # fridge door, vertical gola
