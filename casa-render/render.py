@@ -168,9 +168,12 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         cx, cy = (x0+x1)/2, (y0+y1)/2; cyl_pts((cx, cy, 0), (cx, cy, 200), 10, 'frame')
         bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=3, radius=1.5, location=(cx*S, cy*S, 3.0)); bpy.context.object.data.materials.append(MAT['hedge']); continue
     if 'Ovale' in n:
-        cx, cy = (x0+x1)/2, (y0+y1)/2; ellipse(cx, cy, (x1-x0)/2, (y1-y0)/2, 72, 76, 'walnut')
-        box(cx-44, cy-0.4, 73, cx+44, cy+0.4, 76.1, 'nero')  # extension leaf joint
-        ellipse(cx, cy, 6, 22, 3, 72, 'nero'); ellipse(cx, cy, 25, 45, 0, 3, 'nero'); continue
+        # light look: 2 cm oak top on a recessed apron, four slender splayed legs
+        cx, cy = (x0+x1)/2, (y0+y1)/2; rx, ry = (x1-x0)/2, (y1-y0)/2
+        ellipse(cx, cy, rx, ry, 74, 76, 'oak'); ellipse(cx, cy, rx-6, ry-8, 70, 74, 'oak')
+        for sx_, sy_ in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
+            cyl_pts((cx+sx_*rx*.55, cy+sy_*ry*.58, 70), (cx+sx_*rx*.68, cy+sy_*ry*.70, 0), 1.8, 'oak', 12, 1.1)
+        continue
     if 'Termo' in n:
         alx = (x1-x0) > (y1-y0); fx = (y0+y1)/2 if alx else (x0+x1)/2; a0 = (x0 if alx else y0) + 2; a1 = (x1 if alx else y1) - 2
         P = (lambda t, z: (t, fx, z)) if alx else (lambda t, z: (fx, t, z))
