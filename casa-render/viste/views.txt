@@ -1,0 +1,8 @@
+soggiorno_1_verso_tv 60,115,125,360,230,112 58
+soggiorno_2_verso_divano 330,150,150,20,150,100 70
+soggiorno_3_da_ingresso 180,15,160,180,450,100 70
+soggiorno_4_dal_tavolo 270,290,150,150,20,100 70
+cucina_1_dal_soggiorno 320,190,175,70,480,110 62
+cucina_2_ante 330,300,150,40,460,80 72
+cucina_3_dalla_finestra 60,400,165,350,380,100 72
+cucina_4_dal_giardino 290,540,160,100,250,100 72
