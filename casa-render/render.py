@@ -180,8 +180,8 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         while y + 4 <= y1: box(359, y, 0, 362, y + 4, 270, 'walnut'); y += 7
         continue
     if n.startswith('Complemento'):
-        box(325, 522, 0, 364, 560, 89, 'beige'); box(325, 522, 89, 364, 560, 93, 'nero_oro'); box(325, 558, 93, 364, 560, 232, 'beige'); box(325, 522, 93, 327, 560, 232, 'beige')
-        for z in (130, 165, 200): box(327, 524, z, 364, 558, z + 2, 'beige')
+        box(326, 522, 0, 364, 560, 89, 'beige'); box(326, 522, 89, 364, 560, 93, 'nero_oro')  # low 40 cm base with top
+        for z in (135, 175): box(328, 536, z, 364, 560, z + 3, 'beige')  # two light floating shelves, no tall unit
         continue
     if 'Libreria_Ingresso' in n:
         box(x0, y0, 0, x1, y0+2, 250, 'white'); box(x0, y1-2, 0, x1, y1, 250, 'white'); box(x0, y0, 0, x1, y1, 45, 'white')
@@ -214,7 +214,7 @@ if os.environ.get('CASA_VARIANT') == 'mia':
 # extra details
 box(0, 397, 150, 35, 525, 270, 'beige'); box(34.6, 460.8, 150, 35.2, 461.2, 270, 'nero'); box(2, 399, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
 box(0, 394.5, 90, 1.2, 560, 150, 'beige')  # beige glass backsplash, same tone as the fronts
-box(0, 525, 150, 62, 560, 270, 'beige'); box(325, 525, 232, 364, 560, 270, 'beige')
+box(0, 525, 150, 62, 560, 270, 'beige')
 cyl_pts((15, 425, 90), (15, 425, 120), .9, 'nero'); cyl_pts((15, 425, 120), (28, 425, 120), .9, 'nero')
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
 box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]

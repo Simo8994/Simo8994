@@ -92,7 +92,7 @@ Cuc|Colonna_Frigo|62,500,0,122,560,270
 Cuc|Colonna_Forni|122,500,0,182,560,270
 Cuc|Colonna_Estraibile_40|182,500,0,222,560,270
 Sog|Boiserie_Doghe_Noce|357,292,0,364,520,270
-Sog|Complemento_40_Noce|325,520,0,364,560,230
+Sog|Complemento_40_Basso|325,520,0,364,560,93
 Sog|Sedia_Pranzo_0|182,310,0,222,350,46
 Sog|Sedia_Pranzo_1|182,380,0,222,420,46
 Sog|Sedia_Pranzo_2|302,310,0,342,350,46
