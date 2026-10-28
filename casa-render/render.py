@@ -49,10 +49,10 @@ def node_mat(name, base, rough=0.5, metal=0.0, transm=0.0, emit=None, tex=None, 
             nt.links.new(mp.outputs['Vector'], br.inputs['Vector']); nt.links.new(cr.outputs['Color'], br.inputs['Color1']); nt.links.new(cr2.outputs['Color'], br.inputs['Color2'])
             nt.links.new(br.outputs['Color'], b.inputs['Base Color']); return m
         elif tex == 'nero_oro':
-            nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 2.5; nz.inputs['Detail'].default_value = 14; nz.inputs['Distortion'].default_value = 4
+            nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 1.5; nz.inputs['Detail'].default_value = 8; nz.inputs['Distortion'].default_value = 2.5
             nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
             e = cr.color_ramp.elements; e[0].position = 0.0; e[0].color = (0.012, 0.011, 0.010, 1); e[1].position = 1.0; e[1].color = (0.02, 0.018, 0.016, 1)
-            for pos, col in ((0.492, (0.012, 0.011, 0.010, 1)), (0.5, (0.75, 0.52, 0.18, 1)), (0.508, (0.015, 0.013, 0.012, 1))):
+            for pos, col in ((0.4975, (0.012, 0.011, 0.010, 1)), (0.5, (0.62, 0.43, 0.15, 1)), (0.5025, (0.015, 0.013, 0.012, 1))):
                 el = e.new(pos); el.color = col
         elif tex == 'grass':
             nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 60
