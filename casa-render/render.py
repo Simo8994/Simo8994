@@ -137,6 +137,11 @@ def wall(n, x0, y0, x1, y1):
         if ext:
             if horiz: box(a, (y0+y1)/2-.4, s, b, (y0+y1)/2+.4, h, 'glass'); [box(*q, 'frame') for q in ((a, y0+3, s, a+5, y1-3, h), (b-5, y0+3, s, b, y1-3, h), (a, y0+3, h-5, b, y1-3, h), (a, y0+3, s, b, y1-3, s+4))]
             else: box((x0+x1)/2-.4, a, s, (x0+x1)/2+.4, b, h, 'glass'); [box(*q, 'frame') for q in ((x0+3, a, s, x1-3, a+5, h), (x0+3, b-5, s, x1-3, b, h), (x0+3, a, h-5, x1-3, b, h), (x0+3, a, s, x1-3, b, s+4))]
+            hz = s + 105 if s < 50 else (s + h) / 2  # silver lever handle on both faces
+            for f0, f1 in (((y1 if horiz else x1) - 3, (y1 if horiz else x1) - 1.5), ((y0 if horiz else x0) + 1.5, (y0 if horiz else x0) + 3)):
+                lo, hi = (f0 - 2, f0) if f0 < (y0 + y1 if horiz else x0 + x1) / 2 else (f1, f1 + 2)
+                if horiz: box(a + 1, f0, hz - 4, a + 4, f1, hz + 4, 'steel'); box(a + 2, lo, hz - 1, a + 14, hi, hz + 1, 'steel')
+                else: box(f0, a + 1, hz - 4, f1, a + 4, hz + 4, 'steel'); box(lo, a + 2, hz - 1, hi, a + 14, hz + 1, 'steel')
             portals.append((horiz, a, b, s, h, x0, y0, x1, y1))
         cur = b
     seg(cur, end, 0, 270)
@@ -182,7 +187,7 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         box(x0, y0, 0, x1, y0+2, 250, 'white'); box(x0, y1-2, 0, x1, y1, 250, 'white'); box(x0, y0, 0, x1, y1, 45, 'white')
         for z in (85, 125, 165, 205, 248): box(x0+2, y0, z, x1, y1, z+2, 'white')
         continue
-    if n.startswith('Lavello'): box(x0, y0, z0 - 1, x1, y1, z1 + .3, 'steel'); continue
+    if n.startswith('Lavello'): box(x0, y0, z0 - 1, x1, y1, z1 + .3, 'nero'); continue
     if n == 'Penisola_Base': x0 = 60
     m = mat_for(n)
     if 'Induzione' in n: m = 'black'
@@ -209,7 +214,7 @@ if os.environ.get('CASA_VARIANT') == 'mia':
 # extra details
 for z in (140, 180): box(0, 419, z, 25, 523, z + 4, 'beige'); box(.5, 421, z - .6, 2, 521, z, 'led')
 box(0, 525, 150, 62, 560, 270, 'beige'); box(325, 525, 232, 364, 560, 270, 'beige')
-cyl_pts((15, 460, 90), (15, 460, 120), .9, 'steel'); cyl_pts((15, 460, 120), (28, 460, 120), .9, 'steel')
+cyl_pts((15, 460, 90), (15, 460, 120), .9, 'nero'); cyl_pts((15, 460, 120), (28, 460, 120), .9, 'nero')
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
 box(350, 155, 0, 352, 280, 270, 'walnut'); box(348, 160, 100, 350, 275, 172, 'tv'); box(349.5, 155, 0, 350, 157, 270, 'led'); box(349.5, 278, 0, 350, 280, 270, 'led')
 for x in (122, 182): box(x - .3, 499.5, 0, x + .3, 500, 270, 'seam')
