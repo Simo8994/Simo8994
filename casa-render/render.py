@@ -166,10 +166,10 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         continue
     if n.startswith('Sedia'):
         sx, sy = (x0+x1)/2, (y0+y1)/2; dx, dy = sx-TC[0], 0; ang = math.atan2(dy, dx)
-        cyl_pts((sx, sy, 42), (sx, sy, 49), 23, 'boucle', 40)
-        arc_wall(sx, sy, 20, ang - math.radians(100), ang + math.radians(100), 49, 78, 4, 'boucle')
+        cyl_pts((sx, sy, 40), (sx, sy, 46), 20, 'boucle', 40)
+        arc_wall(sx, sy, 17.5, ang - math.radians(95), ang + math.radians(95), 46, 72, 3.5, 'boucle')
         for a in (45, 135, 225, 315):
-            la = math.radians(a); cyl_pts((sx+math.cos(la)*15, sy+math.sin(la)*15, 0), (sx+math.cos(la)*13, sy+math.sin(la)*13, 42), 1.0, 'walnut', 10, 1.4)
+            la = math.radians(a); cyl_pts((sx+math.cos(la)*13, sy+math.sin(la)*13, 0), (sx+math.cos(la)*11, sy+math.sin(la)*11, 40), 1.0, 'walnut', 10, 1.3)
         continue
     if 'Cappa' in n:
         box(x0, y0, z0, x1, y1, z1, 'black'); box(x0+2, y0+2, z0-.5, x1-2, y1-2, z0, 'led'); top = ((x0+x1)/2, (y0+y1)/2, 267)
@@ -199,10 +199,10 @@ def blind(wall, c, d, a, b, top, low):
         box(min(c, c+8*d), a-1, top, max(c, c+8*d), b+1, top+10, 'beige'); box(min(c+4*d, c+4.6*d), a, low, max(c+4*d, c+4.6*d), b, top, 'tenda'); box(min(c+3.5*d, c+5*d), a, low-3, max(c+3.5*d, c+5*d), b, low, 'nero')
     else:
         box(a-1, min(c, c+8*d), top, b+1, max(c, c+8*d), top+10, 'beige'); box(a, min(c+4*d, c+4.6*d), low, b, max(c+4*d, c+4.6*d), top, 'tenda'); box(a, min(c+3.5*d, c+5*d), low-3, b, max(c+3.5*d, c+5*d), low, 'nero')
-for args in [('x', 0, 1, 294.5, 394.5, 242, 185),     # kitchen window
-             ('x', 0, 1, 63, 163, 242, 185),        # living window
-             ('x', 192, 1, -165, -65, 242, 160),    # entrance patio door
-             ('y', 560, -1, 224, 324, 242, 160)]:   # kitchen patio door
+for args in [('x', 0, 1, 294.5, 394.5, 242, 100),     # kitchen window
+             ('x', 0, 1, 63, 163, 242, 100),        # living window
+             ('x', 192, 1, -165, -65, 242, 4),    # entrance patio door
+             ('y', 560, -1, 224, 324, 242, 4)]:   # kitchen patio door
     blind(*args)
 # designer variant (CASA_VARIANT=mia): brass pendant over the table, brass handle grooves, cognac boucle pouf
 if os.environ.get('CASA_VARIANT') == 'mia':

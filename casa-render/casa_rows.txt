@@ -93,10 +93,10 @@ Cuc|Colonna_Forni|122,500,0,182,560,270
 Cuc|Colonna_Estraibile_40|182,500,0,222,560,270
 Sog|Boiserie_Doghe_Noce|357,292,0,364,520,270
 Sog|Complemento_40_Noce|325,520,0,364,560,230
-Sog|Sedia_Pranzo_0|168,308,0,212,352,45
-Sog|Sedia_Pranzo_1|168,378,0,212,422,45
-Sog|Sedia_Pranzo_2|312,308,0,356,352,45
-Sog|Sedia_Pranzo_3|312,378,0,356,422,45
+Sog|Sedia_Pranzo_0|182,310,0,222,350,46
+Sog|Sedia_Pranzo_1|182,380,0,222,420,46
+Sog|Sedia_Pranzo_2|302,310,0,342,350,46
+Sog|Sedia_Pranzo_3|302,380,0,342,420,46
 Sog|Tavolo_Ovale_Allungabile|212,285,72,312,445,76
 Sog|Parete_TV_Cartongesso|352,143,0,364,292,270
 Sog|TV_55|348,156,105,350,279,175
