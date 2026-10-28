@@ -188,10 +188,9 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         while y + 4 <= y1: box(359, y, 0, 362, y + 4, 270, 'walnut'); y += 7
         continue
     if n.startswith('Complemento'):
-        # walnut slats wrap the corner onto the 20 cm return, with three LED-lit walnut shelves
+        # walnut slats wrap the corner onto the 20 cm return
         box(x0, 558, 0, x1, 560, 270, 'nero'); x = x0 + 1
         while x + 4 <= x1: box(x, 555, 0, x + 4, 558, 270, 'walnut'); x += 7
-        for z in (105, 145, 185): box(x0, 530, z, 357, 555, z + 3, 'walnut'); box(x0 + 1, 531, z - .6, 356, 554, z, 'led')
         continue
     if 'Libreria_Ingresso' in n:
         box(x0, y0, 0, x1, y0+2, 250, 'white'); box(x0, y1-2, 0, x1, y1, 250, 'white'); box(x0, y0, 0, x1, y1, 45, 'white')
@@ -229,7 +228,7 @@ cyl_pts((15, 425, 90), (15, 425, 120), .9, 'white'); cyl_pts((15, 425, 120), (28
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
 box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
-box(350, 155, 0, 352, 280, 270, 'walnut'); box(348, 160, 100, 350, 275, 172, 'tv'); box(349.5, 155, 0, 350, 157, 270, 'led'); box(349.5, 278, 0, 350, 280, 270, 'led')
+box(350, 155, 0, 352, 280, 270, 'walnut'); box(348, 160, 100, 350, 275, 172, 'tv')
 # kitchen fronts: door/drawer seams and handle-less gola grips (recessed channel, darker cashmere)
 def front(ax, p, d, a, b, z0, z1, hs=(), vs=(), gola=True, vgola=None):
     q0, q1 = (p, p + .3 * d) if d > 0 else (p + .3 * d, p)
