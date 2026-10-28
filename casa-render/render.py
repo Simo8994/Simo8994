@@ -92,7 +92,7 @@ MAT = {
  'frame': node_mat('frame', srgb(0x3a3029), 0.45), 'grass': node_mat('grass', (0.1, 0.25, 0.05), 0.95, tex='grass', scale=1), 'paving': node_mat('paving', srgb(0xcfc7b8), 0.85),
  'hedge': node_mat('hedge', srgb(0x2f5a2a), 0.9), 'led': node_mat('led', (1, 0.85, 0.6), 0.5, emit=(1, 0.75, 0.45)), 'tv': node_mat('tv', (0.01, 0.01, 0.012), 0.08, 0.2),
  'red': node_mat('red', srgb(0xa0623a), 0.8), 'pot': node_mat('pot', srgb(0xb06a4a), 0.7), 'leaf': node_mat('leaf', srgb(0x2f6a2c), 0.6), 'grey': node_mat('grey', srgb(0xd9d7d1), 0.6),
- 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gola': node_mat('gola', srgb(0xa89c8a), 0.5), 'gyp': node_mat('gyp', srgb(0xbdb6aa), 0.85),
+ 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gola': node_mat('gola', srgb(0xa89c8a), 0.5), 'panna': node_mat('panna', srgb(0xefe8da), 0.4), 'gyp': node_mat('gyp', srgb(0xbdb6aa), 0.85),
 }
 coll = sc.collection
 def mesh_obj(name, verts, faces, mat):
@@ -174,7 +174,7 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if 'Termo' in n:
         alx = (x1-x0) > (y1-y0); fx = (y0+y1)/2 if alx else (x0+x1)/2; a0 = (x0 if alx else y0) + 2; a1 = (x1 if alx else y1) - 2
         P = (lambda t, z: (t, fx, z)) if alx else (lambda t, z: (fx, t, z))
-        tm = 'steel' if g == 'Zon' else 'nero'
+        tm = 'panna'  # all radiators cream
         for c in (a0, a1): cyl_pts(P(c, 18), P(c, 202), 2, tm, 12)
         z = 26
         while z < 199: cyl_pts(P(a0, z), P(a1, z), 1.25, tm, 8); z += 7
@@ -215,10 +215,10 @@ def blind(wall, c, d, a, b, top, low):
         box(min(c, c+8*d), a-1, top, max(c, c+8*d), b+1, top+10, 'beige'); box(min(c+4*d, c+4.6*d), a, low, max(c+4*d, c+4.6*d), b, top, 'tenda'); box(min(c+3.5*d, c+5*d), a, low-3, max(c+3.5*d, c+5*d), b, low, 'nero')
     else:
         box(a-1, min(c, c+8*d), top, b+1, max(c, c+8*d), top+10, 'beige'); box(a, min(c+4*d, c+4.6*d), low, b, max(c+4*d, c+4.6*d), top, 'tenda'); box(a, min(c+3.5*d, c+5*d), low-3, b, max(c+3.5*d, c+5*d), low, 'nero')
-for args in [('x', 0, 1, 294.5, 394.5, 242, 100),     # kitchen window
-             ('x', 0, 1, 63, 163, 242, 100),        # living window
-             ('x', 192, 1, -165, -65, 242, 4),    # entrance patio door
-             ('y', 560, -1, 244, 344, 242, 4)]:   # kitchen patio door
+for args in [('x', 0, 1, 294.5, 394.5, 242, 130),     # kitchen window
+             ('x', 0, 1, 63, 163, 242, 130),        # living window
+             ('x', 192, 1, -165, -65, 242, 34),    # entrance patio door
+             ('y', 560, -1, 244, 344, 242, 34)]:   # kitchen patio door
     blind(*args)
 # designer variant (CASA_VARIANT=mia): brass pendant over the table, brass handle grooves, cognac boucle pouf
 if os.environ.get('CASA_VARIANT') == 'mia':
@@ -236,6 +236,9 @@ cyl_pts((15, 425, 90), (15, 425, 120), .9, 'white'); cyl_pts((15, 425, 120), (28
 box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
 box(350, 155, 0, 352, 280, 270, 'walnut'); box(348, 160, 100, 350, 275, 172, 'tv')
+# recessed LED ceiling spots (kitchen + living)
+for x, y in ((60, 60), (60, 200), (180, 60), (180, 200), (290, 60), (290, 200), (30, 330), (30, 450), (110, 430), (260, 330), (260, 420)):
+    cyl_pts((x, y, 269.2), (x, y, 270), 5, 'white', 24); cyl_pts((x, y, 269), (x, y, 269.3), 3.5, 'led', 24)
 # kitchen fronts: door/drawer seams and handle-less gola grips (recessed channel, darker cashmere)
 def front(ax, p, d, a, b, z0, z1, hs=(), vs=(), gola=True, vgola=None):
     q0, q1 = (p, p + .3 * d) if d > 0 else (p + .3 * d, p)
