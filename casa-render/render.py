@@ -131,7 +131,7 @@ def mat_for(n):
     for k, m in RULES:
         if k in n: return m
     return 'grey'
-OPEN = [[-13,294.5,0,394.5,100,240],[-13,63,0,163,100,240],[224,560,324,573,0,240],[179,-165,192,-65,0,240],[450,560,550,573,0,240],[640,560,740,573,0,240],[845,560,945,573,0,240],[1204,100,1217,200,100,200],
+OPEN = [[-13,294.5,0,394.5,100,240],[-13,63,0,163,100,240],[244,560,344,573,0,240],[179,-165,192,-65,0,240],[450,560,550,573,0,240],[640,560,740,573,0,240],[845,560,945,573,0,240],[1204,100,1217,200,100,200],
  [432,50,445,130,0,210],[660,143,740,156,0,210],[850,250,930,263,0,210],[934,63,946,143,0,210],[522,40,602,53,0,210],[840,143,920,156,0,210]]
 portals = []
 def wall(n, x0, y0, x1, y1):
@@ -210,7 +210,7 @@ def blind(wall, c, d, a, b, top, low):
 for args in [('x', 0, 1, 294.5, 394.5, 242, 100),     # kitchen window
              ('x', 0, 1, 63, 163, 242, 100),        # living window
              ('x', 192, 1, -165, -65, 242, 4),    # entrance patio door
-             ('y', 560, -1, 224, 324, 242, 4)]:   # kitchen patio door
+             ('y', 560, -1, 244, 344, 242, 4)]:   # kitchen patio door
     blind(*args)
 # designer variant (CASA_VARIANT=mia): brass pendant over the table, brass handle grooves, cognac boucle pouf
 if os.environ.get('CASA_VARIANT') == 'mia':
@@ -222,13 +222,13 @@ if os.environ.get('CASA_VARIANT') == 'mia':
 # extra details
 box(0, 397, 150, 35, 525, 270, 'beige'); box(34.6, 460.8, 150, 35.2, 461.2, 270, 'nero'); box(2, 399, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
 box(0, 394.5, 90, 1.2, 560, 150, 'taj')  # Taj Mahal stoneware backsplash, same slab as the top
-box(0, 525, 150, 62, 560, 270, 'beige'); box(122, 525, 150, 162, 560, 270, 'beige')  # wall unit left of the oven column
+box(0, 525, 150, 62, 560, 270, 'beige'); box(62, 525, 150, 122, 560, 270, 'beige')  # wall unit left of the oven column
 cyl_pts((15, 425, 90), (15, 425, 120), .9, 'white'); cyl_pts((15, 425, 120), (28, 425, 120), .9, 'white')
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
 box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]
-box(166, 499, 88, 218, 500, 147, 'black'); box(166, 499, 150, 218, 500, 190, 'black')
+box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
 box(350, 155, 0, 352, 280, 270, 'walnut'); box(348, 160, 100, 350, 275, 172, 'tv'); box(349.5, 155, 0, 350, 157, 270, 'led'); box(349.5, 278, 0, 350, 280, 270, 'led')
-for x in (122, 162): box(x - .3, 499.5, 0, x + .3, 500, 270, 'seam')
+for x in (122, 182): box(x - .3, 499.5, 0, x + .3, 500, 270, 'seam')
 for y in (235, 290, 345, 400): box(754.5, y - .3, 0, 755, y + .3, 250, 'seam')
 for y in (-140, -90): box(386.5, y - .3, 0, 387, y + .3, 250, 'seam')
 for x in (1014, 1078, 1144): box(x - .3, 499.5, 0, x + .3, 500, 250, 'seam')
