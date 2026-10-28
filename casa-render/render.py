@@ -240,7 +240,7 @@ def front(ax, p, d, a, b, z0, z1, hs=(), vs=(), gola=True, vgola=None):
     if vgola: B(vgola[0], vgola[1], z0 + 1, z1 - 1, 'gola')
 # window run (fronts face +x at x=58)
 front('x', 58, 1, 355, 380, 10, 88)                          # bottle pull-out 25
-front('x', 58, 1, 380, 470, 10, 88, vs=(425,))               # sink base, two doors
+front('x', 58, 1, 380, 470, 10, 88, hs=(50,))               # sink base: U-shaped top drawer + deep waste-sorting drawer
 front('x', 58, 1, 470, 530, 10, 88)                          # dishwasher panel
 front('x', 58, 1, 530, 560, 10, 88)                          # corner door
 # garden run (fronts face -y at y=500)
