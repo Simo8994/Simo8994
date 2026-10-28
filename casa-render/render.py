@@ -199,6 +199,13 @@ for wall, c, a, b, z0, p0, p1 in [('x', 0, 294.5, 411, 95, 279, 418),       # ki
                                   ('y', 550, 207, 324, 1, 190, 324)]:       # kitchen patio door (interior face y=560)
     for q0, q1 in ((p0, a + 15), (b - 15, p1)): curtain(wall, c, q0, q1, z0, 266)
     rod(wall, c, p0 - 3, p1 + 3)
+# designer variant (CASA_VARIANT=mia): brass pendant over the table, brass handle grooves, cognac boucle pouf
+if os.environ.get('CASA_VARIANT') == 'mia':
+    tx, ty = TC
+    cyl_pts((tx, ty, 168), (tx, ty, 270), .3, 'nero', 6)
+    cyl_pts((tx, ty, 150), (tx, ty, 168), 24, 'brass', 48, 6); cyl_pts((tx, ty, 149.5), (tx, ty, 150.5), 21, 'led', 48)
+    box(60, 297, 84, 60.6, 500, 86, 'brass'); box(60, 355, 84, 157, 355.6, 86, 'brass'); box(157, 297, 84, 157.6, 355, 86, 'brass')
+    cyl_pts((275, 240, 0), (275, 240, 40), 28, 'pillow', 48)
 # extra details
 for z in (140, 180): box(0, 419, z, 25, 523, z + 4, 'beige'); box(.5, 421, z - .6, 2, 521, z, 'led')
 box(0, 525, 150, 62, 560, 270, 'beige'); box(325, 525, 232, 364, 560, 270, 'beige')
