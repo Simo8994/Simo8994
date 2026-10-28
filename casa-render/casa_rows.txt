@@ -1,10 +1,11 @@
 Cuc|Zoccolo_Finestra|0,354,0,53,560,10
 Cuc|Top_Finestra|0,354,88,62,560,90
 Cuc|Base_Angolo_Cieco_Penisola|0,297,10,60,355,88
-Cuc|Base_Lavastoviglie|0,355,10,58,414,88
-Cuc|Base_Lavello_90|0,415,10,58,504,88
-Cuc|Base_Angolo|0,505,10,58,560,88
-Cuc|Lavello_Grande_80x45|8,420,90,53,500,90
+Cuc|Base_Portabottiglie_25|0,355,10,58,380,88
+Cuc|Base_Lavastoviglie|0,470,10,58,530,88
+Cuc|Base_Lavello_90|0,380,10,58,470,88
+Cuc|Base_Angolo|0,530,10,58,560,88
+Cuc|Lavello_Grande_80x45|8,385,90,53,465,90
 Sog|Pavimento_Zona_Giorno|0,0,-2,364,560,0
 Sog|Pavimento_Ingresso|192,-202,-2,432,0,0
 Sog|Pavimento_Passaggio_Corridoio|364,0,-2,432,143,0
@@ -86,7 +87,6 @@ Zon|WC|1130,195,0,1170,250,40
 Cuc|Penisola_Base|0,297,10,157,355,88
 Cuc|Penisola_Top|0,294,88,160,354,90
 Cuc|Piano_Induzione_Penisola|95,300,90,155,349,90
-Cuc|Cappa_Sospesa_Design|90,304,160,160,344,172
 Sog|Chaise_Longue|115,15,0,185,105,42
 Cuc|Colonna_Frigo|62,500,0,122,560,270
 Cuc|Colonna_Forni|122,500,0,182,560,270

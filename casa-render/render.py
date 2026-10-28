@@ -215,7 +215,9 @@ if os.environ.get('CASA_VARIANT') == 'mia':
 box(0, 397, 150, 35, 525, 270, 'beige'); box(34.6, 460.8, 150, 35.2, 461.2, 270, 'nero'); box(2, 399, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
 box(0, 394.5, 90, 1.2, 560, 150, 'beige')  # beige glass backsplash, same tone as the fronts
 box(0, 525, 150, 62, 560, 270, 'beige'); box(325, 525, 232, 364, 560, 270, 'beige')
-cyl_pts((15, 460, 90), (15, 460, 120), .9, 'nero'); cyl_pts((15, 460, 120), (28, 460, 120), .9, 'nero')
+cyl_pts((15, 425, 90), (15, 425, 120), .9, 'nero'); cyl_pts((15, 425, 120), (28, 425, 120), .9, 'nero')
+# downdraft extractor integrated in the induction hob (replaces the suspended hood)
+box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
 box(350, 155, 0, 352, 280, 270, 'walnut'); box(348, 160, 100, 350, 275, 172, 'tv'); box(349.5, 155, 0, 350, 157, 270, 'led'); box(349.5, 278, 0, 350, 280, 270, 'led')
 for x in (122, 182): box(x - .3, 499.5, 0, x + .3, 500, 270, 'seam')
