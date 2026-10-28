@@ -92,7 +92,7 @@ MAT = {
  'frame': node_mat('frame', srgb(0x3a3029), 0.45), 'grass': node_mat('grass', (0.1, 0.25, 0.05), 0.95, tex='grass', scale=1), 'paving': node_mat('paving', srgb(0xcfc7b8), 0.85),
  'hedge': node_mat('hedge', srgb(0x2f5a2a), 0.9), 'led': node_mat('led', (1, 0.85, 0.6), 0.5, emit=(1, 0.75, 0.45)), 'tv': node_mat('tv', (0.01, 0.01, 0.012), 0.08, 0.2),
  'red': node_mat('red', srgb(0xa0623a), 0.8), 'pot': node_mat('pot', srgb(0xb06a4a), 0.7), 'leaf': node_mat('leaf', srgb(0x2f6a2c), 0.6), 'grey': node_mat('grey', srgb(0xd9d7d1), 0.6),
- 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gola': node_mat('gola', srgb(0xa89c8a), 0.5), 'panna': node_mat('panna', srgb(0xefe8da), 0.4), 'gyp': node_mat('gyp', srgb(0xbdb6aa), 0.85),
+ 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gola': node_mat('gola', srgb(0xa89c8a), 0.5), 'panna': node_mat('panna', srgb(0xefe8da), 0.4), 'oliva': node_mat('oliva', srgb(0x6f6e57), 0.85), 'pelle': node_mat('pelle', srgb(0x8a4f2e), 0.45), 'gyp': node_mat('gyp', srgb(0xbdb6aa), 0.85),
 }
 coll = sc.collection
 def mesh_obj(name, verts, faces, mat):
@@ -129,7 +129,7 @@ def arc_wall(cx, cy, r, a0, a1, z0, z1, t, mat, n=20):
     ob = mesh_obj('arc', v, f, mat)
     for p in ob.data.polygons: p.use_smooth = True
 
-RULES = [['LED','led'],['Parete_TV_Cartongesso','gyp'],['Matrimoniale_Cuscini','linen'],['Poltrona','pink'],['Tappeto_Gioco','sage'],['Termo','anthr'],['Divano','fabric'],['Chaise','fabric'],['Cuscin','pillow'],['Tappeto','rug'],
+RULES = [['LED','led'],['Parete_TV_Cartongesso','oliva'],['Panca_Cuscino','pelle'],['Panca','walnut'],['Matrimoniale_Cuscini','linen'],['Poltrona','pink'],['Tappeto_Gioco','sage'],['Termo','anthr'],['Divano','fabric'],['Chaise','fabric'],['Cuscin','pillow'],['Tappeto','rug'],
  ['Comodino','white'],['Testiera','white'],['Armadio_Matrimoniale','white'],['Matrimoniale_Letto','linen'],['Ingresso_Bianc','white'],['Armadio_L','white'],['Pavimento_Bagno','grey'],['Pavimento','oak'],
  ['Penisola_Top','taj'],['Top','taj'],['Penisola','anthr'],['Piano_Induzione','black'],['Dispensa','beige'],['Colonna','walnut'],['Pensil','walnut'],['Mensola','walnut'],['Mobiletto','walnut'],['Mobile_Lavabo','walnut'],
  ['Base','beige'],['Zoccolo','anthr'],['TV_','tv'],['Controparete','gyp'],['Prato','grass'],['Terrazza','paving'],['Marciapiede','paving'],['Vialetto','paving'],['Area_Pranzo','paving'],['Siepe','hedge'],
@@ -161,7 +161,7 @@ def wall(n, x0, y0, x1, y1):
         cur = b
     seg(cur, end, 0, 270)
 
-TC = (262, 365)
+TC = (274.5, 375)
 for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if n.startswith('Parete') and 'TV' not in n: wall(n, x0, y0, x1, y1); continue
     if n.startswith('Albero'):
@@ -180,7 +180,7 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         while z < 199: cyl_pts(P(a0, z), P(a1, z), 1.25, tm, 8); z += 7
         continue
     if n.startswith('Sedia'):
-        sx, sy = (x0+x1)/2, (y0+y1)/2; dx, dy = sx-TC[0], 0; ang = math.atan2(dy, dx)
+        sx, sy = (x0+x1)/2, (y0+y1)/2; dx, dy = sx-TC[0], sy-TC[1]; ang = math.atan2(dy, dx)
         cyl_pts((sx, sy, 40), (sx, sy, 46), 20, 'boucle', 40)
         arc_wall(sx, sy, 17.5, ang - math.radians(95), ang + math.radians(95), 46, 72, 3.5, 'boucle')
         for a in (45, 135, 225, 315):
@@ -235,7 +235,11 @@ cyl_pts((15, 425, 90), (15, 425, 120), .9, 'white'); cyl_pts((15, 425, 120), (28
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
 box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
-box(350, 155, 0, 352, 280, 270, 'walnut'); box(348, 160, 100, 350, 275, 172, 'tv')
+# TV wall: deep olive microcement, ceiling wash light and soft glow under the floating unit
+box(351, 145, 266.5, 352, 290, 267.5, 'led'); box(323, 152, 21.4, 348, 286, 22, 'led')
+# dining: linear brass pendant over the table
+for y in (330, 420): cyl_pts((TC[0], y, 152), (TC[0], y, 270), .3, 'nero', 6)
+cyl_pts((TC[0], 325, 150), (TC[0], 425, 150), 2.2, 'brass', 24); box(TC[0] - 1.2, 327, 147.6, TC[0] + 1.2, 423, 148, 'led')
 # recessed LED ceiling spots (kitchen + living)
 for x, y in ((60, 60), (60, 200), (180, 60), (180, 200), (290, 60), (290, 200), (30, 330), (30, 450), (110, 430), (260, 330), (260, 420)):
     cyl_pts((x, y, 269.2), (x, y, 270), 5, 'white', 24); cyl_pts((x, y, 269), (x, y, 269.3), 3.5, 'led', 24)
