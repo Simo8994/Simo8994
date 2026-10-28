@@ -91,6 +91,7 @@ Cuc|Cappa_Sospesa_Design|90,304,160,160,344,172
 Sog|Chaise_Longue|115,15,0,185,105,42
 Cuc|Colonna_Frigo|62,500,0,122,560,270
 Cuc|Colonna_Forni|122,500,0,182,560,270
+Cuc|Colonna_Estraibile_20|182,500,0,202,560,270
 Sog|Boiserie_Doghe_Noce|357,292,0,364,520,270
 Sog|Complemento_40_Noce|325,520,0,364,560,230
 Sog|Sedia_Pranzo_0|168,308,0,212,352,45
