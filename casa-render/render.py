@@ -154,7 +154,7 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=3, radius=1.5, location=(cx*S, cy*S, 3.0)); bpy.context.object.data.materials.append(MAT['hedge']); continue
     if 'Ovale' in n:
         cx, cy = (x0+x1)/2, (y0+y1)/2; ellipse(cx, cy, (x1-x0)/2, (y1-y0)/2, 72, 76, 'walnut')
-        box(cx-1, cy-30, 73, cx+1, cy+30, 76.2, 'walnut')  # extension leaf joint
+        box(cx-44, cy-0.4, 73, cx+44, cy+0.4, 76.1, 'nero')  # extension leaf joint
         ellipse(cx, cy, 6, 22, 3, 72, 'nero'); ellipse(cx, cy, 25, 45, 0, 3, 'nero'); continue
     if 'Termo' in n:
         alx = (x1-x0) > (y1-y0); fx = (y0+y1)/2 if alx else (x0+x1)/2; a0 = (x0 if alx else y0) + 2; a1 = (x1 if alx else y1) - 2
