@@ -90,7 +90,7 @@ Cuc|Piano_Induzione_Penisola|95,300,90,155,349,90
 Sog|Chaise_Longue|115,15,0,185,105,42
 Cuc|Colonna_Frigo|182,500,0,242,560,270
 Cuc|Colonna_Forni|122,500,0,182,560,270
-Cuc|Zoccolo_Forno_40|122,505,0,162,560,10
+Cuc|Zoccolo_60_Sx_Forno|62,505,0,122,560,10
 Cuc|Base_60_Sx_Forno|62,500,10,122,560,88
 Cuc|Top_60_Sx_Forno|62,500,88,122,560,90
 Sog|Boiserie_Doghe_Noce|357,292,0,364,560,270

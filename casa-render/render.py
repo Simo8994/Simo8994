@@ -85,7 +85,7 @@ MAT = {
  'frame': node_mat('frame', srgb(0x3a3029), 0.45), 'grass': node_mat('grass', (0.1, 0.25, 0.05), 0.95, tex='grass', scale=1), 'paving': node_mat('paving', srgb(0xcfc7b8), 0.85),
  'hedge': node_mat('hedge', srgb(0x2f5a2a), 0.9), 'led': node_mat('led', (1, 0.85, 0.6), 0.5, emit=(1, 0.75, 0.45)), 'tv': node_mat('tv', (0.01, 0.01, 0.012), 0.08, 0.2),
  'red': node_mat('red', srgb(0xa0623a), 0.8), 'pot': node_mat('pot', srgb(0xb06a4a), 0.7), 'leaf': node_mat('leaf', srgb(0x2f6a2c), 0.6), 'grey': node_mat('grey', srgb(0xd9d7d1), 0.6),
- 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gyp': node_mat('gyp', srgb(0xc2b6a3), 0.85),
+ 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gola': node_mat('gola', srgb(0x8f8474), 0.45), 'gyp': node_mat('gyp', srgb(0xc2b6a3), 0.85),
 }
 coll = sc.collection
 def mesh_obj(name, verts, faces, mat):
@@ -230,7 +230,33 @@ cyl_pts((15, 425, 90), (15, 425, 120), .9, 'white'); cyl_pts((15, 425, 120), (28
 box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
 box(350, 155, 0, 352, 280, 270, 'walnut'); box(348, 160, 100, 350, 275, 172, 'tv'); box(349.5, 155, 0, 350, 157, 270, 'led'); box(349.5, 278, 0, 350, 280, 270, 'led')
-for x in (122, 182): box(x - .3, 499.5, 0, x + .3, 500, 270, 'seam')
+# kitchen fronts: door/drawer seams and handle-less gola grips (recessed channel, darker cashmere)
+def front(ax, p, d, a, b, z0, z1, hs=(), vs=(), gola=True, vgola=None):
+    q0, q1 = (p, p + .3 * d) if d > 0 else (p + .3 * d, p)
+    B = (lambda u0, u1, w0, w1, m: box(q0, u0, w0, q1, u1, w1, m)) if ax == 'x' else (lambda u0, u1, w0, w1, m: box(u0, q0, w0, u1, q1, w1, m))
+    for u in (a, b) + tuple(vs): B(u - .2, u + .2, z0, z1, 'seam')
+    for z in (z0, z1) + tuple(hs): B(a, b, z - .2, z + .2, 'seam')
+    if gola:
+        for z in (z1,) + tuple(hs): B(a + .5, b - .5, z - 4, z - .8, 'gola')
+    if vgola: B(vgola[0], vgola[1], z0 + 1, z1 - 1, 'gola')
+# window run (fronts face +x at x=58)
+front('x', 58, 1, 355, 380, 10, 88)                          # bottle pull-out 25
+front('x', 58, 1, 380, 470, 10, 88, vs=(425,))               # sink base, two doors
+front('x', 58, 1, 470, 530, 10, 88)                          # dishwasher panel
+front('x', 58, 1, 530, 560, 10, 88)                          # corner door
+# garden run (fronts face -y at y=500)
+front('y', 500, -1, 62, 122, 10, 88, hs=(36, 62))            # three drawers left of the oven
+front('y', 500, -1, 122, 182, 10, 88)                        # drawer under the ovens
+front('y', 500, -1, 122, 182, 190, 270, gola=False)          # door above the ovens (push-to-open)
+front('y', 500, -1, 182, 242, 10, 190, gola=False, vgola=(182.6, 185.5))   # fridge door, vertical gola
+front('y', 500, -1, 182, 242, 190, 270, gola=False)          # door above the fridge
+for x in (122, 182): box(x - .3, 499.5, 0, x + .3, 500, 10, 'seam')
+# peninsula (fronts face +y at y=355): door + three pan drawers under the hob
+front('y', 355, 1, 60, 97, 10, 88)
+front('y', 355, 1, 97, 157, 10, 88, hs=(36, 62))
+# wall units: push-to-open doors, shadow-gap outline only
+front('y', 525, -1, 0, 62, 150, 270, gola=False); front('y', 525, -1, 62, 122, 150, 270, gola=False)
+front('x', 35, 1, 397, 525, 150, 270, vs=(461,), gola=False)
 for y in (235, 290, 345, 400): box(754.5, y - .3, 0, 755, y + .3, 250, 'seam')
 for y in (-140, -90): box(386.5, y - .3, 0, 387, y + .3, 250, 'seam')
 for x in (1014, 1078, 1144): box(x - .3, 499.5, 0, x + .3, 500, 250, 'seam')
