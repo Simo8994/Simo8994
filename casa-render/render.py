@@ -123,7 +123,7 @@ def mat_for(n):
     for k, m in RULES:
         if k in n: return m
     return 'grey'
-OPEN = [[-13,311,0,411,100,240],[-13,63,0,163,100,240],[224,560,324,573,0,240],[179,-165,192,-65,0,240],[450,560,550,573,0,240],[640,560,740,573,0,240],[845,560,945,573,0,240],[1204,100,1217,200,100,200],
+OPEN = [[-13,294.5,0,394.5,100,240],[-13,63,0,163,100,240],[224,560,324,573,0,240],[179,-165,192,-65,0,240],[450,560,550,573,0,240],[640,560,740,573,0,240],[845,560,945,573,0,240],[1204,100,1217,200,100,200],
  [432,50,445,130,0,210],[660,143,740,156,0,210],[850,250,930,263,0,210],[934,63,946,143,0,210],[522,40,602,53,0,210],[840,143,920,156,0,210]]
 portals = []
 def wall(n, x0, y0, x1, y1):
@@ -199,7 +199,7 @@ def blind(wall, c, d, a, b, top, low):
         box(min(c, c+8*d), a-1, top, max(c, c+8*d), b+1, top+10, 'beige'); box(min(c+4*d, c+4.6*d), a, low, max(c+4*d, c+4.6*d), b, top, 'tenda'); box(min(c+3.5*d, c+5*d), a, low-3, max(c+3.5*d, c+5*d), b, low, 'nero')
     else:
         box(a-1, min(c, c+8*d), top, b+1, max(c, c+8*d), top+10, 'beige'); box(a, min(c+4*d, c+4.6*d), low, b, max(c+4*d, c+4.6*d), top, 'tenda'); box(a, min(c+3.5*d, c+5*d), low-3, b, max(c+3.5*d, c+5*d), low, 'nero')
-for args in [('x', 0, 1, 311, 411, 242, 185),     # kitchen window
+for args in [('x', 0, 1, 294.5, 394.5, 242, 185),     # kitchen window
              ('x', 0, 1, 63, 163, 242, 185),        # living window
              ('x', 192, 1, -165, -65, 242, 160),    # entrance patio door
              ('y', 560, -1, 224, 324, 242, 160)]:   # kitchen patio door
@@ -212,8 +212,8 @@ if os.environ.get('CASA_VARIANT') == 'mia':
     box(60, 297, 84, 60.6, 500, 86, 'brass'); box(60, 355, 84, 157, 355.6, 86, 'brass'); box(157, 297, 84, 157.6, 355, 86, 'brass')
     cyl_pts((275, 240, 0), (275, 240, 38), 23, 'pillow', 48)
 # extra details
-box(0, 414, 150, 35, 525, 270, 'beige'); box(34.6, 468.8, 150, 35.2, 469.2, 270, 'nero'); box(2, 416, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
-box(0, 411, 90, 1.2, 560, 150, 'beige')  # beige glass backsplash, same tone as the fronts
+box(0, 397, 150, 35, 525, 270, 'beige'); box(34.6, 460.8, 150, 35.2, 461.2, 270, 'nero'); box(2, 399, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
+box(0, 394.5, 90, 1.2, 560, 150, 'beige')  # beige glass backsplash, same tone as the fronts
 box(0, 525, 150, 62, 560, 270, 'beige'); box(325, 525, 232, 364, 560, 270, 'beige')
 cyl_pts((15, 460, 90), (15, 460, 120), .9, 'nero'); cyl_pts((15, 460, 120), (28, 460, 120), .9, 'nero')
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')

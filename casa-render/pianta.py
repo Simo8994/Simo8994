@@ -85,7 +85,7 @@ for i in sorted(rest, key=lambda r: r[7] if "Cappa" not in r[1] else 0):
 for i in walls:
     el.append(rect(i[2], i[3], i[5], i[6], "#3b3b3b"))
 # openings (x0,y0,x1,y1,orientation)
-OPEN = [(-13, 311, 0, 411, "v"), (-13, 63, 0, 163, "v"), (224, 560, 324, 573, "h"), (179, -165, 192, -65, "v"),
+OPEN = [(-13, 294.5, 0, 394.5, "v"), (-13, 63, 0, 163, "v"), (224, 560, 324, 573, "h"), (179, -165, 192, -65, "v"),
         (450, 560, 550, 573, "h"), (640, 560, 740, 573, "h"), (845, 560, 945, 573, "h"), (1204, 100, 1217, 200, "v")]
 for x0, y0, x1, y1, o in OPEN:
     el.append(rect(x0, y0, x1, y1, "#ffffff"))
