@@ -188,8 +188,10 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         while y + 4 <= y1: box(359, y, 0, 362, y + 4, 270, 'walnut'); y += 7
         continue
     if n.startswith('Complemento'):
-        box(x0, y0, 0, x1, y1, 89, 'beige'); box(x0, y0, 89, x1, y1, 93, 'taj')  # low base with top
-        for z in (135, 175): box(x0, 536, z, x1, 560, z + 3, 'beige')  # two light floating shelves, no tall unit
+        # walnut slats wrap the corner onto the 20 cm return, with three LED-lit walnut shelves
+        box(x0, 558, 0, x1, 560, 270, 'nero'); x = x0 + 1
+        while x + 4 <= x1: box(x, 555, 0, x + 4, 558, 270, 'walnut'); x += 7
+        for z in (105, 145, 185): box(x0, 530, z, 357, 555, z + 3, 'walnut'); box(x0 + 1, 531, z - .6, 356, 554, z, 'led')
         continue
     if 'Libreria_Ingresso' in n:
         box(x0, y0, 0, x1, y0+2, 250, 'white'); box(x0, y1-2, 0, x1, y1, 250, 'white'); box(x0, y0, 0, x1, y1, 45, 'white')
