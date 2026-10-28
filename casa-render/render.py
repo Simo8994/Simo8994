@@ -72,7 +72,7 @@ MAT = {
  'nero_oro': node_mat('nero_oro', (0.015, 0.013, 0.012), 0.1, tex='nero_oro', scale=0.8),
  'anthr': node_mat('anthr', srgb(0x35373a), 0.5), 'black': node_mat('black', srgb(0x111112), 0.18, 0.3), 'steel': node_mat('steel', (0.75, 0.76, 0.78), 0.22, 1.0),
  'white': node_mat('white', srgb(0xf1efea), 0.5), 'ceramic': node_mat('ceramic', (0.95, 0.95, 0.94), 0.08), 'wall': node_mat('wall', srgb(0xf2ede4), 0.85),
- 'fabric': node_mat('fabric', srgb(0x9a938a), 0.95), 'boucle': node_mat('boucle', srgb(0xefebe4), 1.0), 'pillow': node_mat('pillow', srgb(0xa0623a), 1.0),
+ 'fabric': node_mat('fabric', srgb(0x9a938a), 0.95), 'boucle': node_mat('boucle', srgb(0xefebe4), 1.0), 'pillow': node_mat('pillow', srgb(0x8a4f2e), 1.0),
  'rug': node_mat('rug', srgb(0xe3d9c8), 1.0), 'linen': node_mat('linen', srgb(0xeae4d8), 0.95), 'glass': node_mat('glass', (1, 1, 1), 0.0, transm=1.0),
  'frame': node_mat('frame', srgb(0x3a3029), 0.45), 'grass': node_mat('grass', (0.1, 0.25, 0.05), 0.95, tex='grass', scale=1), 'paving': node_mat('paving', srgb(0xcfc7b8), 0.85),
  'hedge': node_mat('hedge', srgb(0x2f5a2a), 0.9), 'led': node_mat('led', (1, 0.85, 0.6), 0.5, emit=(1, 0.75, 0.45)), 'tv': node_mat('tv', (0.01, 0.01, 0.012), 0.08, 0.2),
@@ -83,6 +83,10 @@ coll = sc.collection
 def mesh_obj(name, verts, faces, mat):
     me = bpy.data.meshes.new(name); me.from_pydata(verts, [], faces); me.update()
     ob = bpy.data.objects.new(name, me); ob.data.materials.append(MAT[mat] if isinstance(mat, str) else mat); coll.objects.link(ob); return ob
+def ellipse(cx, cy, rx, ry, z0, z1, mat, k=64):
+    v = [((cx + rx*math.cos(2*math.pi*i/k))*S, (cy + ry*math.sin(2*math.pi*i/k))*S, z*S) for z in (z0, z1) for i in range(k)]
+    f = [tuple(range(k-1, -1, -1)), tuple(range(k, 2*k))] + [(i, (i+1) % k, k + (i+1) % k, k + i) for i in range(k)]
+    return mesh_obj('ell', v, f, mat)
 def box(x0, y0, z0, x1, y1, z1, mat, name='b'):
     if x1 - x0 < 0.05 or y1 - y0 < 0.05 or z1 - z0 < 0.05: return
     v = [(x * S, y * S, z * S) for z in (z0, z1) for y in (y0, y1) for x in (x0, x1)]
@@ -143,8 +147,10 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if n.startswith('Albero'):
         cx, cy = (x0+x1)/2, (y0+y1)/2; cyl_pts((cx, cy, 0), (cx, cy, 200), 10, 'frame')
         bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=3, radius=1.5, location=(cx*S, cy*S, 3.0)); bpy.context.object.data.materials.append(MAT['hedge']); continue
-    if 'Rotondo' in n:
-        cx, cy = (x0+x1)/2, (y0+y1)/2; cyl_pts((cx, cy, 72), (cx, cy, 76), 55, 'walnut', 64); cyl_pts((cx, cy, 3), (cx, cy, 72), 6, 'anthr'); cyl_pts((cx, cy, 0), (cx, cy, 3), 25, 'anthr', 40); continue
+    if 'Ovale' in n:
+        cx, cy = (x0+x1)/2, (y0+y1)/2; ellipse(cx, cy, (x1-x0)/2, (y1-y0)/2, 72, 76, 'walnut')
+        box(cx-1, cy-30, 73, cx+1, cy+30, 76.2, 'walnut')  # extension leaf joint
+        ellipse(cx, cy, 6, 22, 3, 72, 'nero'); ellipse(cx, cy, 25, 45, 0, 3, 'nero'); continue
     if 'Termo' in n:
         alx = (x1-x0) > (y1-y0); fx = (y0+y1)/2 if alx else (x0+x1)/2; a0 = (x0 if alx else y0) + 2; a1 = (x1 if alx else y1) - 2
         P = (lambda t, z: (t, fx, z)) if alx else (lambda t, z: (fx, t, z))
@@ -154,7 +160,7 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         while z < 199: cyl_pts(P(a0, z), P(a1, z), 1.25, tm, 8); z += 7
         continue
     if n.startswith('Sedia'):
-        sx, sy = (x0+x1)/2, (y0+y1)/2; dx, dy = sx-TC[0], sy-TC[1]; ang = math.atan2(dy, dx)
+        sx, sy = (x0+x1)/2, (y0+y1)/2; dx, dy = sx-TC[0], 0; ang = math.atan2(dy, dx)
         cyl_pts((sx, sy, 42), (sx, sy, 49), 23, 'boucle', 40)
         arc_wall(sx, sy, 20, ang - math.radians(100), ang + math.radians(100), 49, 78, 4, 'boucle')
         for a in (45, 135, 225, 315):
@@ -182,30 +188,24 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if 'Induzione' in n: m = 'black'
     elif g == 'Cuc' and m in ('walnut', 'anthr'): m = 'beige'
     box(x0, y0, z0, x1, y1, max(z1, z0 + .5), m, n)
-# blackout curtains (cream), open and gathered at the sides; wall: 'x' = wall at constant x, 'y' = constant y
-def curtain(wall, c, a, b, z0, z1, mat='tenda'):
-    n = max(2, int((b - a) / 2.5)); v = []; f = []
-    for i in range(n + 1):
-        t = a + (b - a) * i / n; d = c + 2 + 2 * math.sin(i * 2.5 * 2 * math.pi / 10)
-        for z in (z0, z1): v.append(((d, t, z) if wall == 'x' else (t, d, z)))
-    v = [(x * S, y * S, z * S) for x, y, z in v]
-    for i in range(n): f.append((2 * i, 2 * i + 2, 2 * i + 3, 2 * i + 1))
-    mesh_obj('Tenda', v, f, mat)
-def rod(wall, c, a, b, z=262):
-    p0, p1 = ((c + 6, a, z), (c + 6, b, z)) if wall == 'x' else ((a, c + 6, z), (b, c + 6, z)); cyl_pts(p0, p1, .8, 'nero')
-for wall, c, a, b, z0, p0, p1 in [('x', 0, 294.5, 411, 95, 279, 418),       # kitchen window (stops above worktop)
-                                  ('x', 0, 63, 163, 1, 45, 181),            # living window
-                                  ('x', 192, -165, -65, 1, -183, -47),      # entrance patio door
-                                  ('y', 550, 207, 324, 1, 190, 324)]:       # kitchen patio door (interior face y=560)
-    for q0, q1 in ((p0, a + 15), (b - 15, p1)): curtain(wall, c, q0, q1, z0, 266)
-    rod(wall, c, p0 - 3, p1 + 3)
+# blackout roller blinds (cream) dropping from a box above each opening; d = +1/-1 direction into the room
+def blind(wall, c, d, a, b, top, low):
+    if wall == 'x':
+        box(min(c, c+8*d), a-3, top, max(c, c+8*d), b+3, top+10, 'beige'); box(min(c+4*d, c+4.6*d), a-2, low, max(c+4*d, c+4.6*d), b+2, top, 'tenda'); box(min(c+3.5*d, c+5*d), a-2, low-3, max(c+3.5*d, c+5*d), b+2, low, 'nero')
+    else:
+        box(a-3, min(c, c+8*d), top, b+3, max(c, c+8*d), top+10, 'beige'); box(a-2, min(c+4*d, c+4.6*d), low, b+2, max(c+4*d, c+4.6*d), top, 'tenda'); box(a-2, min(c+3.5*d, c+5*d), low-3, b+2, max(c+3.5*d, c+5*d), low, 'nero')
+for args in [('x', 0, 1, 294.5, 411, 242, 185),     # kitchen window
+             ('x', 0, 1, 63, 163, 242, 185),        # living window
+             ('x', 192, 1, -165, -65, 242, 160),    # entrance patio door
+             ('y', 560, -1, 207, 324, 242, 160)]:   # kitchen patio door
+    blind(*args)
 # designer variant (CASA_VARIANT=mia): brass pendant over the table, brass handle grooves, cognac boucle pouf
 if os.environ.get('CASA_VARIANT') == 'mia':
     tx, ty = TC
     cyl_pts((tx, ty, 168), (tx, ty, 270), .3, 'nero', 6)
     cyl_pts((tx, ty, 150), (tx, ty, 168), 24, 'brass', 48, 6); cyl_pts((tx, ty, 149.5), (tx, ty, 150.5), 21, 'led', 48)
     box(60, 297, 84, 60.6, 500, 86, 'brass'); box(60, 355, 84, 157, 355.6, 86, 'brass'); box(157, 297, 84, 157.6, 355, 86, 'brass')
-    cyl_pts((275, 240, 0), (275, 240, 40), 28, 'pillow', 48)
+    cyl_pts((275, 240, 0), (275, 240, 38), 23, 'pillow', 48)
 # extra details
 for z in (140, 180): box(0, 419, z, 25, 523, z + 4, 'beige'); box(.5, 421, z - .6, 2, 521, z, 'led')
 box(0, 525, 150, 62, 560, 270, 'beige'); box(325, 525, 232, 364, 560, 270, 'beige')

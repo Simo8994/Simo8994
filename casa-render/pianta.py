@@ -76,9 +76,9 @@ for i in sorted(rest, key=lambda r: r[7] if "Cappa" not in r[1] else 0):
     if "Cappa" in i[1]:
         el.append(rect(i[2], i[3], i[5], i[6], "none", stroke="#c9a227", sw=1))
         continue
-    if "Rotondo" in i[1]:
+    if "Rotondo" in i[1] or "Ovale" in i[1]:
         ax, ay = px((i[2] + i[5]) / 2, (i[3] + i[6]) / 2)
-        el.append(f'<circle cx="{ax:.1f}" cy="{ay:.1f}" r="{(i[5]-i[2])/2*S:.1f}" fill="#60422c" stroke="#2a1a10"/>')
+        el.append(f'<ellipse cx="{ax:.1f}" cy="{ay:.1f}" rx="{(i[5]-i[2])/2*S:.1f}" ry="{(i[6]-i[3])/2*S:.1f}" fill="#60422c" stroke="#2a1a10"/>')
         continue
     el.append(rect(i[2], i[3], i[5], i[6], color(i[1]), stroke="#00000040", sw=0.5,
                    rx=3 if any(k in i[1] for k in ("Divano", "Chaise", "Letto", "Sedia")) else 0))
