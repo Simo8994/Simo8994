@@ -123,7 +123,7 @@ def mat_for(n):
     for k, m in RULES:
         if k in n: return m
     return 'grey'
-OPEN = [[-13,294.5,0,411,100,240],[-13,63,0,163,100,240],[207,560,324,573,0,240],[179,-165,192,-65,0,240],[450,560,550,573,0,240],[640,560,740,573,0,240],[845,560,945,573,0,240],[1204,100,1217,200,100,200],
+OPEN = [[-13,311,0,411,100,240],[-13,63,0,163,100,240],[224,560,324,573,0,240],[179,-165,192,-65,0,240],[450,560,550,573,0,240],[640,560,740,573,0,240],[845,560,945,573,0,240],[1204,100,1217,200,100,200],
  [432,50,445,130,0,210],[660,143,740,156,0,210],[850,250,930,263,0,210],[934,63,946,143,0,210],[522,40,602,53,0,210],[840,143,920,156,0,210]]
 portals = []
 def wall(n, x0, y0, x1, y1):
@@ -196,13 +196,13 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
 # blackout roller blinds (cream) dropping from a box above each opening; d = +1/-1 direction into the room
 def blind(wall, c, d, a, b, top, low):
     if wall == 'x':
-        box(min(c, c+8*d), a-3, top, max(c, c+8*d), b+3, top+10, 'beige'); box(min(c+4*d, c+4.6*d), a-2, low, max(c+4*d, c+4.6*d), b+2, top, 'tenda'); box(min(c+3.5*d, c+5*d), a-2, low-3, max(c+3.5*d, c+5*d), b+2, low, 'nero')
+        box(min(c, c+8*d), a-1, top, max(c, c+8*d), b+1, top+10, 'beige'); box(min(c+4*d, c+4.6*d), a, low, max(c+4*d, c+4.6*d), b, top, 'tenda'); box(min(c+3.5*d, c+5*d), a, low-3, max(c+3.5*d, c+5*d), b, low, 'nero')
     else:
-        box(a-3, min(c, c+8*d), top, b+3, max(c, c+8*d), top+10, 'beige'); box(a-2, min(c+4*d, c+4.6*d), low, b+2, max(c+4*d, c+4.6*d), top, 'tenda'); box(a-2, min(c+3.5*d, c+5*d), low-3, b+2, max(c+3.5*d, c+5*d), low, 'nero')
-for args in [('x', 0, 1, 294.5, 411, 242, 185),     # kitchen window
+        box(a-1, min(c, c+8*d), top, b+1, max(c, c+8*d), top+10, 'beige'); box(a, min(c+4*d, c+4.6*d), low, b, max(c+4*d, c+4.6*d), top, 'tenda'); box(a, min(c+3.5*d, c+5*d), low-3, b, max(c+3.5*d, c+5*d), low, 'nero')
+for args in [('x', 0, 1, 311, 411, 242, 185),     # kitchen window
              ('x', 0, 1, 63, 163, 242, 185),        # living window
              ('x', 192, 1, -165, -65, 242, 160),    # entrance patio door
-             ('y', 560, -1, 207, 324, 242, 160)]:   # kitchen patio door
+             ('y', 560, -1, 224, 324, 242, 160)]:   # kitchen patio door
     blind(*args)
 # designer variant (CASA_VARIANT=mia): brass pendant over the table, brass handle grooves, cognac boucle pouf
 if os.environ.get('CASA_VARIANT') == 'mia':
@@ -213,7 +213,7 @@ if os.environ.get('CASA_VARIANT') == 'mia':
     cyl_pts((275, 240, 0), (275, 240, 38), 23, 'pillow', 48)
 # extra details
 box(0, 414, 150, 35, 525, 270, 'beige'); box(34.6, 468.8, 150, 35.2, 469.2, 270, 'nero'); box(2, 416, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
-box(0, 411, 90, 1.2, 560, 150, 'nero_oro')  # black-gold marble backsplash
+box(0, 411, 90, 1.2, 560, 150, 'beige')  # beige glass backsplash, same tone as the fronts
 box(0, 525, 150, 62, 560, 270, 'beige'); box(325, 525, 232, 364, 560, 270, 'beige')
 cyl_pts((15, 460, 90), (15, 460, 120), .9, 'nero'); cyl_pts((15, 460, 120), (28, 460, 120), .9, 'nero')
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
