@@ -1,0 +1,152 @@
+# Gateway LiteLLM per tutti i provider di https://github.com/mnfst/awesome-free-llm-apis
+# Avvio:  litellm --config litellm-config.yaml --port 4000
+# Le chiavi si leggono dal file .env (vedi .env.example).
+# I provider senza chiave configurata rispondono con errore di autenticazione: il router
+# li salta e passa al deployment successivo del gruppo "free".
+
+model_list:
+  # ---------------------------------------------------------------- Provider APIs
+  # Aion Labs - 15 RPM, 20K token/giorno
+  - model_name: aion/aion-3.0
+    litellm_params: {model: openai/aion-labs/aion-3.0, api_base: https://api.aionlabs.ai/v1, api_key: os.environ/AION_API_KEY}
+  - model_name: aion/aion-3.0-mini
+    litellm_params: {model: openai/aion-labs/aion-3.0-mini, api_base: https://api.aionlabs.ai/v1, api_key: os.environ/AION_API_KEY}
+
+  # Cohere - 1.000 chiamate/mese, solo uso non commerciale
+  - model_name: cohere/command-a
+    litellm_params: {model: cohere_chat/command-a-03-2025, api_key: os.environ/COHERE_API_KEY}
+  - model_name: cohere/command-r7b
+    litellm_params: {model: cohere_chat/command-r7b-12-2024, api_key: os.environ/COHERE_API_KEY}
+
+  # Google Gemini - i prompt del piano gratuito possono essere usati da Google (fuori da UE/UK/CH)
+  - model_name: gemini/2.5-flash
+    litellm_params: {model: gemini/gemini-2.5-flash, api_key: os.environ/GEMINI_API_KEY}
+  - model_name: gemini/2.5-flash-lite
+    litellm_params: {model: gemini/gemini-2.5-flash-lite, api_key: os.environ/GEMINI_API_KEY}
+
+  # Mistral AI - free mode, i prompt possono essere usati per training (opt-out disponibile)
+  - model_name: mistral/medium
+    litellm_params: {model: mistral/mistral-medium-latest, api_key: os.environ/MISTRAL_API_KEY}
+  - model_name: mistral/large
+    litellm_params: {model: mistral/mistral-large-latest, api_key: os.environ/MISTRAL_API_KEY}
+  - model_name: mistral/small
+    litellm_params: {model: mistral/mistral-small-latest, api_key: os.environ/MISTRAL_API_KEY}
+  - model_name: mistral/codestral
+    litellm_params: {model: mistral/codestral-latest, api_key: os.environ/MISTRAL_API_KEY}
+
+  # Z AI (Zhipu) - endpoint internazionale, 1 richiesta concorrente
+  - model_name: zai/glm-4.7-flash
+    litellm_params: {model: openai/glm-4.7-flash, api_base: https://api.z.ai/api/paas/v4, api_key: os.environ/ZAI_API_KEY}
+  - model_name: zai/glm-4.6v-flash
+    litellm_params: {model: openai/glm-4.6v-flash, api_base: https://api.z.ai/api/paas/v4, api_key: os.environ/ZAI_API_KEY}
+
+  # ---------------------------------------------------------------- Inference providers
+  # Cloudflare Workers AI - 10K neurons/giorno condivisi; richiede anche CLOUDFLARE_ACCOUNT_ID
+  - model_name: cloudflare/llama-3.3-70b
+    litellm_params: {model: cloudflare/@cf/meta/llama-3.3-70b-instruct-fp8-fast, api_key: os.environ/CLOUDFLARE_API_KEY}
+  - model_name: cloudflare/gpt-oss-120b
+    litellm_params: {model: cloudflare/@cf/openai/gpt-oss-120b, api_key: os.environ/CLOUDFLARE_API_KEY}
+
+  # Gonka Broker - ~1M token/mese, verifica SMS
+  - model_name: gonka/deepseek-v4-flash
+    litellm_params: {model: openai/deepseek-ai/DeepSeek-V4-Flash-0731, api_base: https://proxy.gonkabroker.com/v1, api_key: os.environ/GONKA_API_KEY}
+  - model_name: gonka/glm-5.3-flash
+    litellm_params: {model: openai/zai-org/GLM-5.3-Flash, api_base: https://proxy.gonkabroker.com/v1, api_key: os.environ/GONKA_API_KEY}
+  - model_name: gonka/minimax-m2.7
+    litellm_params: {model: openai/MiniMaxAI/MiniMax-M2.7, api_base: https://proxy.gonkabroker.com/v1, api_key: os.environ/GONKA_API_KEY}
+
+  # Groq - 30 RPM, 1.000 RPD
+  - model_name: groq/gpt-oss-120b
+    litellm_params: {model: groq/openai/gpt-oss-120b, api_key: os.environ/GROQ_API_KEY}
+  - model_name: groq/gpt-oss-20b
+    litellm_params: {model: groq/openai/gpt-oss-20b, api_key: os.environ/GROQ_API_KEY}
+  - model_name: groq/qwen3.8-27b
+    litellm_params: {model: groq/qwen/qwen3.8-27b, api_key: os.environ/GROQ_API_KEY}
+
+  # Kilo Code - nessuna chiave richiesta, 200 req/ora per IP
+  - model_name: kilo/auto-free
+    litellm_params: {model: openai/kilo-auto/free, api_base: https://api.kilo.ai/api/gateway, api_key: os.environ/KILO_API_KEY}
+  - model_name: kilo/nemotron-3-ultra
+    litellm_params: {model: openai/nvidia/nemotron-3-ultra-550b-a55b:free, api_base: https://api.kilo.ai/api/gateway, api_key: os.environ/KILO_API_KEY}
+  - model_name: kilo/laguna-s-2.1
+    litellm_params: {model: openai/poolside/laguna-s-2.1:free, api_base: https://api.kilo.ai/api/gateway, api_key: os.environ/KILO_API_KEY}
+
+  # LLM7.io - accesso anonimo possibile, token gratuito alza i limiti
+  - model_name: llm7/gpt-oss-20b
+    litellm_params: {model: openai/gpt-oss:20b, api_base: https://api.llm7.io/v1, api_key: os.environ/LLM7_API_KEY}
+  - model_name: llm7/codestral
+    litellm_params: {model: openai/codestral-latest, api_base: https://api.llm7.io/v1, api_key: os.environ/LLM7_API_KEY}
+
+  # ModelScope - richiede account Alibaba Cloud + verifica identità (Cina)
+  - model_name: modelscope/qwen3.5-35b-a3b
+    litellm_params: {model: openai/Qwen/Qwen3.5-35B-A3B, api_base: https://api-inference.modelscope.cn/v1, api_key: os.environ/MODELSCOPE_API_KEY}
+  - model_name: modelscope/qwen3.5-27b
+    litellm_params: {model: openai/Qwen/Qwen3.5-27B, api_base: https://api-inference.modelscope.cn/v1, api_key: os.environ/MODELSCOPE_API_KEY}
+
+  # NVIDIA NIM - 40 RPM, 10.000 RPD
+  - model_name: nvidia/nemotron-3-ultra
+    litellm_params: {model: nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b, api_key: os.environ/NVIDIA_API_KEY}
+  - model_name: nvidia/gemma-4-31b
+    litellm_params: {model: nvidia_nim/google/gemma-4-31b-it, api_key: os.environ/NVIDIA_API_KEY}
+  - model_name: nvidia/gpt-oss-20b
+    litellm_params: {model: nvidia_nim/openai/gpt-oss-20b, api_key: os.environ/NVIDIA_API_KEY}
+
+  # Ollama Cloud - crediti mensili, 1 richiesta concorrente
+  - model_name: ollama/gpt-oss-120b
+    litellm_params: {model: openai/gpt-oss:120b, api_base: https://ollama.com/v1, api_key: os.environ/OLLAMA_API_KEY}
+  - model_name: ollama/gpt-oss-20b
+    litellm_params: {model: openai/gpt-oss:20b, api_base: https://ollama.com/v1, api_key: os.environ/OLLAMA_API_KEY}
+
+  # OpenRouter - 20 RPM, 50 RPD totali sui modelli :free
+  - model_name: openrouter/free
+    litellm_params: {model: openrouter/openrouter/free, api_key: os.environ/OPENROUTER_API_KEY}
+  - model_name: openrouter/nemotron-3-ultra
+    litellm_params: {model: openrouter/nvidia/nemotron-3-ultra-550b-a55b:free, api_key: os.environ/OPENROUTER_API_KEY}
+  - model_name: openrouter/gemma-4-31b
+    litellm_params: {model: openrouter/google/gemma-4-31b-it:free, api_key: os.environ/OPENROUTER_API_KEY}
+  - model_name: openrouter/north-mini-code
+    litellm_params: {model: openrouter/cohere/north-mini-code:free, api_key: os.environ/OPENROUTER_API_KEY}
+
+  # OVHcloud AI Endpoints - anonimo, 2 RPM per IP per modello, server UE
+  - model_name: ovh/gpt-oss-120b
+    litellm_params: {model: openai/gpt-oss-120b, api_base: https://oai.endpoints.kepler.ai.cloud.ovh.net/v1, api_key: os.environ/OVH_API_KEY}
+  - model_name: ovh/qwen3.5-397b
+    litellm_params: {model: openai/Qwen3.5-397B-A17B, api_base: https://oai.endpoints.kepler.ai.cloud.ovh.net/v1, api_key: os.environ/OVH_API_KEY}
+  - model_name: ovh/llama-3.3-70b
+    litellm_params: {model: openai/Meta-Llama-3_3-70B-Instruct, api_base: https://oai.endpoints.kepler.ai.cloud.ovh.net/v1, api_key: os.environ/OVH_API_KEY}
+
+  # SiliconFlow - richiede verifica identità (documenti cinesi)
+  - model_name: siliconflow/xing4.0-29b
+    litellm_params: {model: openai/XingChenAGI/Xing4.0-29B, api_base: https://api.siliconflow.cn/v1, api_key: os.environ/SILICONFLOW_API_KEY}
+  - model_name: siliconflow/hunyuan-mt-7b
+    litellm_params: {model: openai/tencent/Hunyuan-MT-7B, api_base: https://api.siliconflow.cn/v1, api_key: os.environ/SILICONFLOW_API_KEY}
+
+  # ---------------------------------------------------------------- Gruppo "free"
+  # Un solo nome modello con più deployment: LiteLLM distribuisce le richieste e,
+  # quando un provider va in rate limit o errore, ripiega sugli altri.
+  - model_name: free
+    litellm_params: {model: groq/openai/gpt-oss-120b, api_key: os.environ/GROQ_API_KEY}
+  - model_name: free
+    litellm_params: {model: nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b, api_key: os.environ/NVIDIA_API_KEY}
+  - model_name: free
+    litellm_params: {model: gemini/gemini-2.5-flash, api_key: os.environ/GEMINI_API_KEY}
+  - model_name: free
+    litellm_params: {model: mistral/mistral-medium-latest, api_key: os.environ/MISTRAL_API_KEY}
+  - model_name: free
+    litellm_params: {model: openai/kilo-auto/free, api_base: https://api.kilo.ai/api/gateway, api_key: os.environ/KILO_API_KEY}
+  - model_name: free
+    litellm_params: {model: openrouter/openrouter/free, api_key: os.environ/OPENROUTER_API_KEY}
+  - model_name: free
+    litellm_params: {model: openai/gpt-oss-120b, api_base: https://oai.endpoints.kepler.ai.cloud.ovh.net/v1, api_key: os.environ/OVH_API_KEY}
+
+router_settings:
+  routing_strategy: simple-shuffle
+  num_retries: 3
+  allowed_fails: 1      # dopo 1 errore il deployment va in pausa
+  cooldown_time: 60     # secondi di pausa prima di riprovarlo
+
+litellm_settings:
+  drop_params: true     # scarta i parametri non supportati dal singolo provider
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
