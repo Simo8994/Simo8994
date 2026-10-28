@@ -87,7 +87,7 @@ MAT = {
  'nero_oro': node_mat('nero_oro', (0.015, 0.013, 0.012), 0.1, tex='nero_oro', scale=0.8),
  'anthr': node_mat('anthr', srgb(0x35373a), 0.5), 'black': node_mat('black', srgb(0x111112), 0.18, 0.3), 'steel': node_mat('steel', (0.75, 0.76, 0.78), 0.22, 1.0),
  'white': node_mat('white', srgb(0xf1efea), 0.5), 'ceramic': node_mat('ceramic', (0.95, 0.95, 0.94), 0.08), 'wall': node_mat('wall', srgb(0xf2ede4), 0.85),
- 'fabric': node_mat('fabric', srgb(0x9a938a), 0.95), 'boucle': node_mat('boucle', srgb(0xefebe4), 1.0), 'pillow': node_mat('pillow', srgb(0x8a4f2e), 1.0),
+ 'fabric': node_mat('fabric', srgb(0x9a938a), 0.95), 'boucle': node_mat('boucle', srgb(0xefebe4), 1.0), 'corda': node_mat('corda', srgb(0xd9c7a2), 0.9), 'pillow': node_mat('pillow', srgb(0x8a4f2e), 1.0),
  'rug': node_mat('rug', srgb(0xe3d9c8), 1.0), 'linen': node_mat('linen', srgb(0xeae4d8), 0.95), 'glass': node_mat('glass', (1, 1, 1), 0.0, transm=1.0),
  'frame': node_mat('frame', srgb(0x3a3029), 0.45), 'grass': node_mat('grass', (0.1, 0.25, 0.05), 0.95, tex='grass', scale=1), 'paving': node_mat('paving', srgb(0xcfc7b8), 0.85),
  'hedge': node_mat('hedge', srgb(0x2f5a2a), 0.9), 'led': node_mat('led', (1, 0.85, 0.6), 0.5, emit=(1, 0.75, 0.45)), 'tv': node_mat('tv', (0.01, 0.01, 0.012), 0.08, 0.2),
@@ -161,7 +161,7 @@ def wall(n, x0, y0, x1, y1):
         cur = b
     seg(cur, end, 0, 270)
 
-TC = (274.5, 375)
+TC = (274.5, 355)
 for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if n.startswith('Parete') and 'TV' not in n: wall(n, x0, y0, x1, y1); continue
     if n.startswith('Albero'):
@@ -184,10 +184,12 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         continue
     if n.startswith('Sedia'):
         sx, sy = (x0+x1)/2, (y0+y1)/2; dx, dy = sx-TC[0], sy-TC[1]; ang = math.atan2(dy, dx)
-        cyl_pts((sx, sy, 40), (sx, sy, 46), 20, 'boucle', 40)
-        arc_wall(sx, sy, 17.5, ang - math.radians(95), ang + math.radians(95), 46, 72, 3.5, 'boucle')
-        for a in (45, 135, 225, 315):
-            la = math.radians(a); cyl_pts((sx+math.cos(la)*13, sy+math.sin(la)*13, 0), (sx+math.cos(la)*11, sy+math.sin(la)*11, 40), 1.0, 'walnut', 10, 1.3)
+        # light chair: thin oak ring with paper-cord seat, slender legs, open curved back rail
+        cyl_pts((sx, sy, 42), (sx, sy, 44), 20, 'oak', 40); cyl_pts((sx, sy, 44), (sx, sy, 45), 18.8, 'corda', 40)
+        P = lambda a, r, z: (sx + math.cos(ang + math.radians(a))*r, sy + math.sin(ang + math.radians(a))*r, z)
+        for a in (135, -135): cyl_pts(P(a, 17, 0), P(a, 15, 42), 1.0, 'oak', 10, 1.3)
+        for a in (40, -40): cyl_pts(P(a, 17, 0), P(a, 19, 76), 1.0, 'oak', 10, 1.3)
+        arc_wall(sx, sy, 19.5, ang - math.radians(55), ang + math.radians(55), 70, 77, 1.8, 'oak')
         continue
     if 'Cappa' in n:
         box(x0, y0, z0, x1, y1, z1, 'black'); box(x0+2, y0+2, z0-.5, x1-2, y1-2, z0, 'led'); top = ((x0+x1)/2, (y0+y1)/2, 267)
@@ -239,12 +241,12 @@ cyl_pts((15, 425, 90), (15, 425, 120), .9, 'white'); cyl_pts((15, 425, 120), (28
 box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
 # TV wall: deep olive microcement, ceiling wash light and soft glow under the floating unit
-box(351, 145, 266.5, 352, 290, 267.5, 'led'); box(323, 152, 21.4, 348, 286, 22, 'led')
+box(351, 145, 266.5, 352, 290, 267.5, 'led'); box(333, 152, 21.4, 349, 266, 22, 'led')
 # dining: linear brass pendant over the table
-for y in (330, 420): cyl_pts((TC[0], y, 152), (TC[0], y, 270), .3, 'nero', 6)
-cyl_pts((TC[0], 325, 150), (TC[0], 425, 150), 2.2, 'brass', 24); box(TC[0] - 1.2, 327, 147.6, TC[0] + 1.2, 423, 148, 'led')
+for y in (310, 400): cyl_pts((TC[0], y, 152), (TC[0], y, 270), .3, 'nero', 6)
+cyl_pts((TC[0], 305, 150), (TC[0], 405, 150), 2.2, 'brass', 24); box(TC[0] - 1.2, 307, 147.6, TC[0] + 1.2, 403, 148, 'led')
 # recessed LED ceiling spots (kitchen + living)
-for x, y in ((60, 60), (60, 200), (180, 60), (180, 200), (290, 60), (290, 200), (30, 330), (30, 450), (110, 430), (260, 330), (260, 420)):
+for x, y in () if os.environ.get('CASA_NOCEIL') else ((60, 60), (60, 200), (180, 60), (180, 200), (290, 60), (290, 200), (30, 330), (30, 450), (110, 430), (260, 310), (260, 400)):
     cyl_pts((x, y, 269.2), (x, y, 270), 5, 'white', 24); cyl_pts((x, y, 269), (x, y, 269.3), 3.5, 'led', 24)
 # kitchen fronts: door/drawer seams and handle-less gola grips (recessed channel, darker cashmere)
 def front(ax, p, d, a, b, z0, z1, hs=(), vs=(), gola=True, vgola=None):
@@ -285,7 +287,7 @@ def plant(x, y, s=1.0):
         o = bpy.context.object; o.scale = (1, 0.7, 1.25); o.rotation_euler = (0.3*math.sin(i), 0.3*math.cos(i), a); o.data.materials.append(MAT['leaf'])
         for p in o.data.polygons: p.use_smooth = True
 pass  # piante rimosse
-box(-13, -215, 270, 1217, 573, 275, 'wall')
+if not os.environ.get('CASA_NOCEIL'): box(-13, -215, 270, 1217, 573, 275, 'wall')
 # world sky + sun
 w = bpy.data.worlds.new('w'); sc.world = w; w.use_nodes = True
 sky = w.node_tree.nodes.new('ShaderNodeTexSky'); sky.sky_type = 'MULTIPLE_SCATTERING' if hasattr(sky, 'sky_type') and 'MULTIPLE_SCATTERING' in [i.identifier for i in sky.bl_rna.properties['sky_type'].enum_items] else sky.sky_type
@@ -307,13 +309,14 @@ for x, y, z, e in ((125, 324, 150, 6), (262, 365, 240, 10), (150, 150, 262, 12),
 # camera
 c = bpy.data.cameras.new('cam'); c.sensor_fit = 'VERTICAL'; c.angle_y = math.radians(FOV)
 co = bpy.data.objects.new('cam', c); coll.objects.link(co); sc.camera = co
+if os.environ.get('CASA_ORTHO'): c.type = 'ORTHO'; c.ortho_scale = float(os.environ['CASA_ORTHO'])
 co.location = Vector(cam[:3]) * S; co.rotation_euler = (Vector(cam[3:]) * S - co.location).to_track_quat('-Z', 'Y').to_euler()
 sc.render.engine = 'CYCLES'; sc.cycles.device = 'CPU'; sc.cycles.samples = SAMPLES; sc.cycles.use_denoising = True
 sc.cycles.max_bounces = 6; sc.cycles.diffuse_bounces = 3; sc.cycles.glossy_bounces = 3; sc.cycles.transmission_bounces = 6
 sc.render.resolution_x = W; sc.render.resolution_y = H; sc.render.resolution_percentage = 100
 try: sc.view_settings.view_transform = 'AgX'; sc.view_settings.look = 'AgX - Medium High Contrast'
 except Exception: sc.view_settings.view_transform = 'Filmic'
-sc.view_settings.exposure = 0.6
+sc.view_settings.exposure = -1.4 if os.environ.get('CASA_NOCEIL') else 0.6
 sc.render.filepath = OUT; sc.render.threads_mode = 'AUTO'
 bpy.ops.render.render(write_still=True)
 print('DONE', OUT)

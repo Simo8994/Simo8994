@@ -7,3 +7,4 @@ cucina_2_ante 330,300,150,40,460,80 72
 cucina_3_dalla_finestra 60,400,165,350,380,100 72
 cucina_4_dal_giardino 290,540,160,100,250,100 72
 zona_pranzo 150,250,160,357,380,100 75
+cucina_5_verso_tavolo 70,480,165,310,330,70 75
