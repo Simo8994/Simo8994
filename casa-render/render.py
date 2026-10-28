@@ -92,7 +92,7 @@ MAT = {
  'frame': node_mat('frame', srgb(0x3a3029), 0.45), 'grass': node_mat('grass', (0.1, 0.25, 0.05), 0.95, tex='grass', scale=1), 'paving': node_mat('paving', srgb(0xcfc7b8), 0.85),
  'hedge': node_mat('hedge', srgb(0x2f5a2a), 0.9), 'led': node_mat('led', (1, 0.85, 0.6), 0.5, emit=(1, 0.75, 0.45)), 'tv': node_mat('tv', (0.01, 0.01, 0.012), 0.08, 0.2),
  'red': node_mat('red', srgb(0xa0623a), 0.8), 'pot': node_mat('pot', srgb(0xb06a4a), 0.7), 'leaf': node_mat('leaf', srgb(0x2f6a2c), 0.6), 'grey': node_mat('grey', srgb(0xd9d7d1), 0.6),
- 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gola': node_mat('gola', srgb(0x8c6a45), 0.35, 1.0), 'gyp': node_mat('gyp', srgb(0xc2b6a3), 0.85),
+ 'pink': node_mat('pink', srgb(0xe2c4ba), 0.95), 'sage': node_mat('sage', srgb(0xcfdcc6), 1.0), 'seam': node_mat('seam', srgb(0x2a2622), 0.8), 'gola': node_mat('gola', srgb(0xa89c8a), 0.5), 'gyp': node_mat('gyp', srgb(0xc2b6a3), 0.85),
 }
 coll = sc.collection
 def mesh_obj(name, verts, faces, mat):
