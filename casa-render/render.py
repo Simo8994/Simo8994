@@ -188,8 +188,8 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
         while y + 4 <= y1: box(359, y, 0, 362, y + 4, 270, 'walnut'); y += 7
         continue
     if n.startswith('Complemento'):
-        box(326, 522, 0, 364, 560, 89, 'beige'); box(326, 522, 89, 364, 560, 93, 'taj')  # low 40 cm base with top
-        for z in (135, 175): box(328, 536, z, 364, 560, z + 3, 'beige')  # two light floating shelves, no tall unit
+        box(x0, y0, 0, x1, y1, 89, 'beige'); box(x0, y0, 89, x1, y1, 93, 'taj')  # low base with top
+        for z in (135, 175): box(x0, 536, z, x1, 560, z + 3, 'beige')  # two light floating shelves, no tall unit
         continue
     if 'Libreria_Ingresso' in n:
         box(x0, y0, 0, x1, y0+2, 250, 'white'); box(x0, y1-2, 0, x1, y1, 250, 'white'); box(x0, y0, 0, x1, y1, 45, 'white')
