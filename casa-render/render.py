@@ -137,7 +137,10 @@ elif SCHEME == 'argilla':
     MAT['k_base'] = node_mat('k_base', srgb(0xa5664d), 0.7); MAT['k_tall'] = node_mat('k_tall', srgb(0xe9e1d3), 0.6)
 elif SCHEME == 'tortora':
     MAT['k_base'] = node_mat('k_base', srgb(0x8b8176), 0.62); MAT['k_tall'] = MAT['walnut']
+elif SCHEME == 'sabbia':
+    MAT['k_base'] = node_mat('k_base', srgb(0xb7a283), 0.65); MAT['k_tall'] = node_mat('k_tall', srgb(0xddd3c3), 0.62)
 if SCHEME: MAT['gola'] = MAT['k_base']
+MAT['champ'] = node_mat('champ', srgb(0xb89c74), 0.35, 0.7)
 RULES = [['LED','led'],['Parete_TV_Cartongesso','oliva'],['Panca_Cuscino','pelle'],['Panca','walnut'],['Matrimoniale_Cuscini','linen'],['Poltrona','pink'],['Tappeto_Gioco','sage'],['Termo','anthr'],['Divano','fabric'],['Chaise','fabric'],['Cuscin','pillow'],['Tappeto','rug'],
  ['Comodino','white'],['Testiera','white'],['Armadio_Matrimoniale','white'],['Matrimoniale_Letto','linen'],['Ingresso_Bianc','white'],['Armadio_L','white'],['Pavimento_Bagno','grey'],['Pavimento','oak'],
  ['Penisola_Top','taj'],['Top','taj'],['Penisola','anthr'],['Piano_Induzione','black'],['Dispensa','beige'],['Colonna','walnut'],['Pensil','walnut'],['Mensola','walnut'],['Mobiletto','walnut'],['Mobile_Lavabo','walnut'],
@@ -255,9 +258,13 @@ box(351, 145, 266.5, 352, 290, 267.5, 'led'); box(333, 152, 21.4, 349, 266, 22, 
 for y in (310, 400): cyl_pts((TC[0], y, 152), (TC[0], y, 270), .3, 'nero', 6)
 cyl_pts((TC[0], 305, 150), (TC[0], 405, 150), 2.2, 'brass', 24); box(TC[0] - 1.2, 307, 147.6, TC[0] + 1.2, 403, 148, 'led')
 if SCHEME:
-    for x in (75, 140): cyl_pts((x, 327, 168), (x, 327, 270), .3, 'nero', 6)
     box(157, 294, 0, 160, 354, 88, 'taj')  # waterfall end in the same top material, as in the kitchen designer's model
-    cyl_pts((68, 327, 166), (148, 327, 166), 2.2, 'brass', 24); box(70, 326, 163.6, 146, 328, 164, 'led')
+    if SCHEME == 'sabbia':  # ceiling-mounted rectangular LED frame over the peninsula, champagne finish
+        for a in ((12, 284, 150, 288), (12, 360, 150, 364), (12, 288, 16, 360), (146, 288, 150, 360)):
+            box(a[0], a[1], 262, a[2], a[3], 270, 'champ'); box(a[0] + .8, a[1] + .8, 261.6, a[2] - .8, a[3] - .8, 262, 'led')
+    else:
+        for x in (75, 140): cyl_pts((x, 327, 168), (x, 327, 270), .3, 'nero', 6)
+        cyl_pts((68, 327, 166), (148, 327, 166), 2.2, 'brass', 24); box(70, 326, 163.6, 146, 328, 164, 'led')
 # recessed LED ceiling spots (kitchen + living)
 for x, y in () if os.environ.get('CASA_NOCEIL') else ((60, 60), (60, 200), (180, 60), (180, 200), (290, 60), (290, 200), (30, 330), (30, 450), (110, 430), (260, 310), (260, 400)):
     cyl_pts((x, y, 269.2), (x, y, 270), 5, 'white', 24); cyl_pts((x, y, 269), (x, y, 269.3), 3.5, 'led', 24)
@@ -323,7 +330,7 @@ if NIGHT:  # evening: recessed spots, under-cabinet strip and pendants actually 
     for x, y in ((60, 60), (60, 200), (180, 60), (180, 200), (290, 60), (290, 200), (30, 330), (30, 450), (110, 430), (260, 310), (260, 400)):
         L = bpy.data.lights.new('nspot', 'SPOT'); L.energy = 35; L.spot_size = math.radians(80); L.spot_blend = .6; L.color = (1, 0.83, 0.64); L.shadow_soft_size = .02
         o = bpy.data.objects.new('nspot', L); coll.objects.link(o); o.location = (x*S, y*S, 2.68)
-    for (x0, y0, x1, y1, z, e) in ((2, 399, 33, 523, 149, 25), (70, 324, 146, 330, 163, 40 if SCHEME else 0), (TC[0]-2, 307, TC[0]+2, 403, 147, 35)):
+    for (x0, y0, x1, y1, z, e) in ((2, 399, 33, 523, 149, 25), (14, 286, 148, 362, 261, 70) if SCHEME == 'sabbia' else (70, 324, 146, 330, 163, 40 if SCHEME else 0), (TC[0]-2, 307, TC[0]+2, 403, 147, 35)):
         if not e: continue
         L = bpy.data.lights.new('nled', 'AREA'); L.shape = 'RECTANGLE'; L.size = (x1-x0)*S; L.size_y = (y1-y0)*S; L.energy = e; L.color = (1, 0.8, 0.58)
         o = bpy.data.objects.new('nled', L); coll.objects.link(o); o.location = ((x0+x1)/2*S, (y0+y1)/2*S, z*S)
@@ -337,7 +344,7 @@ sc.cycles.max_bounces = 6; sc.cycles.diffuse_bounces = 3; sc.cycles.glossy_bounc
 sc.render.resolution_x = W; sc.render.resolution_y = H; sc.render.resolution_percentage = 100
 try: sc.view_settings.view_transform = 'AgX'; sc.view_settings.look = 'AgX - Medium High Contrast'
 except Exception: sc.view_settings.view_transform = 'Filmic'
-sc.view_settings.exposure = -1.4 if os.environ.get('CASA_NOCEIL') else (-0.5 if NIGHT else 0.6)
+sc.view_settings.exposure = -1.4 if os.environ.get('CASA_NOCEIL') else (0.15 if NIGHT else 0.6)
 sc.render.filepath = OUT; sc.render.threads_mode = 'AUTO'
 bpy.ops.render.render(write_still=True)
 print('DONE', OUT)
