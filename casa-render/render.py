@@ -137,6 +137,9 @@ elif SCHEME == 'argilla':
     MAT['k_base'] = node_mat('k_base', srgb(0xa5664d), 0.7); MAT['k_tall'] = node_mat('k_tall', srgb(0xe9e1d3), 0.6)
 elif SCHEME == 'tortora':
     MAT['k_base'] = node_mat('k_base', srgb(0x8b8176), 0.62); MAT['k_tall'] = MAT['walnut']
+elif SCHEME == 'rovere':  # all cashmere beige, recessed lower wall units in oak
+    MAT['k_base'] = MAT['beige']; MAT['k_tall'] = MAT['beige']
+    MAT['oak_f'] = node_mat('oak_f', srgb(0xb88d5e), 0.55, tex='oak', scale=0.6)
 elif SCHEME == 'sabbia':
     MAT['k_base'] = node_mat('k_base', srgb(0xb7a283), 0.65); MAT['k_tall'] = node_mat('k_tall', srgb(0xddd3c3), 0.62)
 if SCHEME: MAT['gola'] = MAT['k_base']
@@ -245,9 +248,18 @@ if os.environ.get('CASA_VARIANT') == 'mia':
     box(60, 297, 84, 60.6, 500, 86, 'brass'); box(60, 355, 84, 157, 355.6, 86, 'brass'); box(157, 297, 84, 157.6, 355, 86, 'brass')
     cyl_pts((275, 240, 0), (275, 240, 38), 23, 'pillow', 48)
 # extra details
-box(0, 397, 150, 35, 525, 270, 'k_tall'); box(34.6, 460.8, 150, 35.2, 461.2, 270, 'nero'); box(2, 399, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
+if SCHEME == 'rovere':
+    # two-tier wall units: beige upper row flush, lower row set back 5 cm in fluted oak with LED below
+    box(0, 397, 205, 35, 525, 270, 'k_tall'); box(0, 525, 205, 122, 560, 270, 'k_tall')
+    box(0, 397, 150, 30, 530, 205, 'oak_f'); box(0, 530, 150, 122, 560, 205, 'oak_f')
+    for y in range(399, 530, 3): box(30, y, 150.5, 30.4, y + .25, 204.5, 'seam')
+    for x in range(32, 122, 3): box(x, 529.6, 150.5, x + .25, 530, 204.5, 'seam')
+    box(2, 399, 149.4, 28, 528, 150, 'led'); box(2, 532, 149.4, 120, 558, 150, 'led')
+    box(0, 558.8, 90, 122, 560, 150, 'taj')
+else:
+    box(0, 397, 150, 35, 525, 270, 'k_tall'); box(34.6, 460.8, 150, 35.2, 461.2, 270, 'nero'); box(2, 399, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
+    box(0, 525, 150, 62, 560, 270, 'k_tall'); box(62, 525, 150, 122, 560, 270, 'k_tall')  # wall unit left of the oven column
 box(0, 394.5, 90, 1.2, 560, 150, 'taj')  # Taj Mahal stoneware backsplash, same slab as the top
-box(0, 525, 150, 62, 560, 270, 'k_tall'); box(62, 525, 150, 122, 560, 270, 'k_tall')  # wall unit left of the oven column
 cyl_pts((15, 425, 90), (15, 425, 120), .9, 'white'); cyl_pts((15, 425, 120), (28, 425, 120), .9, 'white')
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
 box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]
@@ -259,7 +271,7 @@ for y in (310, 400): cyl_pts((TC[0], y, 152), (TC[0], y, 270), .3, 'nero', 6)
 cyl_pts((TC[0], 305, 150), (TC[0], 405, 150), 2.2, 'brass', 24); box(TC[0] - 1.2, 307, 147.6, TC[0] + 1.2, 403, 148, 'led')
 if SCHEME:
     box(157, 294, 0, 160, 354, 88, 'taj')  # waterfall end in the same top material, as in the kitchen designer's model
-    if SCHEME == 'sabbia':  # ceiling-mounted rectangular LED frame over the peninsula, champagne finish
+    if SCHEME in ('sabbia', 'rovere'):  # ceiling-mounted rectangular LED frame over the peninsula, champagne finish
         for a in ((12, 284, 150, 288), (12, 360, 150, 364), (12, 288, 16, 360), (146, 288, 150, 360)):
             box(a[0], a[1], 262, a[2], a[3], 270, 'champ'); box(a[0] + .8, a[1] + .8, 261.6, a[2] - .8, a[3] - .8, 262, 'led')
     else:
@@ -293,8 +305,12 @@ for x in (122, 182): box(x - .3, 499.5, 0, x + .3, 500, 10, 'seam')
 front('y', 355, 1, 60, 97, 10, 88)
 front('y', 355, 1, 97, 157, 10, 88, hs=(36, 62))
 # wall units: push-to-open doors, shadow-gap outline only
-front('y', 525, -1, 0, 62, 150, 270, gola=False); front('y', 525, -1, 62, 122, 150, 270, gola=False)
-front('x', 35, 1, 397, 525, 150, 270, vs=(461,), gola=False)
+if SCHEME == 'rovere':
+    front('y', 525, -1, 0, 62, 205, 270, gola=False); front('y', 525, -1, 62, 122, 205, 270, gola=False)
+    front('x', 35, 1, 397, 525, 205, 270, vs=(461,), gola=False)
+else:
+    front('y', 525, -1, 0, 62, 150, 270, gola=False); front('y', 525, -1, 62, 122, 150, 270, gola=False)
+    front('x', 35, 1, 397, 525, 150, 270, vs=(461,), gola=False)
 for y in (235, 290, 345, 400): box(754.5, y - .3, 0, 755, y + .3, 250, 'seam')
 for y in (-140, -90): box(386.5, y - .3, 0, 387, y + .3, 250, 'seam')
 for x in (1014, 1078, 1144): box(x - .3, 499.5, 0, x + .3, 500, 250, 'seam')
@@ -330,7 +346,7 @@ if NIGHT:  # evening: recessed spots, under-cabinet strip and pendants actually 
     for x, y in ((60, 60), (60, 200), (180, 60), (180, 200), (290, 60), (290, 200), (30, 330), (30, 450), (110, 430), (260, 310), (260, 400)):
         L = bpy.data.lights.new('nspot', 'SPOT'); L.energy = 35; L.spot_size = math.radians(80); L.spot_blend = .6; L.color = (1, 0.83, 0.64); L.shadow_soft_size = .02
         o = bpy.data.objects.new('nspot', L); coll.objects.link(o); o.location = (x*S, y*S, 2.68)
-    for (x0, y0, x1, y1, z, e) in ((2, 399, 33, 523, 149, 25), (14, 286, 148, 362, 261, 70) if SCHEME == 'sabbia' else (70, 324, 146, 330, 163, 40 if SCHEME else 0), (TC[0]-2, 307, TC[0]+2, 403, 147, 35)):
+    for (x0, y0, x1, y1, z, e) in ((2, 399, 33, 523, 149, 25), (14, 286, 148, 362, 261, 70) if SCHEME in ('sabbia', 'rovere') else (70, 324, 146, 330, 163, 40 if SCHEME else 0), (TC[0]-2, 307, TC[0]+2, 403, 147, 35)):
         if not e: continue
         L = bpy.data.lights.new('nled', 'AREA'); L.shape = 'RECTANGLE'; L.size = (x1-x0)*S; L.size_y = (y1-y0)*S; L.energy = e; L.color = (1, 0.8, 0.58)
         o = bpy.data.objects.new('nled', L); coll.objects.link(o); o.location = ((x0+x1)/2*S, (y0+y1)/2*S, z*S)
