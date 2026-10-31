@@ -129,6 +129,15 @@ def arc_wall(cx, cy, r, a0, a1, z0, z1, t, mat, n=20):
     ob = mesh_obj('arc', v, f, mat)
     for p in ob.data.polygons: p.use_smooth = True
 
+MAT['k_base'] = MAT['beige']; MAT['k_tall'] = MAT['beige']
+SCHEME = os.environ.get('CASA_SCHEME'); NIGHT = bool(os.environ.get('CASA_NIGHT'))
+if SCHEME == 'blu':
+    MAT['k_base'] = node_mat('k_base', srgb(0x1f2d45), 0.6); MAT['k_tall'] = MAT['oak']
+elif SCHEME == 'argilla':
+    MAT['k_base'] = node_mat('k_base', srgb(0xa5664d), 0.7); MAT['k_tall'] = node_mat('k_tall', srgb(0xe9e1d3), 0.6)
+elif SCHEME == 'tortora':
+    MAT['k_base'] = node_mat('k_base', srgb(0x8b8176), 0.62); MAT['k_tall'] = MAT['walnut']
+if SCHEME: MAT['gola'] = MAT['k_base']
 RULES = [['LED','led'],['Parete_TV_Cartongesso','oliva'],['Panca_Cuscino','pelle'],['Panca','walnut'],['Matrimoniale_Cuscini','linen'],['Poltrona','pink'],['Tappeto_Gioco','sage'],['Termo','anthr'],['Divano','fabric'],['Chaise','fabric'],['Cuscin','pillow'],['Tappeto','rug'],
  ['Comodino','white'],['Testiera','white'],['Armadio_Matrimoniale','white'],['Matrimoniale_Letto','linen'],['Ingresso_Bianc','white'],['Armadio_L','white'],['Pavimento_Bagno','grey'],['Pavimento','oak'],
  ['Penisola_Top','taj'],['Top','taj'],['Penisola','anthr'],['Piano_Induzione','black'],['Dispensa','beige'],['Colonna','walnut'],['Pensil','walnut'],['Mensola','walnut'],['Mobiletto','walnut'],['Mobile_Lavabo','walnut'],
@@ -212,7 +221,7 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if n == 'Penisola_Base': x0 = 60
     m = mat_for(n)
     if 'Induzione' in n: m = 'black'
-    elif g == 'Cuc' and m in ('walnut', 'anthr'): m = 'beige'
+    elif g == 'Cuc' and m in ('walnut', 'anthr', 'beige'): m = 'k_tall' if 'Colonna' in n else 'k_base'
     box(x0, y0, z0, x1, y1, max(z1, z0 + .5), m, n)
 # blackout roller blinds (cream) dropping from a box above each opening; d = +1/-1 direction into the room
 def blind(wall, c, d, a, b, top, low):
@@ -224,7 +233,7 @@ for args in [('x', 0, 1, 294.5, 394.5, 242, 130),     # kitchen window
              ('x', 0, 1, 63, 163, 242, 130),        # living window
              ('x', 192, 1, -165, -65, 242, 34),    # entrance patio door
              ('y', 560, -1, 244, 344, 242, 34)]:   # kitchen patio door
-    blind(*args)
+    blind(*args[:-1], 236 if NIGHT and SCHEME else args[-1])  # evening shots: blinds rolled up to show the dark sky
 # designer variant (CASA_VARIANT=mia): brass pendant over the table, brass handle grooves, cognac boucle pouf
 if os.environ.get('CASA_VARIANT') == 'mia':
     tx, ty = TC
@@ -233,9 +242,9 @@ if os.environ.get('CASA_VARIANT') == 'mia':
     box(60, 297, 84, 60.6, 500, 86, 'brass'); box(60, 355, 84, 157, 355.6, 86, 'brass'); box(157, 297, 84, 157.6, 355, 86, 'brass')
     cyl_pts((275, 240, 0), (275, 240, 38), 23, 'pillow', 48)
 # extra details
-box(0, 397, 150, 35, 525, 270, 'beige'); box(34.6, 460.8, 150, 35.2, 461.2, 270, 'nero'); box(2, 399, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
+box(0, 397, 150, 35, 525, 270, 'k_tall'); box(34.6, 460.8, 150, 35.2, 461.2, 270, 'nero'); box(2, 399, 149.4, 33, 523, 150, 'led')  # closed wall unit right of the sink, two doors, LED below
 box(0, 394.5, 90, 1.2, 560, 150, 'taj')  # Taj Mahal stoneware backsplash, same slab as the top
-box(0, 525, 150, 62, 560, 270, 'beige'); box(62, 525, 150, 122, 560, 270, 'beige')  # wall unit left of the oven column
+box(0, 525, 150, 62, 560, 270, 'k_tall'); box(62, 525, 150, 122, 560, 270, 'k_tall')  # wall unit left of the oven column
 cyl_pts((15, 425, 90), (15, 425, 120), .9, 'white'); cyl_pts((15, 425, 120), (28, 425, 120), .9, 'white')
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
 box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]
@@ -245,6 +254,10 @@ box(351, 145, 266.5, 352, 290, 267.5, 'led'); box(333, 152, 21.4, 349, 266, 22, 
 # dining: linear brass pendant over the table
 for y in (310, 400): cyl_pts((TC[0], y, 152), (TC[0], y, 270), .3, 'nero', 6)
 cyl_pts((TC[0], 305, 150), (TC[0], 405, 150), 2.2, 'brass', 24); box(TC[0] - 1.2, 307, 147.6, TC[0] + 1.2, 403, 148, 'led')
+if SCHEME:
+    for x in (75, 140): cyl_pts((x, 327, 168), (x, 327, 270), .3, 'nero', 6)
+    box(157, 294, 0, 160, 354, 88, 'taj')  # waterfall end in the same top material, as in the kitchen designer's model
+    cyl_pts((68, 327, 166), (148, 327, 166), 2.2, 'brass', 24); box(70, 326, 163.6, 146, 328, 164, 'led')
 # recessed LED ceiling spots (kitchen + living)
 for x, y in () if os.environ.get('CASA_NOCEIL') else ((60, 60), (60, 200), (180, 60), (180, 200), (290, 60), (290, 200), (30, 330), (30, 450), (110, 430), (260, 310), (260, 400)):
     cyl_pts((x, y, 269.2), (x, y, 270), 5, 'white', 24); cyl_pts((x, y, 269), (x, y, 269.3), 3.5, 'led', 24)
@@ -292,8 +305,8 @@ if not os.environ.get('CASA_NOCEIL'): box(-13, -215, 270, 1217, 573, 275, 'wall'
 w = bpy.data.worlds.new('w'); sc.world = w; w.use_nodes = True
 sky = w.node_tree.nodes.new('ShaderNodeTexSky'); sky.sky_type = 'MULTIPLE_SCATTERING' if hasattr(sky, 'sky_type') and 'MULTIPLE_SCATTERING' in [i.identifier for i in sky.bl_rna.properties['sky_type'].enum_items] else sky.sky_type
 sky.sun_elevation = math.radians(32); sky.sun_rotation = math.radians(215)
-bg = w.node_tree.nodes['Background']; bg.inputs['Strength'].default_value = 0.35; w.node_tree.links.new(sky.outputs['Color'], bg.inputs['Color'])
-sun = bpy.data.lights.new('sun', 'SUN'); sun.energy = 3.5; sun.angle = math.radians(1.5); sun.color = (1, 0.95, 0.88)
+bg = w.node_tree.nodes['Background']; bg.inputs['Strength'].default_value = 0.004 if NIGHT else 0.35; w.node_tree.links.new(sky.outputs['Color'], bg.inputs['Color'])
+sun = bpy.data.lights.new('sun', 'SUN'); sun.energy = 0 if NIGHT else 3.5; sun.angle = math.radians(1.5); sun.color = (1, 0.95, 0.88)
 so = bpy.data.objects.new('sun', sun); coll.objects.link(so); so.rotation_euler = (math.radians(58), 0, math.radians(215 - 90 + 180))
 for horiz, a, b, s, h, x0, y0, x1, y1 in portals:
     L = bpy.data.lights.new('portal', 'AREA'); L.shape = 'RECTANGLE'; L.cycles.is_portal = True
@@ -304,8 +317,16 @@ for horiz, a, b, s, h, x0, y0, x1, y1 in portals:
         if x0 < 100: o.location = ((x0-2)*S, (a+b)/2*S, (s+h)/2*S); o.rotation_euler = (math.radians(90), 0, math.radians(-90))
         else: o.location = ((x1+2)*S, (a+b)/2*S, (s+h)/2*S); o.rotation_euler = (math.radians(90), 0, math.radians(90))
 for x, y, z, e in ((125, 324, 150, 6), (262, 365, 240, 10), (150, 150, 262, 12), (300, 220, 262, 8), (596, 350, 262, 14), (1015, 410, 262, 10), (312, -100, 262, 8), (1110, 150, 262, 8)):
-    L = bpy.data.lights.new('spot', 'POINT'); L.energy = e * 4; L.color = (1, 0.82, 0.62); L.shadow_soft_size = 0.08
+    L = bpy.data.lights.new('spot', 'POINT'); L.energy = e * (1.2 if NIGHT else 4); L.color = (1, 0.82, 0.62); L.shadow_soft_size = 0.08
     o = bpy.data.objects.new('spot', L); coll.objects.link(o); o.location = (x*S, y*S, z*S)
+if NIGHT:  # evening: recessed spots, under-cabinet strip and pendants actually light the room
+    for x, y in ((60, 60), (60, 200), (180, 60), (180, 200), (290, 60), (290, 200), (30, 330), (30, 450), (110, 430), (260, 310), (260, 400)):
+        L = bpy.data.lights.new('nspot', 'SPOT'); L.energy = 35; L.spot_size = math.radians(80); L.spot_blend = .6; L.color = (1, 0.83, 0.64); L.shadow_soft_size = .02
+        o = bpy.data.objects.new('nspot', L); coll.objects.link(o); o.location = (x*S, y*S, 2.68)
+    for (x0, y0, x1, y1, z, e) in ((2, 399, 33, 523, 149, 25), (70, 324, 146, 330, 163, 40 if SCHEME else 0), (TC[0]-2, 307, TC[0]+2, 403, 147, 35)):
+        if not e: continue
+        L = bpy.data.lights.new('nled', 'AREA'); L.shape = 'RECTANGLE'; L.size = (x1-x0)*S; L.size_y = (y1-y0)*S; L.energy = e; L.color = (1, 0.8, 0.58)
+        o = bpy.data.objects.new('nled', L); coll.objects.link(o); o.location = ((x0+x1)/2*S, (y0+y1)/2*S, z*S)
 # camera
 c = bpy.data.cameras.new('cam'); c.sensor_fit = 'VERTICAL'; c.angle_y = math.radians(FOV)
 co = bpy.data.objects.new('cam', c); coll.objects.link(co); sc.camera = co
@@ -316,7 +337,7 @@ sc.cycles.max_bounces = 6; sc.cycles.diffuse_bounces = 3; sc.cycles.glossy_bounc
 sc.render.resolution_x = W; sc.render.resolution_y = H; sc.render.resolution_percentage = 100
 try: sc.view_settings.view_transform = 'AgX'; sc.view_settings.look = 'AgX - Medium High Contrast'
 except Exception: sc.view_settings.view_transform = 'Filmic'
-sc.view_settings.exposure = -1.4 if os.environ.get('CASA_NOCEIL') else 0.6
+sc.view_settings.exposure = -1.4 if os.environ.get('CASA_NOCEIL') else (-0.5 if NIGHT else 0.6)
 sc.render.filepath = OUT; sc.render.threads_mode = 'AUTO'
 bpy.ops.render.render(write_still=True)
 print('DONE', OUT)
