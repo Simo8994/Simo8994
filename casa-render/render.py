@@ -270,7 +270,8 @@ for y in (310, 400): cyl_pts((TC[0], y, 152), (TC[0], y, 270), .3, 'nero', 6)
 cyl_pts((TC[0], 305, 150), (TC[0], 405, 150), 2.2, 'brass', 24); box(TC[0] - 1.2, 307, 147.6, TC[0] + 1.2, 403, 148, 'led')
 if SCHEME:
     box(157, 294, 0, 160, 354, 88, 'taj')  # waterfall end in the same top material, as in the kitchen designer's model
-    if SCHEME in ('sabbia', 'rovere'):  # ceiling-mounted rectangular LED frame over the peninsula, champagne finish
+    if SCHEME == 'rovere': pass  # no light over the hob: only colour changes on the designer's model
+    elif SCHEME == 'sabbia':  # ceiling-mounted rectangular LED frame over the peninsula, champagne finish
         for a in ((12, 284, 150, 288), (12, 360, 150, 364), (12, 288, 16, 360), (146, 288, 150, 360)):
             box(a[0], a[1], 262, a[2], a[3], 270, 'champ'); box(a[0] + .8, a[1] + .8, 261.6, a[2] - .8, a[3] - .8, 262, 'led')
     else:
@@ -343,7 +344,7 @@ if NIGHT:  # evening: recessed spots, under-cabinet strip and pendants actually 
     for x, y in ((60, 60), (60, 200), (180, 60), (180, 200), (290, 60), (290, 200), (30, 330), (30, 450), (110, 430), (260, 310), (260, 400)):
         L = bpy.data.lights.new('nspot', 'SPOT'); L.energy = 35; L.spot_size = math.radians(80); L.spot_blend = .6; L.color = (1, 0.83, 0.64); L.shadow_soft_size = .02
         o = bpy.data.objects.new('nspot', L); coll.objects.link(o); o.location = (x*S, y*S, 2.68)
-    for (x0, y0, x1, y1, z, e) in ((2, 530, 120, 558, 149, 25), (14, 286, 148, 362, 261, 70) if SCHEME in ('sabbia', 'rovere') else (70, 324, 146, 330, 163, 40 if SCHEME else 0), (TC[0]-2, 307, TC[0]+2, 403, 147, 35)):
+    for (x0, y0, x1, y1, z, e) in ((2, 530, 120, 558, 149, 25), (14, 286, 148, 362, 261, 70) if SCHEME == 'sabbia' else (70, 324, 146, 330, 163, 40 if SCHEME not in (None, 'rovere') else 0), (TC[0]-2, 307, TC[0]+2, 403, 147, 35)):
         if not e: continue
         L = bpy.data.lights.new('nled', 'AREA'); L.shape = 'RECTANGLE'; L.size = (x1-x0)*S; L.size_y = (y1-y0)*S; L.energy = e; L.color = (1, 0.8, 0.58)
         o = bpy.data.objects.new('nled', L); coll.objects.link(o); o.location = ((x0+x1)/2*S, (y0+y1)/2*S, z*S)
