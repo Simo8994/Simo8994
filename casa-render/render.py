@@ -140,6 +140,13 @@ elif SCHEME == 'tortora':
 elif SCHEME == 'rovere':  # all cashmere beige, recessed lower wall units in oak
     MAT['k_base'] = MAT['beige']; MAT['k_tall'] = MAT['beige']
     MAT['oak_f'] = node_mat('oak_f', srgb(0xb88d5e), 0.55, tex='oak', scale=0.6)
+    # colour variants on the same layout: CASA_KB base, CASA_KT columns/upper units, CASA_KL recessed units (hex), CASA_KLTEX oak|walnut|none
+    E = os.environ
+    if E.get('CASA_KB'): MAT['k_base'] = node_mat('k_base', srgb(int(E['CASA_KB'], 16)), 0.62)
+    if E.get('CASA_KT'): MAT['k_tall'] = node_mat('k_tall', srgb(int(E['CASA_KT'], 16)), 0.62)
+    if E.get('CASA_KL'):
+        tx = E.get('CASA_KLTEX', 'oak'); tx = None if tx == 'none' else tx
+        MAT['oak_f'] = node_mat('oak_f', srgb(int(E['CASA_KL'], 16)), 0.55, tex=tx, scale=0.6 if tx == 'oak' else 2)
 elif SCHEME == 'sabbia':
     MAT['k_base'] = node_mat('k_base', srgb(0xb7a283), 0.65); MAT['k_tall'] = node_mat('k_tall', srgb(0xddd3c3), 0.62)
 if SCHEME: MAT['gola'] = MAT['k_base']
