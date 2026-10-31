@@ -250,14 +250,13 @@ if os.environ.get('CASA_VARIANT') == 'mia':
 # extra details
 if SCHEME == 'rovere':
     # two-tier wall units: beige upper row flush, lower row set back 5 cm in fluted oak with LED below
-    box(0, 480, 205, 35, 525, 270, 'k_tall'); box(0, 525, 205, 122, 560, 270, 'k_tall')
-    box(0, 480, 150, 30, 530, 205, 'oak_f'); box(0, 530, 150, 122, 560, 205, 'oak_f')
-    for y in range(482, 530, 3): box(30, y, 150.5, 30.4, y + .25, 204.5, 'seam')
-    for x in range(32, 122, 3): box(x, 529.6, 150.5, x + .25, 530, 204.5, 'seam')
-    box(2, 482, 149.4, 28, 528, 150, 'led'); box(2, 532, 149.4, 120, 558, 150, 'led')
+    # designer's layout: wall units only on the garden wall, corner to oven column; window wall left free
+    box(0, 525, 205, 122, 560, 270, 'k_tall'); box(0, 530, 150, 122, 560, 205, 'oak_f')
+    for x in range(2, 122, 3): box(x, 529.6, 150.5, x + .25, 530, 204.5, 'seam')
+    box(60.8, 529.4, 150, 61.2, 530, 205, 'seam'); box(2, 532, 149.4, 120, 558, 150, 'led')
     box(0, 558.8, 90, 122, 560, 150, 'taj')
 else:
-    box(0, 480, 150, 35, 525, 270, 'k_tall'); box(2, 482, 149.4, 33, 558, 150, 'led')  # corner wall unit on the window wall, LED below
+    box(2, 527, 149.4, 120, 558, 150, 'led')
     box(0, 525, 150, 62, 560, 270, 'k_tall'); box(62, 525, 150, 122, 560, 270, 'k_tall')  # wall unit left of the oven column
 box(0, 394.5, 90, 1.2, 560, 150, 'taj')  # Taj Mahal stoneware backsplash, same slab as the top
 cyl_pts((15, 425, 90), (15, 425, 120), .9, 'white'); cyl_pts((15, 425, 120), (28, 425, 120), .9, 'white')
@@ -307,10 +306,8 @@ front('y', 355, 1, 97, 157, 10, 88, hs=(36, 62))
 # wall units: push-to-open doors, shadow-gap outline only
 if SCHEME == 'rovere':
     front('y', 525, -1, 0, 62, 205, 270, gola=False); front('y', 525, -1, 62, 122, 205, 270, gola=False)
-    front('x', 35, 1, 480, 525, 205, 270, gola=False)
 else:
     front('y', 525, -1, 0, 62, 150, 270, gola=False); front('y', 525, -1, 62, 122, 150, 270, gola=False)
-    front('x', 35, 1, 480, 525, 150, 270, gola=False)
 for y in (235, 290, 345, 400): box(754.5, y - .3, 0, 755, y + .3, 250, 'seam')
 for y in (-140, -90): box(386.5, y - .3, 0, 387, y + .3, 250, 'seam')
 for x in (1014, 1078, 1144): box(x - .3, 499.5, 0, x + .3, 500, 250, 'seam')
@@ -346,7 +343,7 @@ if NIGHT:  # evening: recessed spots, under-cabinet strip and pendants actually 
     for x, y in ((60, 60), (60, 200), (180, 60), (180, 200), (290, 60), (290, 200), (30, 330), (30, 450), (110, 430), (260, 310), (260, 400)):
         L = bpy.data.lights.new('nspot', 'SPOT'); L.energy = 35; L.spot_size = math.radians(80); L.spot_blend = .6; L.color = (1, 0.83, 0.64); L.shadow_soft_size = .02
         o = bpy.data.objects.new('nspot', L); coll.objects.link(o); o.location = (x*S, y*S, 2.68)
-    for (x0, y0, x1, y1, z, e) in ((2, 482, 33, 558, 149, 25), (14, 286, 148, 362, 261, 70) if SCHEME in ('sabbia', 'rovere') else (70, 324, 146, 330, 163, 40 if SCHEME else 0), (TC[0]-2, 307, TC[0]+2, 403, 147, 35)):
+    for (x0, y0, x1, y1, z, e) in ((2, 530, 120, 558, 149, 25), (14, 286, 148, 362, 261, 70) if SCHEME in ('sabbia', 'rovere') else (70, 324, 146, 330, 163, 40 if SCHEME else 0), (TC[0]-2, 307, TC[0]+2, 403, 147, 35)):
         if not e: continue
         L = bpy.data.lights.new('nled', 'AREA'); L.shape = 'RECTANGLE'; L.size = (x1-x0)*S; L.size_y = (y1-y0)*S; L.energy = e; L.color = (1, 0.8, 0.58)
         o = bpy.data.objects.new('nled', L); coll.objects.link(o); o.location = ((x0+x1)/2*S, (y0+y1)/2*S, z*S)
