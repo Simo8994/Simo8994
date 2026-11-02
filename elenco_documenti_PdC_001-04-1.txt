@@ -1,0 +1,52 @@
+INVENTARIO DOCUMENTI - PdC n. 001/04/1 "Residence Monte Bianco" - Comune di Thiene (VI)
+Fg. 21, mapp. 535-538 (poi mapp. 652) - Progettista/DL: Geom. Bruno Petracca
+
+A. ATTI AMMINISTRATIVI
+1.  PdC_001-04-1_certificato_di_voltura (2 pag.) - Certificato di voltura PdC 001/04/1 del 04/08/2004 (da Immobiliare Ariete srl a Impresa Gaspari srl) + dichiarazione di ritiro
+2.  Prot.N.0030051-2026 del 03/08/2026 (2 pag.) - Stesso certificato di voltura (apparente doppione del n. 1)
+3.  PdC_001-04-1_inizio_lavori_tracciato_e_L_13-89 (6 pag.) - Richiesta sopralluogo tracciato (25/10/2004), comunicazione inizio lavori 19/10/2004, relazione tecnica L. 13/89 (23/12/2003), dichiarazione di conformita' del progettista
+4.  PdC_001-04-1_relazione_di_variante_L_13-89 (3 pag.) - Relazione L. 13/89 per variante al PdC 001/04/1, ditta Immitalia srl (10/01/2005)
+5.  PdC_001-04-1_istanza_richiesta_agibilita (4 pag.) - Richiesta certificato di agibilita', prot. 26397 del 10/07/2006, Immitalia srl; mapp. 652 sub 1-43; lavori 19/10/2004 - 03/07/2006
+6.  PdC_001-04-1_attestazione_di_agibilita (9 pag.) - Formazione silenzio-assenso agibilita' (11/09/2006), piante 1:200 (interrato, terra, primo, secondo), domanda allacciamento fognatura AVS (19/06/2006) con ricevuta e istruzioni
+
+B. DICHIARAZIONI DI CONFORMITA' IMPIANTI
+7.  PdC_001-04-1_DiCo_impianto_elettrico (10 pag.) - ATTENZIONE: contiene le DiCo riscaldamento, idrosanitario e gas di Ongaro e Roso Impianti srl (19/04/2006), allegati e visura camerale
+8.  PdC_001-04-1_DiCo_impianto_idrotermosanitario_1 (9 pag.) - ATTENZIONE: contiene la DiCo impianto elettrico di F.lli Scremin snc (19/06/2006), tipologia materiali, visura camerale, piante 1:200
+
+C. TAVOLE PROGETTO ORIGINARIO (Immobiliare Ariete srl - 24/12/2003)
+9.  PdC_001-04-1_tavola_10 - Tav. 1 - Planimetrie e piano quotato (1:200)
+10. PdC_001-04-1_tavola_19 - Tav. 3 - Pianta piano terra (1:100)
+11. PdC_001-04-1_tavola_17 - Tav. 4 - Pianta piano primo (1:100)
+12. PdC_001-04-1_tavola_18 - Tav. 4 - Pianta piano primo (1:100) - apparente doppione del n. 11
+13. PdC_001-04-1_tavola_16 - Tav. 5 - Pianta piano secondo - ATTENZIONE: progetto "Residence Alessia" (1 fabbricato, 11 unita')
+14. Prot.N.0030052-2026 - Tav. 5 - Pianta piano secondo - ATTENZIONE: progetto "Residence Alessia"
+15. PdC_001-04-1_tavola_15 - Tav. 6 - Pianta copertura (1:100)
+16. Prot.N.0030054-2026 - Tav. 6 - Pianta copertura (1:100) - apparente doppione del n. 15
+17. PdC_001-04-1_tavola_14 - Tav. 7 - Schema fognatura (1:100)
+18. PdC_001-04-1_tavola_13 - Tav. 8 - Prospetti (1:100)
+19. PdC_001-04-1_tavola_12 - Tav. 9 - Sezioni (1:100)
+20. PdC_001-04-1_tavola_11 - Tav. 10 - L. 13/89 (1:250-1:50)
+
+D. TAVOLE STATO DI VARIANTE (Immitalia srl - 17/01/2006)
+21. Image_20220809_0015 - Dis. 01a - Planimetrie e piano quotato (1:200)
+22. Image_20220809_0017 - Dis. 01a - stessa tavola del n. 21
+23. Image_20220809_0014 - Dis. 03a - Pianta piano terra (1:100)
+24. Image_20220809_0016 - Dis. 03a - stessa tavola del n. 23
+25. Image_20220809_0013 - Dis. 04a - Pianta piano primo (1:100)
+26. Image_20220809_0020 - Dis. 04a - stessa tavola del n. 25
+27. Image_20220809_0012 - Dis. 05a - Pianta piano secondo (1:100)
+28. Image_20220809_0019 - Dis. 05a - stessa tavola del n. 27
+29. Prot.N.0030057-2026 - Dis. 05a - stessa tavola del n. 27
+30. Image_20220809_0011 - Dis. 08a - Sezioni A-A e C-C (1:100)
+31. Image_20220809_0018 - Dis. 08a - stessa tavola del n. 30
+32. Prot.N.0030056-2026 - Dis. 08a - stessa tavola del n. 30
+
+E. PLANIMETRIE CATASTALI (visure del 01/07/2026)
+33. PLN_243634676_1 - Fg. 21, part. 652, sub. 16 - Via Monte Zebio n. 27, piano T (planimetria del 08/05/2013)
+34. PLN_243634676_2 - Fg. 21, part. 652, sub. 9 - Via Monte Ortles, piano S1 (planimetria del 07/07/2006)
+
+NOTE DA VERIFICARE
+- Nomi dei file 7 e 8 invertiti rispetto al contenuto.
+- Tavole 13 e 14 relative al "Residence Alessia", non al Monte Bianco.
+- Mancanti: tavole originarie n. 2 e n. 11; disegni di variante 02a, 06a, 07a.
+- I doppioni sono stati individuati solo dal cartiglio: possono essere copie con timbri diversi.
