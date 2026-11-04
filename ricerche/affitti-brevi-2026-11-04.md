@@ -104,7 +104,7 @@ Campione: **35 citazioni** da 4 fonti (Trustpilot Smoobu, Trustpilot Vikey, foru
 - Il tema 1 è il problema più grave, ma una persona sola non può costruire un channel manager affidabile né gestire serrature.
 - I temi 2 e 3 non sono prodotti: sono **promesse da fare con qualunque prodotto**, cioè assistenza umana in italiano e abbonamento mensile disdicibile con un clic.
 - Il tema 4 è facile da costruire, ma la gente paga poco per le informazioni. In più, mantenere le regole di quasi 8.000 comuni è un lavoro enorme: si parte da una sola regione.
-- Il tema 6 ha la scopertura migliore e clienti che paganoperché lo fanno per lavoro, ma le prove sono le più deboli. Per questo va verificato per primo con le interviste.
+- Il tema 6 ha la scopertura migliore e clienti che pagano perché lo fanno per lavoro, ma le prove sono le più deboli. Per questo va verificato per primo con le interviste.
 
 ## Proposta di app A (consigliata, da validare): gestionale operativo per piccoli co-host
 - **Problema:** chi gestisce 2-10 alloggi per conto di proprietari deve coordinare pulizie a ogni cambio ospite (ora tutte a suo carico per Airbnb), controllare che gli adempimenti siano fatti e fare un rendiconto mensile a ogni proprietario. Ipotesi: oggi lo fa con Excel, WhatsApp e il calendario. **Il problema è dedotto: nessuna citazione diretta.**
