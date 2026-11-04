@@ -1,28 +1,28 @@
 feature,area,priority,original,clone,notes
-Login con username e password,auth,must,yes,no,S01
-Recupero password,auth,should,yes,no,"S01 link ""Forgot password?"""
-Menu laterale con gruppi,navigation,must,yes,no,S04
-Selettore divisione/sede in topbar,navigation,should,yes,no,filtra i dati per sede
-Elenco commesse a card,commesse,must,yes,no,S02
-Filtro commesse per stato con chip,commesse,must,yes,no,"S02 Inserita / In corso / In attesa"
-Creare e modificare una commessa,commesse,must,yes,no,"S02 FAB +; cliente stato portfolio quantita"
+Login con username e password,auth,must,yes,partial,"S01 fatto; auth finta con cookie firmato, Supabase Auth in replica-backend"
+Recupero password,auth,should,yes,partial,pagina segnaposto; invio email con il backend
+Menu laterale con gruppi,navigation,must,yes,yes,"S04 fisso >=lg, drawer con focus trap su mobile"
+Selettore divisione/sede in topbar,navigation,should,yes,partial,"mostrato, non filtra ancora i dati"
+Elenco commesse a card,commesse,must,yes,yes,S02
+Filtro commesse per stato con chip,commesse,must,yes,yes,"S02 chip rimovibili + aggiungi stato, stato vuoto"
+Creare e modificare una commessa,commesse,must,yes,no,S02 FAB +; cliente stato portfolio quantita
 Tipi di progetto con colore o immagine,commesse,should,yes,no,S17
 Fasi e attivita generate dal tipo di progetto,commesse,could,guess,no,da verificare
-Bacheca Scrum per settimana ISO,scrum,must,yes,no,S03
-Colonne Da fare / In corso / Eseguito con contatori,scrum,must,yes,no,S03; quarta colonna a sinistra da verificare
-Spostare una card tra colonne,scrum,must,yes,no,drag o azione; da verificare
-Card attivita con codice titolo scadenza milestone e catena commessa,scrum,must,yes,no,S03
-Filtri bacheca per ufficio utente predecessore,scrum,must,yes,no,S03
-Segnale ritardo e allerta sulla card,scrum,must,yes,no,icona ! e campanella
-Assegnare un'attivita a un utente,scrum,must,yes,no,avatar sulla card
-Creare un'attivita dalla bacheca,scrum,must,yes,no,S03 FAB +
-Registrazione ore su attivita,ore,must,yes,no,"tempi sulla card, ""Registrazione ore"""
-Timer avvia/ferma,ore,should,guess,no,S03 FAB play
-Attivita indirette (lavoro d'ufficio),ore,should,yes,no,"card ""Lavoro indiretto di ufficio"""
+Bacheca Scrum per settimana ISO,scrum,must,yes,yes,S03 navigazione settimane nel fuso dell'org
+Colonne Da fare / In corso / Eseguito con contatori,scrum,must,yes,yes,4 colonne incluso Backlog; su mobile a schede
+Spostare una card tra colonne,scrum,must,yes,yes,"drag, tastiera e menu Sposta; controllo versione e permessi; Annulla"
+Card attivita con codice titolo scadenza milestone e catena commessa,scrum,must,yes,yes,S03
+Filtri bacheca per ufficio utente predecessore,scrum,must,yes,yes,"S03, nell'URL"
+Segnale ritardo e allerta sulla card,scrum,must,yes,partial,mostrati; segnalare un ritardo dalla UI manca (S10)
+Assegnare un'attivita a un utente,scrum,must,yes,partial,solo alla creazione; modifica con S10
+Creare un'attivita dalla bacheca,scrum,must,yes,yes,"FAB + e Aggiungi in colonna vuota, con validazione"
+Registrazione ore su attivita,ore,must,yes,partial,tempi calcolati e mostrati; inserimento ore manca
+Timer avvia/ferma,ore,should,guess,partial,timer acceso mostrato e aggiornato; avvio/stop manca
+Attivita indirette (lavoro d'ufficio),ore,should,yes,yes,"badge Indiretta, creazione con flag"
 Carico utenti della settimana,pianificazione,must,yes,no,"bottone ""Mostra/Nascondi carico utenti"""
 Progresso settimanale,pianificazione,should,yes,no,bottone in S03
 Causali di ritardo,impostazioni,should,yes,no,S21
-Gestione utenti,impostazioni,must,yes,no,S13
+Gestione utenti,impostazioni,must,yes,no,pagina segnaposto S13
 Divisioni e uffici,impostazioni,must,yes,no,S14 S16
 Competenze degli utenti,impostazioni,could,yes,no,S15
 Catalogo attivita e milestone,impostazioni,should,yes,no,S18 S19
