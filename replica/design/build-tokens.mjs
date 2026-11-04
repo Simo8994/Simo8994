@@ -15,16 +15,25 @@ t.space.forEach((v, i) => css.push(`  --space-${i}: ${v / 16}rem;`));
 for (const [k, v] of Object.entries(t.radius)) css.push(`  --radius-${k}: ${v}px;`);
 for (const [k, v] of Object.entries(t.shadow)) css.push(`  --shadow-${k}: ${v};`);
 css.push(`  --motion-fast: ${t.motion.fast};`, `  --motion-base: ${t.motion.base};`, `  --motion-ease: ${t.motion.ease};`);
+for (const [k, v] of Object.entries(t.size)) css.push(`  --size-${k}: ${v / 16}rem;`);
 css.push(`  --layout-header: ${t.layout.header}px;`, `  --layout-sidebar: ${t.layout.sidebar}px;`,
          `  --layout-content-max: ${t.layout["content-max"]}px;`, `  --layout-board-column-min: ${t.layout["board-column-min"]}px;`);
 css.push("}", "");
-writeFileSync(join(dir, "tokens.css"), "/* Generato da tokens.json: non modificare a mano. */\n" + css.join("\n"));
+const cssOut = "/* Generato da tokens.json: non modificare a mano. */\n" + css.join("\n");
+writeFileSync(join(dir, "tokens.css"), cssOut);
+const app = join(dir, "..", "..", "officina");
+try { writeFileSync(join(app, "src", "styles", "tokens.css"), cssOut); } catch {}
 
 const tw = {
   colors: Object.fromEntries(Object.keys(t.color).map((k) => [k, `var(--color-${k})`])),
   fontFamily: { sans: ["var(--font-sans)"], mono: ["var(--font-mono)"] },
   fontSize: Object.fromEntries(Object.keys(t.type).map((k) => [k, [`var(--text-${k})`, { lineHeight: `var(--text-${k}-line)`, fontWeight: `var(--text-${k}-weight)` }]])),
-  spacing: Object.fromEntries(t.space.map((_, i) => [String(i), `var(--space-${i})`])),
+  spacing: {
+    ...Object.fromEntries(t.space.map((_, i) => [String(i), `var(--space-${i})`])),
+    ...Object.fromEntries(Object.keys(t.size).map((k) => [k, `var(--size-${k})`])),
+    px: "1px",
+  },
+  maxWidth: { content: `${t.layout["content-max"] / 16}rem`, prose: "65ch", full: "100%", login: `var(--size-login)` },
   borderRadius: Object.fromEntries(Object.keys(t.radius).map((k) => [k, `var(--radius-${k})`])),
   boxShadow: Object.fromEntries(Object.keys(t.shadow).map((k) => [k, `var(--shadow-${k})`])),
   transitionDuration: { fast: "var(--motion-fast)", base: "var(--motion-base)" },
@@ -34,4 +43,5 @@ const tw = {
 writeFileSync(join(dir, "tailwind.tokens.cjs"),
   "// Generato da tokens.json. In tailwind.config: theme: require('./replica/design/tailwind.tokens.cjs')\n" +
   "module.exports = " + JSON.stringify(tw, null, 2) + ";\n");
+try { writeFileSync(join(app, "tailwind.tokens.cjs"), readFileSync(join(dir, "tailwind.tokens.cjs"))); } catch {}
 console.log("ok: tokens.css, tailwind.tokens.cjs");

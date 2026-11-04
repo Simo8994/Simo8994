@@ -20,6 +20,7 @@
   --color-success: #1d6b44;
   --color-success-soft: #e3f4ea;
   --color-focus: #2563eb;
+  --color-overlay: rgba(27,31,36,.45);
   --font-sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   --text-xs: 0.75rem;
@@ -59,6 +60,18 @@
   --motion-fast: 120ms;
   --motion-base: 200ms;
   --motion-ease: cubic-bezier(.2,.8,.2,1);
+  --size-control-sm: 2rem;
+  --size-control-md: 2.5rem;
+  --size-control-lg: 3rem;
+  --size-fab: 3.5rem;
+  --size-avatar-sm: 1.5rem;
+  --size-avatar-md: 2rem;
+  --size-icon: 1.25rem;
+  --size-header: 3.5rem;
+  --size-sidebar: 16.5rem;
+  --size-column: 18.75rem;
+  --size-login: 25rem;
+  --size-cover: 6rem;
   --layout-header: 56px;
   --layout-sidebar: 264px;
   --layout-content-max: 1440px;

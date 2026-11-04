@@ -20,7 +20,8 @@ module.exports = {
     "warning-soft": "var(--color-warning-soft)",
     "success": "var(--color-success)",
     "success-soft": "var(--color-success-soft)",
-    "focus": "var(--color-focus)"
+    "focus": "var(--color-focus)",
+    "overlay": "var(--color-overlay)"
   },
   "fontFamily": {
     "sans": [
@@ -83,7 +84,26 @@ module.exports = {
     "5": "var(--space-5)",
     "6": "var(--space-6)",
     "7": "var(--space-7)",
-    "8": "var(--space-8)"
+    "8": "var(--space-8)",
+    "control-sm": "var(--size-control-sm)",
+    "control-md": "var(--size-control-md)",
+    "control-lg": "var(--size-control-lg)",
+    "fab": "var(--size-fab)",
+    "avatar-sm": "var(--size-avatar-sm)",
+    "avatar-md": "var(--size-avatar-md)",
+    "icon": "var(--size-icon)",
+    "header": "var(--size-header)",
+    "sidebar": "var(--size-sidebar)",
+    "column": "var(--size-column)",
+    "login": "var(--size-login)",
+    "cover": "var(--size-cover)",
+    "px": "1px"
+  },
+  "maxWidth": {
+    "content": "90rem",
+    "prose": "65ch",
+    "full": "100%",
+    "login": "var(--size-login)"
   },
   "borderRadius": {
     "sm": "var(--radius-sm)",
