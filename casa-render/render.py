@@ -184,6 +184,7 @@ def wall(n, x0, y0, x1, y1):
     seg(cur, end, 0, 270)
 
 TC = (274.5, 355)
+MAT['tenda_w'] = node_mat('tenda_w', srgb(0xf4f2ee), 0.9, transm=0.25)
 V2 = os.environ.get('CASA_LAYOUT') == 'v2'  # client's sketch: wider peninsula, sink to the right, wall units on window wall, plant column
 if V2:
     ED = {'Penisola_Base': (267, 385), 'Penisola_Top': (264, 384), 'Base_Angolo_Cieco_Penisola': (267, 385), 'Piano_Induzione_Penisola': (305, 354),
@@ -257,7 +258,9 @@ for args in [('x', 0, 1, 294.5, 394.5, 242, 130),     # kitchen window
              ('x', 0, 1, 63, 163, 242, 130),        # living window
              ('x', 192, 1, -165, -65, 242, 34),    # entrance patio door
              ('y', 560, -1, 244, 344, 242, 34)]:   # kitchen patio door
-    blind(*args[:-1], 236 if (NIGHT and SCHEME) or (V2 and args[3] == 294.5) else args[-1])  # evening shots: blinds rolled up to show the dark sky
+    if V2 and args[3] == 294.5:  # white roller blind fully down, covering the whole window frame
+        box(0, 294.2, 250, 10, 401, 260, 'white'); box(5, 294.5, 97, 5.6, 400.5, 250, 'tenda_w'); box(4.5, 294.5, 94, 6.5, 400.5, 97, 'white'); continue
+    blind(*args[:-1], 236 if NIGHT and SCHEME else args[-1])  # evening shots: blinds rolled up to show the dark sky
 # designer variant (CASA_VARIANT=mia): brass pendant over the table, brass handle grooves, cognac boucle pouf
 if os.environ.get('CASA_VARIANT') == 'mia':
     tx, ty = TC
@@ -354,9 +357,7 @@ if V2:
         for y in range(397, 524, 3): box(29.6, y, 150.5, 30, y + .25, 204.5, 'seam')
     box(29.6, 459.6, 150, 30.2, 460, 205, 'seam'); box(2, 397, 149.4, 28, 523, 150, 'led')
     front('x', 35, 1, 394.5, 460, 205, 270, gola=False); front('x', 35, 1, 460, 525, 205, 270, gola=False)
-    # bridge unit over the window, flush with the upper row
-    box(0, 294.5, 244, 35, 394.5, 270, up); front('x', 35, 1, 294.5, 394.5, 244, 270, gola=False)
-    # slim open column left of the window, standing on the peninsula top, same depth as the bridge unit (35)
+    # slim open column left of the window, standing on the peninsula top, 35 deep like the wall units
     C0, C1, CZ = 264, 294, 90
     box(0, C0, CZ, 35, C0 + 2, 270, up); box(0, C1 - 2, CZ, 35, C1, 270, up); box(0, C0, CZ, 2, C1, 270, up)
     for z in (130, 172, 214): box(2, C0 + 2, z, 35, C1 - 2, z + 2.5, 'oak_f' if SCHEME == 'rovere' else 'oak')
