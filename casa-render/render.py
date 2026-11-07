@@ -147,6 +147,8 @@ elif SCHEME == 'rovere':  # all cashmere beige, recessed lower wall units in oak
     if E.get('CASA_KL'):
         tx = E.get('CASA_KLTEX', 'oak'); tx = None if tx == 'none' else tx
         MAT['oak_f'] = node_mat('oak_f', srgb(int(E['CASA_KL'], 16)), 0.55, tex=tx, scale=0.6 if tx == 'oak' else 2)
+elif SCHEME == 'contratto':  # Arredo3 order PALUE2962: Wega/Time lacquered matt ecru fronts, Golden Moon HPL top, aluminium plinth
+    MAT['k_base'] = node_mat('k_base', srgb(0xe6dccb), 0.6); MAT['k_tall'] = node_mat('k_tall', srgb(0xe8dfcf), 0.6)
 elif SCHEME == 'sabbia':
     MAT['k_base'] = node_mat('k_base', srgb(0xb7a283), 0.65); MAT['k_tall'] = node_mat('k_tall', srgb(0xddd3c3), 0.62)
 if SCHEME: MAT['gola'] = MAT['k_base']
@@ -186,7 +188,8 @@ def wall(n, x0, y0, x1, y1):
 TC = (274.5, 355)
 MAT['tenda_w'] = node_mat('tenda_w', srgb(0xf4f2ee), 0.9, transm=0.25)
 V2 = os.environ.get('CASA_LAYOUT') == 'v2'
-PL = 220 if V2 else 160  # peninsula length from the window wall  # client's sketch: wider peninsula, sink to the right, wall units on window wall, plant column
+CT = SCHEME == 'contratto'
+PL = 220 if V2 else 182 if CT else 160  # peninsula length from the window wall  # client's sketch: wider peninsula, sink to the right, wall units on window wall, plant column
 if V2:
     ED = {'Penisola_Base': (267, 385), 'Penisola_Top': (264, 384), 'Base_Angolo_Cieco_Penisola': (267, 385), 'Piano_Induzione_Penisola': (325, 374),
           'Divano_270_Seduta': (15, 235), 'Divano_270_Schienale': (15, 235), 'Top_Finestra': (384, 560), 'Zoccolo_Finestra': (385, 560),
@@ -200,6 +203,20 @@ if V2:
         if n == 'Piano_Induzione_Penisola': x0, x1 = 135, 195  # hob over the drawers, not over the dishwasher
         nr.append([g, n, x0, y0, z0, x1, y1, z1])
     rows = nr
+elif CT:  # contract: corner sink base L157 at the peninsula, 60 dishwasher, corner base L127 on the garden wall, base 120 + hob on a 70 deep peninsula
+    ED = {'Penisola_Base': (287, 355), 'Penisola_Top': (285, 355), 'Base_Angolo_Cieco_Penisola': (287, 355), 'Piano_Induzione_Penisola': (293, 345),
+          'Base_Lavello_90': (355, 440), 'Lavello_Grande_80x45': (361, 435), 'Base_Lavastoviglie': (440, 500), 'Base_Angolo': (500, 560)}
+    nr = []
+    for g, n, x0, y0, z0, x1, y1, z1 in rows:
+        if n == 'Base_Portabottiglie_25': continue
+        if n in ED: y0, y1 = ED[n]
+        if n == 'Penisola_Base': x1 = PL - 1.2
+        if n == 'Penisola_Top': x1 = PL
+        if n == 'Piano_Induzione_Penisola': x0, x1 = 80, 163  # Nikola Tesla Alpha 83 cm with integrated hood
+        if n.startswith('Zoccolo'): continue
+        nr.append([g, n, x0, y0, z0, x1, y1, z1])
+    rows = nr
+    for q in ((0, 357, 0, 53, 560, 10), (62, 505, 0, 242, 560, 10), (60, 297, 0, PL - 3, 353, 10)): box(*q, 'steel')  # aluminium plinth
 for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if n.startswith('Parete') and 'TV' not in n: wall(n, x0, y0, x1, y1); continue
     if n.startswith('Albero'):
@@ -280,25 +297,29 @@ if SCHEME == 'rovere':
     for x in range(2, 122, 3): box(x, 529.6, 150.5, x + .25, 530, 204.5, 'seam')
     box(60.8, 529.4, 150, 61.2, 530, 205, 'seam'); box(2, 532, 149.4, 120, 558, 150, 'led')
     box(0, 558.8, 90, 122, 560, 150, 'taj')
+elif CT:  # wall unit L120 H72 P35 aligned with the columns (plinth 15 + 204), lacquered panel with milled 'Kyoto' LED line behind the top
+    box(0, 525, 147, 122, 560, 219, 'k_tall'); box(2, 527, 146.4, 120, 558, 147, 'led')
+    box(0, 558.2, 90, 122, 560, 147, 'k_tall'); box(2, 557.9, 116, 120, 558.2, 117.2, 'led')
 else:
     box(2, 527, 149.4, 120, 558, 150, 'led')
     box(0, 525, 150, 62, 560, 270, 'k_tall'); box(62, 525, 150, 122, 560, 270, 'k_tall')  # wall unit left of the oven column
 box(0, 394.5, 90, 1.2, 560, 150, 'taj')  # Taj Mahal stoneware backsplash, same slab as the top
-FY = 472 if V2 else 425
+FY = 472 if V2 else 398 if CT else 425
 cyl_pts((15, FY, 90), (15, FY, 120), .9, 'white'); cyl_pts((15, FY, 120), (28, FY, 120), .9, 'white')
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
-DY = 25 if V2 else 0
+DY = 25 if V2 else -5 if CT else 0
 DX = 40 if V2 else 0
 box(121+DX, 302+DY, 90, 129+DX, 347+DY, 90.4, 'steel'); [box(122+DX, y+DY, 90.4, 128+DX, y+DY + 1, 90.5, 'nero') for y in range(304, 346, 3)]
-box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
+if CT: box(124, 499, 52, 180, 500, 110, 'black'); box(124, 499, 112, 180, 500, 148, 'black')  # Hotpoint oven 60 + combi microwave, black glass
+else: box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
 # TV wall: deep olive microcement, ceiling wash light and soft glow under the floating unit
 box(351, 145, 266.5, 352, 290, 267.5, 'led'); box(333, 152, 21.4, 349, 266, 22, 'led')
 # dining: linear brass pendant over the table
 for y in (310, 400): cyl_pts((TC[0], y, 152), (TC[0], y, 270), .3, 'nero', 6)
 cyl_pts((TC[0], 305, 150), (TC[0], 405, 150), 2.2, 'brass', 24); box(TC[0] - 1.2, 307, 147.6, TC[0] + 1.2, 403, 148, 'led')
 if SCHEME:
-    box(PL - 3, 264 if V2 else 294, 0, PL, 384 if V2 else 354, 88, 'taj')  # waterfall end in the same top material, as in the kitchen designer's model
-    if SCHEME == 'rovere': pass  # no light over the hob: only colour changes on the designer's model
+    box(PL - 1.2, 264 if V2 else 285 if CT else 294, 0, PL, 384 if V2 else 355 if CT else 354, 88, 'taj')  # waterfall end in the same top material, as in the kitchen designer's model
+    if SCHEME in ('rovere', 'contratto'): pass  # no light over the hob: only colour changes on the designer's model
     elif SCHEME == 'sabbia':  # ceiling-mounted rectangular LED frame over the peninsula, champagne finish
         for a in ((12, 284, 150, 288), (12, 360, 150, 364), (12, 288, 16, 360), (146, 288, 150, 360)):
             box(a[0], a[1], 262, a[2], a[3], 270, 'champ'); box(a[0] + .8, a[1] + .8, 261.6, a[2] - .8, a[3] - .8, 262, 'led')
@@ -322,17 +343,28 @@ if V2:
     front('x', 58, 1, 385, 430, 10, 88, hs=(36, 62))        # 45 cm drawers
     front('x', 58, 1, 430, 515, 10, 88, hs=(50,))           # sink base
     front('x', 58, 1, 515, 530, 10, 88, gola=False)         # filler
+elif CT:
+    front('x', 58, 1, 355, 440, 15, 87, vs=(397.5,))             # corner sink base, 2 doors
+    front('x', 58, 1, 440, 500, 15, 87)                          # dishwasher door
 else:
     front('x', 58, 1, 355, 380, 10, 88)                          # bottle pull-out 25
     front('x', 58, 1, 380, 470, 10, 88, hs=(50,))               # sink base: U-shaped top drawer + deep waste-sorting drawer
     front('x', 58, 1, 470, 530, 10, 88)                          # dishwasher panel
-front('x', 58, 1, 530, 560, 10, 88)                          # corner door
+if not CT: front('x', 58, 1, 530, 560, 10, 88)                          # corner door
 # garden run (fronts face -y at y=500)
-front('y', 500, -1, 62, 122, 10, 88)                         # single door left of the oven
-front('y', 500, -1, 122, 182, 10, 88)                        # drawer under the ovens
-front('y', 500, -1, 122, 182, 190, 270, gola=False)          # door above the ovens (push-to-open)
-front('y', 500, -1, 182, 242, 10, 190, gola=False, vgola=(182.6, 185.5))   # fridge door, vertical gola
-front('y', 500, -1, 182, 242, 190, 270, gola=False)          # door above the fridge
+if CT:
+    front('y', 500, -1, 62, 122, 15, 87)                         # corner base L127, 1 door
+    front('y', 500, -1, 122, 182, 15, 51)                        # oven column: drawer h36
+    front('y', 500, -1, 122, 182, 149.6, 219, gola=False)        # door h69.4 above the microwave
+    front('y', 500, -1, 182, 242, 15, 219, gola=False, vgola=(182.6, 185.5))   # fridge column
+    front('y', 500, -1, 122, 182, 219, 267, gola=False); front('y', 500, -1, 182, 242, 219, 267, gola=False)  # top unit L120 H48 over the columns
+    box(122, 499.5, 267, 242, 560, 270, 'k_tall')
+elif True:
+  front('y', 500, -1, 62, 122, 10, 88)                         # single door left of the oven
+  front('y', 500, -1, 122, 182, 10, 88)                        # drawer under the ovens
+  front('y', 500, -1, 122, 182, 190, 270, gola=False)          # door above the ovens (push-to-open)
+  front('y', 500, -1, 182, 242, 10, 190, gola=False, vgola=(182.6, 185.5))   # fridge door, vertical gola
+  front('y', 500, -1, 182, 242, 190, 270, gola=False)          # door above the fridge
 for x in (122, 182): box(x - .3, 499.5, 0, x + .3, 500, 10, 'seam')
 # peninsula (fronts face +y at y=355): door + three pan drawers under the hob
 PY = 385 if V2 else 355
@@ -340,11 +372,15 @@ if V2:
     front('y', PY, 1, 60, 120, 10, 88)                      # 60 cm dishwasher panel, at 90 deg to the sink
     front('y', PY, 1, 120, 180, 10, 88, hs=(36, 62))        # pan drawers under the hob
     front('y', PY, 1, 180, PL - 3, 10, 88)
+elif CT:
+    front('y', PY, 1, 60, PL - 1.2, 15, 87, hs=(51,))       # base L120, 2 drawers h36 under the hob
 else:
     front('y', PY, 1, 60, 97, 10, 88)
     front('y', PY, 1, 97, 157, 10, 88, hs=(36, 62))
 # wall units: push-to-open doors, shadow-gap outline only
-if SCHEME == 'rovere':
+if CT:
+    front('y', 525, -1, 0, 60, 147, 219, gola=False); front('y', 525, -1, 60, 122, 147, 219, gola=False)
+elif SCHEME == 'rovere':
     front('y', 525, -1, 0, 62, 205, 270, gola=False); front('y', 525, -1, 62, 122, 205, 270, gola=False)
 else:
     front('y', 525, -1, 0, 62, 150, 270, gola=False); front('y', 525, -1, 62, 122, 150, 270, gola=False)
