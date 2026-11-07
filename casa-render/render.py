@@ -186,7 +186,8 @@ def wall(n, x0, y0, x1, y1):
 TC = (274.5, 355)
 V2 = os.environ.get('CASA_LAYOUT') == 'v2'  # client's sketch: wider peninsula, sink to the right, wall units on window wall, plant column
 if V2:
-    ED = {'Penisola_Base': (None, 385), 'Penisola_Top': (None, 384), 'Base_Angolo_Cieco_Penisola': (None, 385), 'Piano_Induzione_Penisola': (315, 364),
+    ED = {'Penisola_Base': (267, 385), 'Penisola_Top': (264, 384), 'Base_Angolo_Cieco_Penisola': (267, 385), 'Piano_Induzione_Penisola': (305, 354),
+          'Divano_270_Seduta': (15, 235), 'Divano_270_Schienale': (15, 235), 'Top_Finestra': (384, 560), 'Zoccolo_Finestra': (385, 560),
           'Base_Lavastoviglie': (385, 445), 'Base_Lavello_90': (445, 530), 'Lavello_Grande_80x45': (450, 525)}
     nr = []
     for g, n, x0, y0, z0, x1, y1, z1 in rows:
@@ -279,7 +280,7 @@ box(0, 394.5, 90, 1.2, 560, 150, 'taj')  # Taj Mahal stoneware backsplash, same 
 FY = 488 if V2 else 425
 cyl_pts((15, FY, 90), (15, FY, 120), .9, 'white'); cyl_pts((15, FY, 120), (28, FY, 120), .9, 'white')
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
-DY = 15 if V2 else 0
+DY = 5 if V2 else 0
 box(121, 302+DY, 90, 129, 347+DY, 90.4, 'steel'); [box(122, y+DY, 90.4, 128, y+DY + 1, 90.5, 'nero') for y in range(304, 346, 3)]
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
 # TV wall: deep olive microcement, ceiling wash light and soft glow under the floating unit
@@ -288,7 +289,7 @@ box(351, 145, 266.5, 352, 290, 267.5, 'led'); box(333, 152, 21.4, 349, 266, 22, 
 for y in (310, 400): cyl_pts((TC[0], y, 152), (TC[0], y, 270), .3, 'nero', 6)
 cyl_pts((TC[0], 305, 150), (TC[0], 405, 150), 2.2, 'brass', 24); box(TC[0] - 1.2, 307, 147.6, TC[0] + 1.2, 403, 148, 'led')
 if SCHEME:
-    box(157, 294, 0, 160, 384 if V2 else 354, 88, 'taj')  # waterfall end in the same top material, as in the kitchen designer's model
+    box(157, 264 if V2 else 294, 0, 160, 384 if V2 else 354, 88, 'taj')  # waterfall end in the same top material, as in the kitchen designer's model
     if SCHEME == 'rovere': pass  # no light over the hob: only colour changes on the designer's model
     elif SCHEME == 'sabbia':  # ceiling-mounted rectangular LED frame over the peninsula, champagne finish
         for a in ((12, 284, 150, 288), (12, 360, 150, 364), (12, 288, 16, 360), (146, 288, 150, 360)):
@@ -355,21 +356,24 @@ if V2:
     front('x', 35, 1, 394.5, 460, 205, 270, gola=False); front('x', 35, 1, 460, 525, 205, 270, gola=False)
     # bridge unit over the window, flush with the upper row
     box(0, 294.5, 244, 35, 394.5, 270, up); front('x', 35, 1, 294.5, 394.5, 244, 270, gola=False)
-    # slim open column left of the window: floor to ceiling, oak shelves with plants
-    box(0, 266, 0, 24, 268, 270, up); box(0, 292, 0, 24, 294, 270, up); box(0, 266, 0, 2, 294, 270, up); box(0, 266, 0, 24, 294, 10, up)
-    for z in (60, 105, 150, 195, 240): box(2, 268, z, 24, 292, z + 2.5, 'oak_f' if SCHEME == 'rovere' else 'oak')
+    # slim open column left of the window, standing on the peninsula top, same depth as the bridge unit (35)
+    C0, C1, CZ = 264, 294, 90
+    box(0, C0, CZ, 35, C0 + 2, 270, up); box(0, C1 - 2, CZ, 35, C1, 270, up); box(0, C0, CZ, 2, C1, 270, up)
+    for z in (130, 172, 214): box(2, C0 + 2, z, 35, C1 - 2, z + 2.5, 'oak_f' if SCHEME == 'rovere' else 'oak')
+    box(2, C0 + 2, 248, 35, C1 - 2, 270, up)
     import random; rnd = random.Random(3)
     def bush(cx, cy, z, n, h):
         for i in range(n):  # many small elongated leaves on thin stems
             a = rnd.uniform(0, 6.283); r = rnd.uniform(0, 6); zz = z + rnd.uniform(4, h)
             bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=6, radius=2.2 * S, location=((cx + math.cos(a) * r) * S, (cy + math.sin(a) * r) * S, zz * S))
             o = bpy.context.object; o.scale = (1.8, .5, .25); o.rotation_euler = (rnd.uniform(-.8, .8), rnd.uniform(-.6, .6), a); o.data.materials.append(MAT['leaf'])
-    for z, h in ((62.5, 30), (152.5, 34), (197.5, 26)):
-        cyl_pts((12, 280, z), (12, 280, z + 11), 5, 'pot', 20, 6.5); bush(12, 280, z + 9, 60, h)
-    cyl_pts((12, 280, 107.5), (12, 280, 118), 5, 'pot', 20, 6)
+    PX, PY_ = 17, 279
+    for z, h in ((90, 30), (174.5, 28), (216.5, 22)):
+        cyl_pts((PX, PY_, z), (PX, PY_, z + 11), 5, 'pot', 20, 6.5); bush(PX, PY_, z + 9, 60, h)
+    cyl_pts((PX, PY_, 132.5), (PX, PY_, 143), 5, 'pot', 20, 6)
     for i in range(40):  # trailing pothos hanging over the shelf
         t = i / 40; a = i * 2.39
-        bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=6, radius=2.2 * S, location=((12 + 7 * math.cos(a)) * S, (280 + 7 * math.sin(a)) * S, (122 - 40 * t * t) * S))
+        bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=6, radius=2.2 * S, location=((PX + 7 * math.cos(a)) * S, (PY_ + 7 * math.sin(a)) * S, (147 - 40 * t * t) * S))
         o = bpy.context.object; o.scale = (1.4, 1, .3); o.rotation_euler = (1.2 * math.sin(a), 1.2 * math.cos(a), a); o.data.materials.append(MAT['leaf'])
 if not os.environ.get('CASA_NOCEIL'): box(-13, -215, 270, 1217, 573, 275, 'wall')
 # world sky + sun
