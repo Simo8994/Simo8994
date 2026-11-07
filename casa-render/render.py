@@ -205,7 +205,7 @@ if V2:
     rows = nr
 elif CT:  # contract: corner sink base L157 at the peninsula, 60 dishwasher, corner base L127 on the garden wall, base 120 + hob on a 70 deep peninsula
     ED = {'Penisola_Base': (287, 355), 'Penisola_Top': (285, 355), 'Base_Angolo_Cieco_Penisola': (287, 355), 'Piano_Induzione_Penisola': (293, 345),
-          'Base_Lavello_90': (355, 440), 'Lavello_Grande_80x45': (361, 435), 'Base_Lavastoviglie': (440, 500), 'Base_Angolo': (500, 560)}
+          'Base_Lavastoviglie': (355, 415), 'Base_Lavello_90': (415, 500), 'Lavello_Grande_80x45': (420, 494), 'Base_Angolo': (500, 560)}
     nr = []
     for g, n, x0, y0, z0, x1, y1, z1 in rows:
         if n == 'Base_Portabottiglie_25': continue
@@ -304,7 +304,7 @@ else:
     box(2, 527, 149.4, 120, 558, 150, 'led')
     box(0, 525, 150, 62, 560, 270, 'k_tall'); box(62, 525, 150, 122, 560, 270, 'k_tall')  # wall unit left of the oven column
 box(0, 394.5, 90, 1.2, 560, 150, 'taj')  # Taj Mahal stoneware backsplash, same slab as the top
-FY = 472 if V2 else 398 if CT else 425
+FY = 472 if V2 else 457 if CT else 425
 cyl_pts((15, FY, 90), (15, FY, 120), .9, 'white'); cyl_pts((15, FY, 120), (28, FY, 120), .9, 'white')
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
 DY = 25 if V2 else -5 if CT else 0
@@ -344,8 +344,8 @@ if V2:
     front('x', 58, 1, 430, 515, 10, 88, hs=(50,))           # sink base
     front('x', 58, 1, 515, 530, 10, 88, gola=False)         # filler
 elif CT:
-    front('x', 58, 1, 355, 440, 15, 87, vs=(397.5,))             # corner sink base, 2 doors
-    front('x', 58, 1, 440, 500, 15, 87)                          # dishwasher door
+    front('x', 58, 1, 355, 415, 15, 87)                          # dishwasher door, next to the peninsula
+    front('x', 58, 1, 415, 500, 15, 87, vs=(457.5,))             # sink base, 2 doors
 else:
     front('x', 58, 1, 355, 380, 10, 88)                          # bottle pull-out 25
     front('x', 58, 1, 380, 470, 10, 88, hs=(50,))               # sink base: U-shaped top drawer + deep waste-sorting drawer
