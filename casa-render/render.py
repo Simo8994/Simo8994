@@ -190,13 +190,14 @@ PL = 220 if V2 else 160  # peninsula length from the window wall  # client's ske
 if V2:
     ED = {'Penisola_Base': (267, 385), 'Penisola_Top': (264, 384), 'Base_Angolo_Cieco_Penisola': (267, 385), 'Piano_Induzione_Penisola': (325, 374),
           'Divano_270_Seduta': (15, 235), 'Divano_270_Schienale': (15, 235), 'Top_Finestra': (384, 560), 'Zoccolo_Finestra': (385, 560),
-          'Base_Lavastoviglie': (385, 445), 'Base_Lavello_90': (445, 530), 'Lavello_Grande_80x45': (450, 525)}
+          'Base_Lavello_90': (430, 515), 'Lavello_Grande_80x45': (435, 510)}
     nr = []
     for g, n, x0, y0, z0, x1, y1, z1 in rows:
-        if n == 'Base_Portabottiglie_25': continue
+        if n in ('Base_Portabottiglie_25', 'Base_Lavastoviglie'): continue  # dishwasher moves into the peninsula, next to the sink corner
         if n in ED: a, b = ED[n]; y0 = y0 if a is None else a; y1 = b
         if n == 'Penisola_Base': x1 = PL - 3
         if n == 'Penisola_Top': x1 = PL
+        if n == 'Piano_Induzione_Penisola': x0, x1 = 135, 195  # hob over the drawers, not over the dishwasher
         nr.append([g, n, x0, y0, z0, x1, y1, z1])
     rows = nr
 for g, n, x0, y0, z0, x1, y1, z1 in rows:
@@ -283,11 +284,12 @@ else:
     box(2, 527, 149.4, 120, 558, 150, 'led')
     box(0, 525, 150, 62, 560, 270, 'k_tall'); box(62, 525, 150, 122, 560, 270, 'k_tall')  # wall unit left of the oven column
 box(0, 394.5, 90, 1.2, 560, 150, 'taj')  # Taj Mahal stoneware backsplash, same slab as the top
-FY = 488 if V2 else 425
+FY = 472 if V2 else 425
 cyl_pts((15, FY, 90), (15, FY, 120), .9, 'white'); cyl_pts((15, FY, 120), (28, FY, 120), .9, 'white')
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
 DY = 25 if V2 else 0
-box(121, 302+DY, 90, 129, 347+DY, 90.4, 'steel'); [box(122, y+DY, 90.4, 128, y+DY + 1, 90.5, 'nero') for y in range(304, 346, 3)]
+DX = 40 if V2 else 0
+box(121+DX, 302+DY, 90, 129+DX, 347+DY, 90.4, 'steel'); [box(122+DX, y+DY, 90.4, 128+DX, y+DY + 1, 90.5, 'nero') for y in range(304, 346, 3)]
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
 # TV wall: deep olive microcement, ceiling wash light and soft glow under the floating unit
 box(351, 145, 266.5, 352, 290, 267.5, 'led'); box(333, 152, 21.4, 349, 266, 22, 'led')
@@ -317,8 +319,9 @@ def front(ax, p, d, a, b, z0, z1, hs=(), vs=(), gola=True, vgola=None):
     if vgola: B(vgola[0], vgola[1], z0 + 1, z1 - 1, 'gola')
 # window run (fronts face +x at x=58)
 if V2:
-    front('x', 58, 1, 385, 445, 10, 88)                      # dishwasher panel
-    front('x', 58, 1, 445, 530, 10, 88, hs=(50,))           # sink base moved towards the corner
+    front('x', 58, 1, 385, 430, 10, 88, hs=(36, 62))        # 45 cm drawers
+    front('x', 58, 1, 430, 515, 10, 88, hs=(50,))           # sink base
+    front('x', 58, 1, 515, 530, 10, 88, gola=False)         # filler
 else:
     front('x', 58, 1, 355, 380, 10, 88)                          # bottle pull-out 25
     front('x', 58, 1, 380, 470, 10, 88, hs=(50,))               # sink base: U-shaped top drawer + deep waste-sorting drawer
@@ -333,9 +336,13 @@ front('y', 500, -1, 182, 242, 190, 270, gola=False)          # door above the fr
 for x in (122, 182): box(x - .3, 499.5, 0, x + .3, 500, 10, 'seam')
 # peninsula (fronts face +y at y=355): door + three pan drawers under the hob
 PY = 385 if V2 else 355
-front('y', PY, 1, 60, 97, 10, 88)
-front('y', PY, 1, 97, 157, 10, 88, hs=(36, 62))
-if V2: front('y', PY, 1, 157, PL - 3, 10, 88, hs=(36, 62))
+if V2:
+    front('y', PY, 1, 60, 120, 10, 88)                      # 60 cm dishwasher panel, at 90 deg to the sink
+    front('y', PY, 1, 120, 180, 10, 88, hs=(36, 62))        # pan drawers under the hob
+    front('y', PY, 1, 180, PL - 3, 10, 88)
+else:
+    front('y', PY, 1, 60, 97, 10, 88)
+    front('y', PY, 1, 97, 157, 10, 88, hs=(36, 62))
 # wall units: push-to-open doors, shadow-gap outline only
 if SCHEME == 'rovere':
     front('y', 525, -1, 0, 62, 205, 270, gola=False); front('y', 525, -1, 62, 122, 205, 270, gola=False)
