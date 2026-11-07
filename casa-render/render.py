@@ -184,6 +184,16 @@ def wall(n, x0, y0, x1, y1):
     seg(cur, end, 0, 270)
 
 TC = (274.5, 355)
+V2 = os.environ.get('CASA_LAYOUT') == 'v2'  # client's sketch: wider peninsula, sink to the right, wall units on window wall, plant column
+if V2:
+    ED = {'Penisola_Base': (None, 385), 'Penisola_Top': (None, 384), 'Base_Angolo_Cieco_Penisola': (None, 385), 'Piano_Induzione_Penisola': (315, 364),
+          'Base_Lavastoviglie': (385, 445), 'Base_Lavello_90': (445, 530), 'Lavello_Grande_80x45': (450, 525)}
+    nr = []
+    for g, n, x0, y0, z0, x1, y1, z1 in rows:
+        if n == 'Base_Portabottiglie_25': continue
+        if n in ED: a, b = ED[n]; y0 = y0 if a is None else a; y1 = b
+        nr.append([g, n, x0, y0, z0, x1, y1, z1])
+    rows = nr
 for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if n.startswith('Parete') and 'TV' not in n: wall(n, x0, y0, x1, y1); continue
     if n.startswith('Albero'):
@@ -246,7 +256,7 @@ for args in [('x', 0, 1, 294.5, 394.5, 242, 130),     # kitchen window
              ('x', 0, 1, 63, 163, 242, 130),        # living window
              ('x', 192, 1, -165, -65, 242, 34),    # entrance patio door
              ('y', 560, -1, 244, 344, 242, 34)]:   # kitchen patio door
-    blind(*args[:-1], 236 if NIGHT and SCHEME else args[-1])  # evening shots: blinds rolled up to show the dark sky
+    blind(*args[:-1], 236 if (NIGHT and SCHEME) or (V2 and args[3] == 294.5) else args[-1])  # evening shots: blinds rolled up to show the dark sky
 # designer variant (CASA_VARIANT=mia): brass pendant over the table, brass handle grooves, cognac boucle pouf
 if os.environ.get('CASA_VARIANT') == 'mia':
     tx, ty = TC
@@ -266,9 +276,11 @@ else:
     box(2, 527, 149.4, 120, 558, 150, 'led')
     box(0, 525, 150, 62, 560, 270, 'k_tall'); box(62, 525, 150, 122, 560, 270, 'k_tall')  # wall unit left of the oven column
 box(0, 394.5, 90, 1.2, 560, 150, 'taj')  # Taj Mahal stoneware backsplash, same slab as the top
-cyl_pts((15, 425, 90), (15, 425, 120), .9, 'white'); cyl_pts((15, 425, 120), (28, 425, 120), .9, 'white')
+FY = 488 if V2 else 425
+cyl_pts((15, FY, 90), (15, FY, 120), .9, 'white'); cyl_pts((15, FY, 120), (28, FY, 120), .9, 'white')
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
-box(121, 302, 90, 129, 347, 90.4, 'steel'); [box(122, y, 90.4, 128, y + 1, 90.5, 'nero') for y in range(304, 346, 3)]
+DY = 15 if V2 else 0
+box(121, 302+DY, 90, 129, 347+DY, 90.4, 'steel'); [box(122, y+DY, 90.4, 128, y+DY + 1, 90.5, 'nero') for y in range(304, 346, 3)]
 box(126, 499, 88, 178, 500, 147, 'black'); box(126, 499, 150, 178, 500, 190, 'black')
 # TV wall: deep olive microcement, ceiling wash light and soft glow under the floating unit
 box(351, 145, 266.5, 352, 290, 267.5, 'led'); box(333, 152, 21.4, 349, 266, 22, 'led')
@@ -276,7 +288,7 @@ box(351, 145, 266.5, 352, 290, 267.5, 'led'); box(333, 152, 21.4, 349, 266, 22, 
 for y in (310, 400): cyl_pts((TC[0], y, 152), (TC[0], y, 270), .3, 'nero', 6)
 cyl_pts((TC[0], 305, 150), (TC[0], 405, 150), 2.2, 'brass', 24); box(TC[0] - 1.2, 307, 147.6, TC[0] + 1.2, 403, 148, 'led')
 if SCHEME:
-    box(157, 294, 0, 160, 354, 88, 'taj')  # waterfall end in the same top material, as in the kitchen designer's model
+    box(157, 294, 0, 160, 384 if V2 else 354, 88, 'taj')  # waterfall end in the same top material, as in the kitchen designer's model
     if SCHEME == 'rovere': pass  # no light over the hob: only colour changes on the designer's model
     elif SCHEME == 'sabbia':  # ceiling-mounted rectangular LED frame over the peninsula, champagne finish
         for a in ((12, 284, 150, 288), (12, 360, 150, 364), (12, 288, 16, 360), (146, 288, 150, 360)):
@@ -297,9 +309,13 @@ def front(ax, p, d, a, b, z0, z1, hs=(), vs=(), gola=True, vgola=None):
         for z in (z1,) + tuple(hs): B(a + .5, b - .5, z - 4, z - .8, 'gola')
     if vgola: B(vgola[0], vgola[1], z0 + 1, z1 - 1, 'gola')
 # window run (fronts face +x at x=58)
-front('x', 58, 1, 355, 380, 10, 88)                          # bottle pull-out 25
-front('x', 58, 1, 380, 470, 10, 88, hs=(50,))               # sink base: U-shaped top drawer + deep waste-sorting drawer
-front('x', 58, 1, 470, 530, 10, 88)                          # dishwasher panel
+if V2:
+    front('x', 58, 1, 385, 445, 10, 88)                      # dishwasher panel
+    front('x', 58, 1, 445, 530, 10, 88, hs=(50,))           # sink base moved towards the corner
+else:
+    front('x', 58, 1, 355, 380, 10, 88)                          # bottle pull-out 25
+    front('x', 58, 1, 380, 470, 10, 88, hs=(50,))               # sink base: U-shaped top drawer + deep waste-sorting drawer
+    front('x', 58, 1, 470, 530, 10, 88)                          # dishwasher panel
 front('x', 58, 1, 530, 560, 10, 88)                          # corner door
 # garden run (fronts face -y at y=500)
 front('y', 500, -1, 62, 122, 10, 88)                         # single door left of the oven
@@ -309,8 +325,9 @@ front('y', 500, -1, 182, 242, 10, 190, gola=False, vgola=(182.6, 185.5))   # fri
 front('y', 500, -1, 182, 242, 190, 270, gola=False)          # door above the fridge
 for x in (122, 182): box(x - .3, 499.5, 0, x + .3, 500, 10, 'seam')
 # peninsula (fronts face +y at y=355): door + three pan drawers under the hob
-front('y', 355, 1, 60, 97, 10, 88)
-front('y', 355, 1, 97, 157, 10, 88, hs=(36, 62))
+PY = 385 if V2 else 355
+front('y', PY, 1, 60, 97, 10, 88)
+front('y', PY, 1, 97, 157, 10, 88, hs=(36, 62))
 # wall units: push-to-open doors, shadow-gap outline only
 if SCHEME == 'rovere':
     front('y', 525, -1, 0, 62, 205, 270, gola=False); front('y', 525, -1, 62, 122, 205, 270, gola=False)
@@ -328,6 +345,32 @@ def plant(x, y, s=1.0):
         o = bpy.context.object; o.scale = (1, 0.7, 1.25); o.rotation_euler = (0.3*math.sin(i), 0.3*math.cos(i), a); o.data.materials.append(MAT['leaf'])
         for p in o.data.polygons: p.use_smooth = True
 pass  # piante rimosse
+if V2:
+    up, lo = ('k_tall', 'oak_f') if SCHEME == 'rovere' else ('k_tall', 'k_tall')
+    # window wall, right of the window up to the garden-wall units: same two tiers as the garden wall
+    box(0, 394.5, 205, 35, 525, 270, up); box(0, 394.5, 150, 30, 525, 205, lo)
+    if SCHEME == 'rovere':
+        for y in range(397, 524, 3): box(29.6, y, 150.5, 30, y + .25, 204.5, 'seam')
+    box(29.6, 459.6, 150, 30.2, 460, 205, 'seam'); box(2, 397, 149.4, 28, 523, 150, 'led')
+    front('x', 35, 1, 394.5, 460, 205, 270, gola=False); front('x', 35, 1, 460, 525, 205, 270, gola=False)
+    # bridge unit over the window, flush with the upper row
+    box(0, 294.5, 244, 35, 394.5, 270, up); front('x', 35, 1, 294.5, 394.5, 244, 270, gola=False)
+    # slim open column left of the window: floor to ceiling, oak shelves with plants
+    box(0, 266, 0, 24, 268, 270, up); box(0, 292, 0, 24, 294, 270, up); box(0, 266, 0, 2, 294, 270, up); box(0, 266, 0, 24, 294, 10, up)
+    for z in (60, 105, 150, 195, 240): box(2, 268, z, 24, 292, z + 2.5, 'oak_f' if SCHEME == 'rovere' else 'oak')
+    import random; rnd = random.Random(3)
+    def bush(cx, cy, z, n, h):
+        for i in range(n):  # many small elongated leaves on thin stems
+            a = rnd.uniform(0, 6.283); r = rnd.uniform(0, 6); zz = z + rnd.uniform(4, h)
+            bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=6, radius=2.2 * S, location=((cx + math.cos(a) * r) * S, (cy + math.sin(a) * r) * S, zz * S))
+            o = bpy.context.object; o.scale = (1.8, .5, .25); o.rotation_euler = (rnd.uniform(-.8, .8), rnd.uniform(-.6, .6), a); o.data.materials.append(MAT['leaf'])
+    for z, h in ((62.5, 30), (152.5, 34), (197.5, 26)):
+        cyl_pts((12, 280, z), (12, 280, z + 11), 5, 'pot', 20, 6.5); bush(12, 280, z + 9, 60, h)
+    cyl_pts((12, 280, 107.5), (12, 280, 118), 5, 'pot', 20, 6)
+    for i in range(40):  # trailing pothos hanging over the shelf
+        t = i / 40; a = i * 2.39
+        bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=6, radius=2.2 * S, location=((12 + 7 * math.cos(a)) * S, (280 + 7 * math.sin(a)) * S, (122 - 40 * t * t) * S))
+        o = bpy.context.object; o.scale = (1.4, 1, .3); o.rotation_euler = (1.2 * math.sin(a), 1.2 * math.cos(a), a); o.data.materials.append(MAT['leaf'])
 if not os.environ.get('CASA_NOCEIL'): box(-13, -215, 270, 1217, 573, 275, 'wall')
 # world sky + sun
 w = bpy.data.worlds.new('w'); sc.world = w; w.use_nodes = True
