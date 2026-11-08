@@ -61,21 +61,39 @@ def tempo_ass(t):
 
 
 # ---------------------------------------------------------------- voce
-def voce_sintetica(dati, modello, velocita, tmp):
+def genera_frasi_piper(frasi, modello, velocita, tmp):
     from piper import PiperVoice, SynthesisConfig
     voce = PiperVoice.load(modello)
     cfg = SynthesisConfig(length_scale=velocita)
+    for n, parlato in enumerate(frasi):
+        with wave.open(str(tmp / f"frase_{n:02d}.wav"), "wb") as wf:
+            voce.synthesize_wav(parlato, wf, syn_config=cfg)
+
+
+def genera_frasi_clonate(frasi, riferimento, python_tts, tmp):
+    lista = tmp / "frasi.json"
+    lista.write_text(json.dumps(frasi, ensure_ascii=False), encoding="utf-8")
+    run([python_tts, Path(__file__).parent / "voce_clonata.py", riferimento, lista, tmp])
+
+
+def voce_sintetica(dati, genera, tmp):
+    frasi = [frase.get("voce", frase["testo"]) if isinstance(frase, dict) else frase
+             for scena in dati["scene"] for frase in scena["frasi"]]
+    genera(frasi)
+    # tutte le frasi allo stesso formato, poi silenzio tra una e l'altra
     silenzio = tmp / "silenzio.wav"
     run(["ffmpeg", "-loglevel", "error", "-y", "-f", "lavfi", "-i",
-         f"anullsrc=r={voce.config.sample_rate}:cl=mono", "-t", PAUSA, silenzio])
+         "anullsrc=r=24000:cl=mono", "-t", PAUSA, silenzio])
     pezzi, inizi_scene, t, n = [], [], 0.0, 0
     for scena in dati["scene"]:
         inizi_scene.append(t)
-        for frase in scena["frasi"]:
-            parlato = frase.get("voce", frase["testo"]) if isinstance(frase, dict) else frase
-            wav = tmp / f"frase_{n:02d}.wav"
-            with wave.open(str(wav), "wb") as wf:
-                voce.synthesize_wav(parlato, wf, syn_config=cfg)
+        for _ in scena["frasi"]:
+            wav = tmp / f"frase_{n:02d}_24k.wav"
+            run(["ffmpeg", "-loglevel", "error", "-y", "-i", tmp / f"frase_{n:02d}.wav",
+                 "-ar", "24000", "-ac", "1", "-af",
+                 "silenceremove=start_periods=1:start_threshold=-50dB,"
+                 "areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse",
+                 wav])
             pezzi += [wav, silenzio]
             t += durata_wav(wav) + PAUSA
             n += 1
@@ -224,6 +242,9 @@ def main():
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--voce", help="modello Piper .onnx (voce sintetica)")
     g.add_argument("--audio", help="la tua registrazione del copione")
+    g.add_argument("--clona", help="campione della tua voce (wav) da clonare")
+    ap.add_argument("--python-tts", default="python3",
+                    help="Python dell'ambiente con chatterbox-tts (per --clona)")
     ap.add_argument("--velocita", type=float, default=0.9)
     args = ap.parse_args()
 
@@ -234,7 +255,12 @@ def main():
     dati = json.loads(scene_path.read_text(encoding="utf-8"))
 
     if args.voce:
-        voce_wav, inizi_scene = voce_sintetica(dati, args.voce, args.velocita, tmp)
+        voce_wav, inizi_scene = voce_sintetica(
+            dati, lambda f: genera_frasi_piper(f, args.voce, args.velocita, tmp), tmp)
+    elif args.clona:
+        voce_wav, inizi_scene = voce_sintetica(
+            dati, lambda f: genera_frasi_clonate(f, Path(args.clona).resolve(),
+                                                 args.python_tts, tmp), tmp)
     else:
         voce_wav, inizi_scene = voce_registrata(Path(args.audio).resolve(), tmp), None
     durata = durata_wav(voce_wav)
