@@ -1,0 +1,172 @@
+{
+  "lingua": "en",
+  "output": "shortest-war-EN.mp4",
+  "tempo_voce": 1.08,
+  "titolo": {
+    "testo": "38 MINUTES",
+    "sotto": "THE SHORTEST WAR EVER",
+    "durata": 2.8
+  },
+  "evidenzia": [
+    "lunch",
+    "ultimatum",
+    "fire",
+    "flames",
+    "craziest",
+    "shells"
+  ],
+  "musica": {
+    "file": "../../musica/Five-Armies.mp3",
+    "inizio": 75,
+    "volume": 0.4
+  },
+  "volume_effetti": 0.45,
+  "scene": [
+    {
+      "immagine": "immagini/04.png",
+      "effetti": [
+        "boom",
+        "flash"
+      ],
+      "frasi": [
+        "This war lasted less than your lunch break."
+      ]
+    },
+    {
+      "immagine": "immagini/01.png",
+      "frasi": [
+        {
+          "testo": "Zanzibar, 1896.",
+          "voce": "Zanzibar. Eighteen ninety-six."
+        }
+      ]
+    },
+    {
+      "immagine": "immagini/06-sultano-morto.png",
+      "frasi": [
+        "The sultan dies suddenly."
+      ]
+    },
+    {
+      "immagine": "immagini/02.png",
+      "ritaglio": [
+        0.2,
+        0.08,
+        0.6,
+        0.6
+      ],
+      "frasi": [
+        "His cousin Khalid seizes the throne. Without asking the British."
+      ]
+    },
+    {
+      "immagine": "archivio/rawson.jpg",
+      "frasi": [
+        {
+          "testo": "London sends an ultimatum: leave the palace by 9 a.m.",
+          "voce": "London sends an ultimatum: leave the palace by nine a.m."
+        }
+      ],
+      "cornice": true,
+      "didascalia": "ADMIRAL HARRY RAWSON"
+    },
+    {
+      "immagine": "immagini/02.png",
+      "frasi": [
+        "He barricades himself inside, with three thousand men."
+      ]
+    },
+    {
+      "immagine": "immagini/04.png",
+      "ritaglio": [
+        0.3,
+        0.3,
+        0.4,
+        0.4
+      ],
+      "frasi": [
+        {
+          "testo": "At 9 o'clock sharp…",
+          "voce": "At nine o'clock sharp..."
+        }
+      ]
+    },
+    {
+      "immagine": "archivio/bombardamento-iln.jpg",
+      "effetti": [
+        "boom",
+        "flash",
+        "scossa"
+      ],
+      "frasi": [
+        "British warships open fire!"
+      ],
+      "cornice": true,
+      "didascalia": "ILLUSTRATED LONDON NEWS · 1896"
+    },
+    {
+      "immagine": "immagini/04.png",
+      "effetti": [
+        "boom",
+        "scossa"
+      ],
+      "frasi": [
+        "The palace goes up in flames."
+      ]
+    },
+    {
+      "immagine": "immagini/03.png",
+      "ritaglio": [
+        0.25,
+        0.3,
+        0.6,
+        0.6
+      ],
+      "effetti": [
+        "boom",
+        "flash"
+      ],
+      "frasi": [
+        "His only warship is sunk."
+      ]
+    },
+    {
+      "immagine": "immagini/04.png",
+      "ritaglio": [
+        0.3,
+        0.02,
+        0.5,
+        0.5
+      ],
+      "frasi": [
+        "About forty minutes later, it's all over."
+      ]
+    },
+    {
+      "immagine": "immagini/05.png",
+      "frasi": [
+        "But the craziest part is still coming."
+      ]
+    },
+    {
+      "immagine": "archivio/bombardamento-fr.jpg",
+      "frasi": [
+        "Britain made his supporters pay for the shells fired at them."
+      ],
+      "cornice": true,
+      "didascalia": "PERIOD ENGRAVING · 1896"
+    },
+    {
+      "immagine": "immagini/01.png",
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.55,
+        0.55
+      ],
+      "frasi": [
+        "Follow for more insane history."
+      ]
+    }
+  ]
+}

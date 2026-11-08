@@ -29,3 +29,29 @@ Guerra anglo-zanzibariana (27/08/1896): ultimatum ore 9:00, ~2.800 difensori,
 affondamento della nave "Glasgow", fine dopo ~38–45 minuti, Khalid rifugiato
 nel consolato tedesco, costo delle munizioni addebitato ai suoi sostenitori.
 Riferimento: voce "Guerra anglo-zanzibariana" su Wikipedia.
+
+## Crediti obbligatori (in ogni descrizione)
+Music: "Five Armies" by Kevin MacLeod (incompetech.com) — Licensed under CC BY 4.0 — http://creativecommons.org/licenses/by/4.0/
+Immagini d'epoca: Wikimedia Commons (pubblico dominio).
+
+---
+
+# ENGLISH VERSION – `shortest-war-EN.mp4`
+
+## YouTube Shorts
+**Title:** The shortest war in history lasted 38 minutes 😳 #shorts
+**Description:**
+Zanzibar, August 27, 1896: an ultimatum, a bombardment, and a war that was over before breakfast.
+Subscribe for more insane history.
+#history #historyfacts #zanzibar #shorts
+Music: "Five Armies" by Kevin MacLeod (incompetech.com) — CC BY 4.0
+
+## TikTok
+**Caption:** The shortest war ever lasted 38 minutes… and the ending is unbelievable 😳 #history #historytok #facts #zanzibar
+
+## Instagram Reels
+**Caption:**
+The shortest war in history: about 38 minutes ⏱️
+Wait for the ending 👀
+.
+#history #historyfacts #didyouknow #reels

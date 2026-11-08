@@ -39,7 +39,10 @@ DEBOLI = {"il", "lo", "la", "i", "gli", "le", "un", "uno", "una", "di", "a", "da
           "della", "dei", "delle", "al", "alla", "ai", "alle", "nel", "nella",
           "sul", "sulla", "non", "si", "ci", "mi", "ti", "gli", "l'", "un'",
           "agli", "dal", "dalla", "dai", "dagli", "nei", "negli", "sui", "col", "suo",
-          "sua", "suoi", "tua", "tuo", "mio", "mia", "più", "come", "se"}
+          "sua", "suoi", "tua", "tuo", "mio", "mia", "più", "come", "se",
+          # inglese
+          "the", "a", "an", "of", "to", "in", "on", "at", "by", "for", "with", "and",
+          "or", "but", "his", "her", "their", "your", "my", "is", "was", "it", "than"}
 
 
 def run(cmd):
@@ -71,6 +74,12 @@ def genera_frasi_piper(frasi, modello, velocita, tmp):
     for n, parlato in enumerate(frasi):
         with wave.open(str(tmp / f"frase_{n:02d}.wav"), "wb") as wf:
             voce.synthesize_wav(parlato, wf, syn_config=cfg)
+
+
+def genera_frasi_kokoro(frasi, voce, python_tts, tmp):
+    lista = tmp / "frasi.json"
+    lista.write_text(json.dumps(frasi, ensure_ascii=False), encoding="utf-8")
+    run([python_tts, Path(__file__).parent / "voce_kokoro.py", voce, lista, tmp])
 
 
 def genera_frasi_clonate(frasi, riferimento, python_tts, tmp):
@@ -138,7 +147,7 @@ def parole_copione(dati):
     return out
 
 
-def tempi_whisper(voce_wav, prompt):
+def tempi_whisper(voce_wav, prompt, lingua="it"):
     from faster_whisper import WhisperModel
     with wave.open(str(voce_wav)) as w:
         sr, ch = w.getframerate(), w.getnchannels()
@@ -147,7 +156,7 @@ def tempi_whisper(voce_wav, prompt):
     if sr != 16000:  # ricampionamento semplice
         a = np.interp(np.arange(0, len(a), sr / 16000), np.arange(len(a)), a).astype(np.float32)
     modello = WhisperModel("small", device="cpu", compute_type="int8")
-    segs, _ = modello.transcribe(a, language="it", word_timestamps=True,
+    segs, _ = modello.transcribe(a, language=lingua, word_timestamps=True,
                                  initial_prompt=prompt[:800])
     return [(w.word.strip(), w.start, w.end) for s in segs for w in s.words]
 
@@ -211,7 +220,7 @@ def pulisci(p):
     return p.strip(",.;:").upper()
 
 
-def scrivi_ass(copione, tempi, path, titolo=None, evidenzia=()):
+def scrivi_ass(copione, tempi, path, titolo=None, evidenzia=(), didascalie=()):
     ass = [
         "[Script Info]", "ScriptType: v4.00+", f"PlayResX: {W}", f"PlayResY: {H}",
         "WrapStyle: 2", "",
@@ -225,6 +234,8 @@ def scrivi_ass(copione, tempi, path, titolo=None, evidenzia=()):
         "0,0,0,0,100,100,2,0,1,12,7,5,40,40,0,1",
         f"Style: Sotto,{FONT},70,{BIANCO},{BIANCO},&H00000000&,&H99000000&,"
         "0,0,0,0,100,100,2,0,1,8,5,5,40,40,0,1",
+        "Style: Didascalia,DejaVu Sans,34,&H00C0DCE8&,&H00C0DCE8&,&H00000000&,&H80000000&,"
+        "-1,-1,0,0,100,100,3,0,1,3,2,5,40,40,0,1",
         "", "[Events]",
         "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
     ]
@@ -236,6 +247,9 @@ def scrivi_ass(copione, tempi, path, titolo=None, evidenzia=()):
         if titolo.get("sotto"):
             ass.append(f"Dialogue: 1,0:00:00.15,{fine_t},Sotto,,0,0,0,,"
                        f"{{\\pos({W // 2},{int(H * 0.30)})\\fad(150,150)}}{titolo['sotto']}")
+    for a, b, testo in didascalie:  # fonte/nome sotto la foto d'epoca
+        ass.append(f"Dialogue: 1,{tempo_ass(a + 0.2)},{tempo_ass(b)},Didascalia,,0,0,0,,"
+                   f"{{\\pos({W // 2},{int(H * 0.80)})\\fad(250,150)}}{testo}")
     evidenzia = {norm(e) for e in evidenzia}
     ROSSO = "&H003030FF&"   # BGR di #FF3030
     pos = f"\\pos({W // 2},{int(H * 0.68)})"
@@ -275,8 +289,9 @@ def main():
     g.add_argument("--voce", help="modello Piper .onnx (voce sintetica)")
     g.add_argument("--audio", help="la tua registrazione del copione")
     g.add_argument("--clona", help="campione della tua voce (wav) da clonare")
+    g.add_argument("--kokoro", help="voce Kokoro, es. im_nicola, if_sara, bm_george")
     ap.add_argument("--python-tts", default="python3",
-                    help="Python dell'ambiente con chatterbox-tts (per --clona)")
+                    help="Python dell'ambiente con chatterbox-tts / kokoro")
     ap.add_argument("--velocita", type=float, default=0.9)
     args = ap.parse_args()
 
@@ -293,12 +308,15 @@ def main():
         voce_wav, inizi_scene = voce_sintetica(
             dati, lambda f: genera_frasi_clonate(f, Path(args.clona).resolve(),
                                                  args.python_tts, tmp), tmp)
+    elif args.kokoro:
+        voce_wav, inizi_scene = voce_sintetica(
+            dati, lambda f: genera_frasi_kokoro(f, args.kokoro, args.python_tts, tmp), tmp)
     else:
         voce_wav, inizi_scene = voce_registrata(Path(args.audio).resolve(), tmp), None
     durata = durata_wav(voce_wav)
 
     copione = parole_copione(dati)
-    sentite = tempi_whisper(voce_wav, " ".join(p for p, _, _ in copione))
+    sentite = tempi_whisper(voce_wav, " ".join(p for p, _, _ in copione), dati.get("lingua", "it"))
     tempi = allinea(copione, sentite, durata)
 
     if inizi_scene is None:  # registrazione: la scena parte con la sua prima parola
@@ -309,7 +327,10 @@ def main():
     durate = [b - a for a, b in zip(inizi_scene, inizi_scene[1:] + [durata])]
 
     ass_path = tmp / "sottotitoli.ass"
-    scrivi_ass(copione, tempi, ass_path, dati.get("titolo"), dati.get("evidenzia", []))
+    didascalie = [(a, a + d, s["didascalia"]) for a, d, s in
+                  zip(inizi_scene, durate, dati["scene"]) if s.get("didascalia")]
+    scrivi_ass(copione, tempi, ass_path, dati.get("titolo"), dati.get("evidenzia", []),
+               didascalie)
 
     clip = []
     for i, (scena, d) in enumerate(zip(dati["scene"], durate)):
@@ -331,8 +352,19 @@ def main():
               f"zoompan=z='{z}':x='{x}':y='{y}':d={frames}:s={W}x{H}:fps={FPS},setsar=1")
         if "flash" in effetti:
             vf += ",fade=in:st=0:d=0.35:color=white"
+        sorgente = base / scena["immagine"]
+        if scena.get("cornice"):  # foto d'epoca: intera al centro, sfondo sfocato
+            sorgente = tmp / f"cornice_{i:02d}.png"
+            run(["ffmpeg", "-loglevel", "error", "-y", "-i", base / scena["immagine"],
+                 "-filter_complex",
+                 f"[0]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},"
+                 f"gblur=sigma=30,eq=brightness=-0.12[bg];"
+                 f"[0]scale={W - 80}:{int(H * 0.62)}:force_original_aspect_ratio=decrease,"
+                 f"pad=iw+12:ih+12:6:6:color=0xE8DCC0[fg];"
+                 f"[bg][fg]overlay=(W-w)/2:(H-h)/2-{int(H * 0.06)}",
+                 "-frames:v", "1", sorgente])
         out = tmp / f"clip_{i:02d}.mp4"
-        run(["ffmpeg", "-loglevel", "error", "-y", "-loop", "1", "-i", base / scena["immagine"],
+        run(["ffmpeg", "-loglevel", "error", "-y", "-loop", "1", "-i", sorgente,
              "-vf", vf, "-frames:v", frames, "-c:v", "libx264", "-preset", "medium",
              "-crf", "18", "-pix_fmt", "yuv420p", out])
         clip.append(out)
@@ -349,7 +381,11 @@ def main():
     finale = base / dati.get("output", "video.mp4")
     cmd = ["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0",
            "-i", lista_v, "-i", voce_wav, "-i", sfx_wav]
-    mix = (f"[1:a]aresample={SR_MIX},asplit=2[voce][chiave];"
+    # voce "da studio": calore, presenza, meno sibilanti, compressione
+    mix = (f"[1:a]aresample={SR_MIX},highpass=f=70,equalizer=f=140:t=q:w=1:g=3,"
+           "equalizer=f=3200:t=q:w=1.2:g=2.5,equalizer=f=7000:t=q:w=2:g=-2,"
+           "acompressor=threshold=-20dB:ratio=3:attack=5:release=80:makeup=2,"
+           "asplit=2[voce][chiave];"
            f"[2:a]volume={dati.get('volume_effetti', 0.5)}[sfx];")
     musica = dati.get("musica")
     if musica:
@@ -362,7 +398,12 @@ def main():
     else:
         mix += "[voce][sfx]amix=inputs=2:normalize=0:duration=first,"
     mix += "loudnorm=I=-14:TP=-1.5:LRA=11[a]"
-    cmd += ["-filter_complex", mix + f";[0:v]subtitles={ass_path}:fontsdir={FONT_DIR}[v]",
+    # look cinematografico: contrasto, toni caldi/freddi, vignettatura, grana pellicola
+    look = ("eq=contrast=1.08:saturation=1.08:gamma=0.97,"
+            "colorbalance=rs=-0.04:bs=0.05:rh=0.06:bh=-0.05,"
+            "vignette=angle=PI/4.5,noise=alls=7:allf=t,")
+    cmd += ["-filter_complex",
+            mix + f";[0:v]{look}subtitles={ass_path}:fontsdir={FONT_DIR}[v]",
             "-map", "[v]", "-map", "[a]",
             "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-pix_fmt", "yuv420p",
             "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "-t", f"{durata:.2f}",
