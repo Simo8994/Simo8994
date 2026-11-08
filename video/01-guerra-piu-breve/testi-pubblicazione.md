@@ -7,10 +7,10 @@ File: `guerra-piu-breve.mp4` (verticale 1080x1920, 37 s, solo voce)
 **Descrizione:**
 Zanzibar, 27 agosto 1896: un ultimatum, un bombardamento e una guerra finita prima di colazione.
 Iscriviti per altre storie che a scuola non ti raccontano.
-#storia #curiosità #zanzibar #lostavicheshorts #shorts
+#storia #curiosità #zanzibar #shorts
 
 ## TikTok
-**Didascalia:** La guerra più breve della storia? Meno di un'ora 😳 E alla fine hanno pure dovuto pagare le munizioni… #storia #curiosità #lostavichè #imparacontiktok #zanzibar
+**Didascalia:** La guerra più breve della storia? Meno di un'ora 😳 E alla fine hanno pure dovuto pagare le munizioni… #storia #curiosità #imparacontiktok #zanzibar
 
 ## Instagram Reels
 **Didascalia:**
@@ -18,7 +18,7 @@ La guerra più breve della storia è durata circa 38 minuti ⏱️
 E il finale è assurdo 👀
 Salvalo e mandalo a chi ama la storia.
 .
-#storia #curiosità #storiaitaliana #lostavichè #fattistorici #reels #zanzibar
+#storia #curiosità #fattistorici #reels #zanzibar
 
 ## Musica (da aggiungere in app)
 - TikTok / Instagram: suono di tendenza "epico" o "suspense", volume 10–15%.
