@@ -1,40 +1,40 @@
 {
   "output": "guerra-piu-breve.mp4",
+  "tempo_voce": 1.08,
+  "titolo": {"testo": "38 MINUTI", "sotto": "LA GUERRA PIÙ BREVE", "durata": 2.8},
+  "evidenzia": ["pranzo", "ultimatum", "fuoco", "fiamme", "colmo", "cannonate"],
+  "musica": {"file": "../../musica/Five-Armies.mp3", "inizio": 75, "volume": 0.4},
+  "volume_effetti": 0.45,
   "scene": [
-    {
-      "immagine": "immagini/01.png",
-      "frasi": [
-        "La guerra più breve della storia è durata meno di un'ora.",
-        {"testo": "Zanzibar, 27 agosto 1896.", "voce": "Zanzibar, ventisette agosto, milleottocentonovantasei."}
-      ]
-    },
-    {
-      "immagine": "immagini/02.png",
-      "frasi": [
-        "Il sultano muore all'improvviso, e suo cugino Khalid prende il potere senza il permesso degli inglesi.",
-        {"testo": "Londra gli dà un ultimatum: lasciare il palazzo entro le 9 del mattino.", "voce": "Londra gli dà un ultimatum: lasciare il palazzo entro le nove del mattino."},
-        "Khalid si barrica dentro con quasi tremila uomini."
-      ]
-    },
-    {
-      "immagine": "immagini/03.png",
-      "frasi": [
-        {"testo": "Alle 9 in punto, le navi britanniche aprono il fuoco.", "voce": "Alle nove in punto, le navi britanniche aprono il fuoco."}
-      ]
-    },
-    {
-      "immagine": "immagini/04.png",
-      "frasi": [
-        "Il palazzo va in fiamme, e l'unica nave da guerra del sultano viene affondata.",
-        "Dopo circa quaranta minuti, la bandiera viene abbattuta. Fine della guerra."
-      ]
-    },
-    {
-      "immagine": "immagini/05.png",
-      "frasi": [
-        "E il colmo? Gli inglesi fecero pagare ai sostenitori di Khalid perfino le munizioni sparate contro di loro.",
-        "Segui per altre storie che a scuola non ti raccontano."
-      ]
-    }
+    {"immagine": "immagini/04.png", "effetti": ["boom", "flash"],
+     "frasi": ["Questa guerra è durata meno della tua pausa pranzo."]},
+    {"immagine": "immagini/01.png",
+     "frasi": [{"testo": "Zanzibar, 1896.", "voce": "Zanzibar. Milleottocentonovantasei."}]},
+    {"immagine": "immagini/06-sultano-morto.png",
+     "frasi": ["Il sultano muore all'improvviso."]},
+    {"immagine": "immagini/02.png", "ritaglio": [0.2, 0.08, 0.6, 0.6],
+     "frasi": [{"testo": "Suo cugino Khalid prende il trono. Senza chiedere agli inglesi.",
+                "voce": "Suo cugino, Kàlid, prende il trono. Senza chiedere agli inglesi."}]},
+    {"immagine": "immagini/07-ufficiale.png",
+     "frasi": [{"testo": "Londra gli dà un ultimatum: fuori dal palazzo entro le 9.",
+                "voce": "Londra gli dà un ultimatum: fuori dal palazzo, entro le nove."}]},
+    {"immagine": "immagini/02.png",
+     "frasi": ["Lui si barrica dentro, con tremila uomini."]},
+    {"immagine": "immagini/04.png", "ritaglio": [0.3, 0.3, 0.4, 0.4],
+     "frasi": [{"testo": "Alle 9 in punto…", "voce": "Alle nove in punto..."}]},
+    {"immagine": "immagini/03.png", "effetti": ["boom", "flash", "scossa"],
+     "frasi": ["Le navi inglesi aprono il fuoco!"]},
+    {"immagine": "immagini/04.png", "effetti": ["boom", "scossa"],
+     "frasi": ["Il palazzo va in fiamme."]},
+    {"immagine": "immagini/03.png", "ritaglio": [0.25, 0.3, 0.6, 0.6], "effetti": ["boom", "flash"],
+     "frasi": ["La sua unica nave da guerra affonda."]},
+    {"immagine": "immagini/04.png", "ritaglio": [0.3, 0.02, 0.5, 0.5],
+     "frasi": ["Circa quaranta minuti dopo, è tutto finito."]},
+    {"immagine": "immagini/05.png",
+     "frasi": ["Ma il colmo deve ancora arrivare."]},
+    {"immagine": "immagini/03.png", "ritaglio": [0.0, 0.5, 0.5, 0.5],
+     "frasi": ["Gli inglesi fecero pagare ai suoi sostenitori perfino le cannonate."]},
+    {"immagine": "immagini/01.png", "ritaglio": [0.25, 0.2, 0.55, 0.55],
+     "frasi": ["Seguimi per altre storie assurde."]}
   ]
 }

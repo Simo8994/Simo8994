@@ -26,7 +26,7 @@ from faster_whisper import WhisperModel
 TENTATIVI = 4
 SOGLIA = 0.92  # somiglianza testo/trascrizione oltre cui ci si ferma subito
 # (exaggeration, cfg_weight): espressivita' e aderenza al testo
-IMPOSTAZIONI = [(0.3, 0.8), (0.25, 1.0), (0.4, 0.6), (0.3, 0.8)]
+IMPOSTAZIONI = [(0.65, 0.6), (0.55, 0.75), (0.75, 0.5), (0.6, 0.7)]
 
 
 def parole(s):

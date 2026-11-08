@@ -25,7 +25,8 @@ from pathlib import Path
 import numpy as np
 
 W, H, FPS = 1080, 1920, 30
-PAUSA = 0.25          # silenzio tra le frasi (solo voce sintetica)
+PAUSA = 0.12          # silenzio tra le frasi (solo voce sintetica)
+SR_MIX = 48000
 MAX_PAROLE = 3        # parole per riga di sottotitolo
 MAX_CARATTERI = 18
 FONT_DIR = Path(__file__).parent / "font"
@@ -36,7 +37,9 @@ BIANCO = "&H00FFFFFF&"
 DEBOLI = {"il", "lo", "la", "i", "gli", "le", "un", "uno", "una", "di", "a", "da",
           "in", "con", "su", "per", "tra", "fra", "e", "o", "ma", "che", "del",
           "della", "dei", "delle", "al", "alla", "ai", "alle", "nel", "nella",
-          "sul", "sulla", "non", "si", "ci", "mi", "ti", "gli", "l'", "un'"}
+          "sul", "sulla", "non", "si", "ci", "mi", "ti", "gli", "l'", "un'",
+          "agli", "dal", "dalla", "dai", "dagli", "nei", "negli", "sui", "col", "suo",
+          "sua", "suoi", "tua", "tuo", "mio", "mia", "più", "come", "se"}
 
 
 def run(cmd):
@@ -72,7 +75,13 @@ def genera_frasi_piper(frasi, modello, velocita, tmp):
 
 def genera_frasi_clonate(frasi, riferimento, python_tts, tmp):
     lista = tmp / "frasi.json"
-    lista.write_text(json.dumps(frasi, ensure_ascii=False), encoding="utf-8")
+    contenuto = json.dumps(frasi, ensure_ascii=False)
+    # se le frasi sono identiche all'ultima volta, riusa l'audio gia' generato
+    if lista.exists() and lista.read_text(encoding="utf-8") == contenuto and \
+            all((tmp / f"frase_{n:02d}.wav").exists() for n in range(len(frasi))):
+        print("Voce gia' generata: la riuso.")
+        return
+    lista.write_text(contenuto, encoding="utf-8")
     run([python_tts, Path(__file__).parent / "voce_clonata.py", riferimento, lista, tmp])
 
 
@@ -80,6 +89,7 @@ def voce_sintetica(dati, genera, tmp):
     frasi = [frase.get("voce", frase["testo"]) if isinstance(frase, dict) else frase
              for scena in dati["scene"] for frase in scena["frasi"]]
     genera(frasi)
+    tempo = dati.get("tempo_voce", 1.0)  # >1 = voce piu' veloce
     # tutte le frasi allo stesso formato, poi silenzio tra una e l'altra
     silenzio = tmp / "silenzio.wav"
     run(["ffmpeg", "-loglevel", "error", "-y", "-f", "lavfi", "-i",
@@ -92,7 +102,8 @@ def voce_sintetica(dati, genera, tmp):
             run(["ffmpeg", "-loglevel", "error", "-y", "-i", tmp / f"frase_{n:02d}.wav",
                  "-ar", "24000", "-ac", "1", "-af",
                  "silenceremove=start_periods=1:start_threshold=-50dB,"
-                 "areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse",
+                 "areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse,"
+                 f"atempo={tempo}",
                  wav])
             pezzi += [wav, silenzio]
             t += durata_wav(wav) + PAUSA
@@ -181,11 +192,13 @@ def righe(copione, tempi):
         stop = fine or p[-1] in ",.:;?!" or len(cur) >= MAX_PAROLE or len(testo) >= MAX_CARATTERI
         if stop:
             # non lasciare una parola debole in fondo alla riga
-            if not fine and len(cur) > 1 and norm(copione[cur[-1]][0]) in DEBOLI \
-                    and p[-1] not in ",.:;?!":
-                ultimo = cur.pop()
+            debole = lambda k: copione[k][0].lower().strip(",.:;?!…") in DEBOLI
+            if not fine and len(cur) > 1 and debole(cur[-1]) and p[-1] not in ",.:;?!":
+                resto = []
+                while len(cur) > 1 and debole(cur[-1]):  # sposta tutte le parole deboli finali
+                    resto.insert(0, cur.pop())
                 gruppi.append(cur)
-                cur = [ultimo]
+                cur = resto
             else:
                 gruppi.append(cur)
                 cur = []
@@ -198,7 +211,7 @@ def pulisci(p):
     return p.strip(",.;:").upper()
 
 
-def scrivi_ass(copione, tempi, path):
+def scrivi_ass(copione, tempi, path, titolo=None, evidenzia=()):
     ass = [
         "[Script Info]", "ScriptType: v4.00+", f"PlayResX: {W}", f"PlayResY: {H}",
         "WrapStyle: 2", "",
@@ -208,9 +221,23 @@ def scrivi_ass(copione, tempi, path):
         "BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
         f"Style: Sub,{FONT},96,{BIANCO},{BIANCO},&H00000000&,&H99000000&,"
         "0,0,0,0,100,100,1,0,1,9,5,5,60,60,0,1",
+        f"Style: Titolo,{FONT},210,{GIALLO},{GIALLO},&H00000000&,&H99000000&,"
+        "0,0,0,0,100,100,2,0,1,12,7,5,40,40,0,1",
+        f"Style: Sotto,{FONT},70,{BIANCO},{BIANCO},&H00000000&,&H99000000&,"
+        "0,0,0,0,100,100,2,0,1,8,5,5,40,40,0,1",
         "", "[Events]",
         "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
     ]
+    if titolo:  # titolo d'impatto nei primi secondi, in alto
+        fine_t = tempo_ass(titolo.get("durata", 2.6))
+        pop = "\\fscx40\\fscy40\\t(0,120,\\fscx112\\fscy112)\\t(120,220,\\fscx100\\fscy100)"
+        ass.append(f"Dialogue: 1,0:00:00.00,{fine_t},Titolo,,0,0,0,,"
+                   f"{{\\pos({W // 2},{int(H * 0.22)}){pop}\\fad(0,150)}}{titolo['testo']}")
+        if titolo.get("sotto"):
+            ass.append(f"Dialogue: 1,0:00:00.15,{fine_t},Sotto,,0,0,0,,"
+                       f"{{\\pos({W // 2},{int(H * 0.30)})\\fad(150,150)}}{titolo['sotto']}")
+    evidenzia = {norm(e) for e in evidenzia}
+    ROSSO = "&H003030FF&"   # BGR di #FF3030
     pos = f"\\pos({W // 2},{int(H * 0.68)})"
     gruppi = righe(copione, tempi)
     for g_i, g in enumerate(gruppi):
@@ -223,8 +250,13 @@ def scrivi_ass(copione, tempi, path):
             parti = []
             for kk in g:
                 p = pulisci(copione[kk][0])
+                forte = norm(copione[kk][0]) in evidenzia or any(c.isdigit() for c in p)
                 if kk == k:
-                    parti.append(f"{{\\c{GIALLO}\\fscx115\\fscy115}}{p}{{\\c{BIANCO}\\fscx100\\fscy100}}")
+                    colore, scala = (ROSSO, 130) if forte else (GIALLO, 115)
+                    parti.append(f"{{\\c{colore}\\fscx{scala}\\fscy{scala}}}{p}"
+                                 f"{{\\c{BIANCO}\\fscx100\\fscy100}}")
+                elif forte:
+                    parti.append(f"{{\\c{ROSSO}}}{p}{{\\c{BIANCO}}}")
                 else:
                     parti.append(p)
             effetto = pos
@@ -277,17 +309,29 @@ def main():
     durate = [b - a for a, b in zip(inizi_scene, inizi_scene[1:] + [durata])]
 
     ass_path = tmp / "sottotitoli.ass"
-    scrivi_ass(copione, tempi, ass_path)
+    scrivi_ass(copione, tempi, ass_path, dati.get("titolo"), dati.get("evidenzia", []))
 
     clip = []
     for i, (scena, d) in enumerate(zip(dati["scene"], durate)):
         frames = int(round(d * FPS))
-        z = f"1+0.12*on/{frames}" if i % 2 == 0 else f"1.12-0.12*on/{frames}"
-        out = tmp / f"clip_{i:02d}.mp4"
-        vf = (f"scale={W * 2}:{H * 2}:force_original_aspect_ratio=increase,"
+        effetti = scena.get("effetti", [])
+        # zoom piu' marcato, alternato dentro/fuori
+        z = f"1+0.2*on/{frames}" if i % 2 == 0 else f"1.2-0.2*on/{frames}"
+        x, y = "iw/2-(iw/zoom/2)", "ih/2-(ih/zoom/2)"
+        if "scossa" in effetti:  # tremolio di camera per ~0.7 s
+            x += f"+if(lt(on,{int(FPS * 0.7)}),40*sin(on*2.7)*(1-on/{int(FPS * 0.7)}),0)"
+            y += f"+if(lt(on,{int(FPS * 0.7)}),30*cos(on*3.1)*(1-on/{int(FPS * 0.7)}),0)"
+            z = f"if(lt(on,{int(FPS * 0.7)}),1.1,{z})"
+        ritaglio = ""
+        if "ritaglio" in scena:  # [x, y, larghezza, altezza] in frazioni dell'immagine
+            rx, ry, rw, rh = scena["ritaglio"]
+            ritaglio = f"crop=iw*{rw}:ih*{rh}:iw*{rx}:ih*{ry},"
+        vf = (f"{ritaglio}scale={W * 2}:{H * 2}:force_original_aspect_ratio=increase,"
               f"crop={W * 2}:{H * 2},"
-              f"zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
-              f"d={frames}:s={W}x{H}:fps={FPS},setsar=1")
+              f"zoompan=z='{z}':x='{x}':y='{y}':d={frames}:s={W}x{H}:fps={FPS},setsar=1")
+        if "flash" in effetti:
+            vf += ",fade=in:st=0:d=0.35:color=white"
+        out = tmp / f"clip_{i:02d}.mp4"
         run(["ffmpeg", "-loglevel", "error", "-y", "-loop", "1", "-i", base / scena["immagine"],
              "-vf", vf, "-frames:v", frames, "-c:v", "libx264", "-preset", "medium",
              "-crf", "18", "-pix_fmt", "yuv420p", out])
@@ -295,14 +339,90 @@ def main():
     lista_v = tmp / "video.txt"
     lista_v.write_text("".join(f"file '{p}'\n" for p in clip))
 
+    # effetti sonori: whoosh a ogni cambio scena, boato dove richiesto
+    sfx_wav = tmp / "sfx.wav"
+    scrivi_effetti(sfx_wav, durata, [
+        (t, "boom" if "boom" in s.get("effetti", []) else "whoosh")
+        for t, s in zip(inizi_scene, dati["scene"]) if t > 0 or "boom" in s.get("effetti", [])
+    ])
+
     finale = base / dati.get("output", "video.mp4")
-    run(["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0",
-         "-i", lista_v, "-i", voce_wav,
-         "-vf", f"subtitles={ass_path}:fontsdir={FONT_DIR}",
-         "-af", "loudnorm=I=-14:TP=-1.5:LRA=11",
-         "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
-         "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "-shortest", finale])
-    print(f"Creato: {finale} ({durata:.1f} s)")
+    cmd = ["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0",
+           "-i", lista_v, "-i", voce_wav, "-i", sfx_wav]
+    mix = (f"[1:a]aresample={SR_MIX},asplit=2[voce][chiave];"
+           f"[2:a]volume={dati.get('volume_effetti', 0.5)}[sfx];")
+    musica = dati.get("musica")
+    if musica:
+        cmd += ["-ss", str(musica.get("inizio", 0)), "-i", base / musica["file"]]
+        mix += (f"[3:a]aresample={SR_MIX},volume={musica.get('volume', 0.35)},"
+                f"afade=t=in:d=0.5,afade=t=out:st={max(durata - 1.5, 0):.2f}:d=1.5[mus];"
+                # la musica si abbassa quando parla la voce
+                "[mus][chiave]sidechaincompress=threshold=0.04:ratio=6:attack=15:release=250[musd];"
+                "[voce][musd][sfx]amix=inputs=3:normalize=0:duration=first,")
+    else:
+        mix += "[voce][sfx]amix=inputs=2:normalize=0:duration=first,"
+    mix += "loudnorm=I=-14:TP=-1.5:LRA=11[a]"
+    cmd += ["-filter_complex", mix + f";[0:v]subtitles={ass_path}:fontsdir={FONT_DIR}[v]",
+            "-map", "[v]", "-map", "[a]",
+            "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-pix_fmt", "yuv420p",
+            "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "-t", f"{durata:.2f}",
+            finale]
+    run(cmd)
+    # anteprima leggera per guardarlo al volo dal telefono
+    anteprima = finale.with_name(finale.stem + "-anteprima.mp4")
+    run(["ffmpeg", "-loglevel", "error", "-y", "-i", finale, "-vf", "scale=540:960",
+         "-c:v", "libx264", "-preset", "fast", "-crf", "28", "-c:a", "aac", "-b:a", "96k",
+         "-movflags", "+faststart", anteprima])
+    print(f"Creato: {finale} ({durata:.1f} s) + {anteprima.name}")
+
+
+# ---------------------------------------------------------------- effetti sonori
+def _whoosh(sr):
+    n = int(sr * 0.55)
+    t = np.linspace(0, 1, n)
+    rumore = np.random.default_rng(1).standard_normal(n)
+    # filtro passa-basso con frequenza che sale e scende: effetto "passaggio"
+    cut = 300 + 5000 * np.sin(np.pi * t) ** 2
+    a = np.exp(-2 * np.pi * cut / sr)
+    out = np.zeros(n)
+    prev = 0.0
+    for i in range(n):
+        prev = (1 - a[i]) * rumore[i] + a[i] * prev
+        out[i] = prev
+    out *= np.sin(np.pi * t) ** 1.5
+    return out / (np.abs(out).max() + 1e-9) * 0.7
+
+
+def _boom(sr):
+    n = int(sr * 1.8)
+    t = np.arange(n) / sr
+    freq = 38 + 50 * np.exp(-t * 6)
+    basso = np.sin(2 * np.pi * np.cumsum(freq) / sr) * np.exp(-t * 2.2)
+    rumore = np.random.default_rng(2).standard_normal(n) * np.exp(-t * 9)
+    lp = np.zeros(n)
+    prev = 0.0
+    for i in range(n):  # rumore scuro, tipo esplosione
+        prev = 0.06 * rumore[i] + 0.94 * prev
+        lp[i] = prev
+    lp /= np.abs(lp).max() + 1e-9
+    out = np.tanh(2.5 * (basso + 0.8 * lp))
+    return out / (np.abs(out).max() + 1e-9) * 0.95
+
+
+def scrivi_effetti(path, durata, eventi):
+    sr = SR_MIX
+    traccia = np.zeros(int(sr * (durata + 2)))
+    suoni = {"whoosh": _whoosh(sr), "boom": _boom(sr)}
+    for t, tipo in eventi:
+        s = suoni[tipo]
+        i = max(int((t - (0.3 if tipo == "whoosh" else 0.02)) * sr), 0)
+        traccia[i:i + len(s)] += s[:len(traccia) - i]
+    traccia = np.clip(traccia[:int(sr * durata)], -1, 1)
+    with wave.open(str(path), "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(sr)
+        w.writeframes((traccia * 32767).astype(np.int16).tobytes())
 
 
 if __name__ == "__main__":
