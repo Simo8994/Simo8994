@@ -1,0 +1,40 @@
+{
+  "output": "guerra-piu-breve.mp4",
+  "scene": [
+    {
+      "immagine": "immagini/01.png",
+      "frasi": [
+        "La guerra più breve della storia è durata meno di un'ora.",
+        {"testo": "Zanzibar, 27 agosto 1896.", "voce": "Zanzibar, ventisette agosto, milleottocentonovantasei."}
+      ]
+    },
+    {
+      "immagine": "immagini/02.png",
+      "frasi": [
+        "Il sultano muore all'improvviso, e suo cugino Khalid prende il potere senza il permesso degli inglesi.",
+        {"testo": "Londra gli dà un ultimatum: lasciare il palazzo entro le 9 del mattino.", "voce": "Londra gli dà un ultimatum: lasciare il palazzo entro le nove del mattino."},
+        "Khalid si barrica dentro con quasi tremila uomini."
+      ]
+    },
+    {
+      "immagine": "immagini/03.png",
+      "frasi": [
+        {"testo": "Alle 9 in punto, le navi britanniche aprono il fuoco.", "voce": "Alle nove in punto, le navi britanniche aprono il fuoco."}
+      ]
+    },
+    {
+      "immagine": "immagini/04.png",
+      "frasi": [
+        "Il palazzo va in fiamme, e l'unica nave da guerra del sultano viene affondata.",
+        "Dopo circa quaranta minuti, la bandiera viene abbattuta. Fine della guerra."
+      ]
+    },
+    {
+      "immagine": "immagini/05.png",
+      "frasi": [
+        "E il colmo? Gli inglesi fecero pagare ai sostenitori di Khalid perfino le munizioni sparate contro di loro.",
+        "Segui per altre storie che a scuola non ti raccontano."
+      ]
+    }
+  ]
+}
