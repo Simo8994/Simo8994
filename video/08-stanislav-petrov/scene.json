@@ -1,0 +1,195 @@
+{
+  "output": "stanislav-petrov.mp4",
+  "output_en": "stanislav-petrov-EN.mp4",
+  "tempo_voce": 1.08,
+  "titolo": {
+    "testo": "26 SETTEMBRE 1983",
+    "sotto": "IL MONDO A UN PASSO",
+    "durata": 2.8
+  },
+  "titolo_en": {
+    "testo": "SEPT 26, 1983",
+    "sotto": "THE WORLD ON THE EDGE",
+    "durata": 2.8
+  },
+  "evidenzia": [
+    "nucleare",
+    "allarme",
+    "cinque",
+    "falso"
+  ],
+  "evidenzia_en": [
+    "nuclear",
+    "alarm",
+    "five",
+    "false"
+  ],
+  "musica": {
+    "file": "../../musica/Hitman.mp3",
+    "inizio": "auto",
+    "volume": 0.4
+  },
+  "volume_effetti": 0.45,
+  "scene": [
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Quest'uomo ha probabilmente evitato una guerra nucleare. E quasi nessuno conosce il suo nome."
+      ],
+      "frasi_en": [
+        "This man probably prevented a nuclear war. And almost nobody knows his name."
+      ],
+      "prompt": "soviet officer in 1980s uniform staring at glowing red alarm screens in a dark command bunker",
+      "seme": 1944,
+      "effetti": [
+        "boom",
+        "flash"
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Vicino a Mosca, 26 settembre 1983. Piena Guerra Fredda."
+      ],
+      "frasi_en": [
+        "Near Moscow, September 26, 1983. The height of the Cold War."
+      ],
+      "prompt": "snowy soviet military bunker entrance at night near Moscow, 1983, cold war",
+      "seme": 1945
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Stanislav Petrov è di turno nel bunker che sorveglia i missili americani."
+      ],
+      "frasi_en": [
+        "Stanislav Petrov is on duty in the bunker that watches for American missiles."
+      ],
+      "prompt": "1980s soviet control room with large world map display and blinking red lights",
+      "seme": 1946
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Dopo mezzanotte scatta l'allarme: un missile lanciato dagli Stati Uniti."
+      ],
+      "frasi_en": [
+        "After midnight, the alarm goes off: a missile launched from the United States."
+      ],
+      "prompt": "red flashing warning light and big red button in a dark room, tension",
+      "seme": 1947,
+      "effetti": [
+        "boom",
+        "flash",
+        "scossa"
+      ]
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Poi due, tre… cinque missili."
+      ],
+      "frasi_en": [
+        "Then two, three… five missiles."
+      ],
+      "prompt": "1980s soviet control room with large world map display and blinking red lights",
+      "seme": 1946,
+      "ritaglio": [
+        0.15,
+        0.1,
+        0.7,
+        0.7
+      ]
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Il protocollo è chiaro: avvisare subito i superiori. E potrebbe partire la risposta nucleare."
+      ],
+      "frasi_en": [
+        "Protocol is clear: report it immediately. And that could trigger nuclear retaliation."
+      ],
+      "prompt": "red flashing warning light and big red button in a dark room, tension",
+      "seme": 1947,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Petrov ragiona: un vero attacco userebbe centinaia di missili, non cinque."
+      ],
+      "frasi_en": [
+        "Petrov thinks: a real attack would use hundreds of missiles, not five."
+      ],
+      "prompt": "soviet officer in 1980s uniform staring at glowing red alarm screens in a dark command bunker",
+      "seme": 1944,
+      "ritaglio": [
+        0.15,
+        0.1,
+        0.7,
+        0.7
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Decide che è un falso allarme. E non lo segnala come attacco."
+      ],
+      "frasi_en": [
+        "He decides it's a false alarm. And doesn't report it as an attack."
+      ],
+      "prompt": "soviet officer in 1980s uniform staring at glowing red alarm screens in a dark command bunker",
+      "seme": 1944,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "Aveva ragione: il satellite aveva scambiato i riflessi del sole sulle nuvole per missili."
+      ],
+      "frasi_en": [
+        "He was right: the satellite had mistaken sunlight reflecting off clouds for missiles."
+      ],
+      "prompt": "satellite in orbit above clouds lit by the rising sun, earth from space",
+      "seme": 1948
+    },
+    {
+      "immagine": "immagini/f.png",
+      "frasi": [
+        "Non ricevette nessuna medaglia. La storia rimase segreta per anni."
+      ],
+      "frasi_en": [
+        "He got no medal. The story stayed secret for years."
+      ],
+      "prompt": "old soviet officer sitting alone in a simple apartment, quiet, melancholic",
+      "seme": 1949
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Seguimi per altre storie assurde."
+      ],
+      "frasi_en": [
+        "Follow for more insane history."
+      ],
+      "prompt": "snowy soviet military bunker entrance at night near Moscow, 1983, cold war",
+      "seme": 1945,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    }
+  ]
+}

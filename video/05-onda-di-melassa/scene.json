@@ -1,0 +1,196 @@
+{
+  "output": "onda-di-melassa.mp4",
+  "output_en": "onda-di-melassa-EN.mp4",
+  "tempo_voce": 1.08,
+  "titolo": {
+    "testo": "ONDA DI MELASSA",
+    "sotto": "BOSTON 1919",
+    "durata": 2.8
+  },
+  "titolo_en": {
+    "testo": "MOLASSES WAVE",
+    "sotto": "BOSTON 1919",
+    "durata": 2.8
+  },
+  "evidenzia": [
+    "melassa",
+    "esplode",
+    "ventuno"
+  ],
+  "evidenzia_en": [
+    "molasses",
+    "bursts",
+    "twenty-one"
+  ],
+  "musica": {
+    "file": "../../musica/Volatile-Reaction.mp3",
+    "inizio": "auto",
+    "volume": 0.4
+  },
+  "volume_effetti": 0.45,
+  "scene": [
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Nel 1919 un'onda alta sette metri travolse Boston. Era fatta di melassa."
+      ],
+      "frasi_en": [
+        "In 1919, a wave twenty-five feet high swept through Boston. It was made of molasses."
+      ],
+      "prompt": "giant brown wave of thick molasses flooding a 1919 Boston street, buildings, people running",
+      "seme": 1698,
+      "effetti": [
+        "boom",
+        "flash"
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        {
+          "testo": "15 gennaio 1919. Quartiere di North End.",
+          "voce": "Quindici gennaio, millenovecentodiciannove. Quartiere di North End."
+        }
+      ],
+      "frasi_en": [
+        "January 15, 1919. Boston's North End."
+      ],
+      "prompt": "1919 Boston North End street with elevated railway, horse carts, people, winter",
+      "seme": 1699
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Un enorme serbatoio contiene quasi nove milioni di litri di melassa."
+      ],
+      "frasi_en": [
+        "A giant tank holds over two million gallons of molasses."
+      ],
+      "prompt": "huge cylindrical steel storage tank next to a harbor, 1919, cold winter day",
+      "seme": 1700
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "All'improvviso, il serbatoio esplode."
+      ],
+      "frasi_en": [
+        "Suddenly, the tank bursts."
+      ],
+      "prompt": "giant steel tank bursting open, brown liquid exploding out, rivets flying",
+      "seme": 1701,
+      "effetti": [
+        "boom",
+        "flash",
+        "scossa"
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Un'onda appiccicosa corre per le strade a oltre cinquanta chilometri all'ora."
+      ],
+      "frasi_en": [
+        "A sticky wave races down the streets at thirty-five miles per hour."
+      ],
+      "prompt": "giant brown wave of thick molasses flooding a 1919 Boston street, buildings, people running",
+      "seme": 1698,
+      "ritaglio": [
+        0.15,
+        0.1,
+        0.7,
+        0.7
+      ]
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "Travolge case, carri, cavalli e persone."
+      ],
+      "frasi_en": [
+        "It crushes houses, wagons, horses and people."
+      ],
+      "prompt": "horse-drawn wagon stuck in thick brown syrup in a street, 1919",
+      "seme": 1702
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "Più si cerca di uscirne, più si resta intrappolati."
+      ],
+      "frasi_en": [
+        "The more people struggle, the more they get stuck."
+      ],
+      "prompt": "horse-drawn wagon stuck in thick brown syrup in a street, 1919",
+      "seme": 1702,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Muoiono ventuno persone. Oltre centocinquanta i feriti."
+      ],
+      "frasi_en": [
+        "Twenty-one people die. About a hundred and fifty are injured."
+      ],
+      "prompt": "1919 Boston North End street with elevated railway, horse carts, people, winter",
+      "seme": 1699,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/f.png",
+      "frasi": [
+        "Per ripulire servirono settimane, e acqua di mare."
+      ],
+      "frasi_en": [
+        "The cleanup took weeks, using seawater."
+      ],
+      "prompt": "1919 firefighters cleaning a brown sticky street with water hoses",
+      "seme": 1703
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Si racconta che per decenni, nei giorni caldi, il quartiere profumasse ancora di melassa."
+      ],
+      "frasi_en": [
+        "Locals said that for decades, on hot days, the neighborhood still smelled of molasses."
+      ],
+      "prompt": "1919 Boston North End street with elevated railway, horse carts, people, winter",
+      "seme": 1699,
+      "ritaglio": [
+        0.1,
+        0.35,
+        0.7,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Seguimi per altre storie assurde."
+      ],
+      "frasi_en": [
+        "Follow for more insane history."
+      ],
+      "prompt": "giant brown wave of thick molasses flooding a 1919 Boston street, buildings, people running",
+      "seme": 1698,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    }
+  ]
+}

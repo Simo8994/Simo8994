@@ -1,0 +1,210 @@
+{
+  "output": "onoda.mp4",
+  "output_en": "onoda-EN.mp4",
+  "tempo_voce": 1.08,
+  "titolo": {
+    "testo": "29 ANNI",
+    "sotto": "DI GUERRA IN PIÙ",
+    "durata": 2.8
+  },
+  "titolo_en": {
+    "testo": "29 YEARS",
+    "sotto": "OF EXTRA WAR",
+    "durata": 2.8
+  },
+  "evidenzia": [
+    "29",
+    "arrenderti",
+    "propaganda",
+    "comandante"
+  ],
+  "evidenzia_en": [
+    "29",
+    "surrender",
+    "propaganda",
+    "commander"
+  ],
+  "musica": {
+    "file": "../../musica/Hitman.mp3",
+    "inizio": "auto",
+    "volume": 0.4
+  },
+  "volume_effetti": 0.45,
+  "scene": [
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Questo soldato ha combattuto la Seconda guerra mondiale per 29 anni dopo la fine."
+      ],
+      "frasi_en": [
+        "This soldier kept fighting World War Two for 29 years after it ended."
+      ],
+      "prompt": "japanese world war two soldier in tattered uniform with rifle hiding in dense tropical jungle",
+      "seme": 771,
+      "effetti": [
+        "boom",
+        "flash"
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Filippine, 1944. Il tenente Hiroo Onoda viene mandato sull'isola di Lubang."
+      ],
+      "frasi_en": [
+        "Philippines, 1944. Lieutenant Hiroo Onoda is sent to Lubang Island."
+      ],
+      "prompt": "tropical island covered in jungle, philippines, 1940s, misty mountains, sea",
+      "seme": 772
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "L'ordine è chiaro: non arrenderti mai."
+      ],
+      "frasi_en": [
+        "His orders: never surrender."
+      ],
+      "prompt": "japanese world war two soldier in tattered uniform with rifle hiding in dense tropical jungle",
+      "seme": 771,
+      "ritaglio": [
+        0.15,
+        0.1,
+        0.7,
+        0.7
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Nel 1945 la guerra finisce. Ma lui non ci crede."
+      ],
+      "frasi_en": [
+        "In 1945 the war ends. He doesn't believe it."
+      ],
+      "prompt": "tropical island covered in jungle, philippines, 1940s, misty mountains, sea",
+      "seme": 772,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Volantini, giornali, lettere della famiglia: per lui è tutta propaganda nemica."
+      ],
+      "frasi_en": [
+        "Leaflets, newspapers, letters from his family: he thinks it's all enemy propaganda."
+      ],
+      "prompt": "paper leaflets falling from the sky over a dense jungle",
+      "seme": 773
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Passano gli anni. I suoi compagni muoiono o si arrendono. Lui resta nella giungla."
+      ],
+      "frasi_en": [
+        "Years pass. His comrades die or surrender. He stays in the jungle."
+      ],
+      "prompt": "lonely soldier sitting by a small fire in a jungle at night, worn uniform",
+      "seme": 774
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Ma non fu un eroe per tutti: negli scontri morirono anche diversi abitanti dell'isola."
+      ],
+      "frasi_en": [
+        "But he was no hero to everyone: several islanders were killed in his raids."
+      ],
+      "prompt": "japanese world war two soldier in tattered uniform with rifle hiding in dense tropical jungle",
+      "seme": 771,
+      "ritaglio": [
+        0.1,
+        0.35,
+        0.7,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "Nel 1974 un giovane viaggiatore giapponese lo trova."
+      ],
+      "frasi_en": [
+        "In 1974, a young Japanese traveler finds him."
+      ],
+      "prompt": "1970s young japanese traveler with backpack in a jungle clearing",
+      "seme": 775
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Onoda si arrende a una sola condizione: l'ordine deve arrivare dal suo vecchio comandante."
+      ],
+      "frasi_en": [
+        "Onoda will surrender on one condition: the order must come from his old commander."
+      ],
+      "prompt": "lonely soldier sitting by a small fire in a jungle at night, worn uniform",
+      "seme": 774,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/f.png",
+      "frasi": [
+        "Il comandante vola sull'isola. E gli ordina di deporre le armi."
+      ],
+      "frasi_en": [
+        "The commander flies to the island and orders him to lay down his arms."
+      ],
+      "prompt": "elderly japanese officer in uniform reading an order in a jungle, solemn",
+      "seme": 776,
+      "effetti": [
+        "flash"
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Ventinove anni dopo, la sua guerra è finita."
+      ],
+      "frasi_en": [
+        "Twenty-nine years later, his war is finally over."
+      ],
+      "prompt": "tropical island covered in jungle, philippines, 1940s, misty mountains, sea",
+      "seme": 772,
+      "ritaglio": [
+        0.1,
+        0.35,
+        0.7,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Seguimi per altre storie assurde."
+      ],
+      "frasi_en": [
+        "Follow for more insane history."
+      ],
+      "prompt": "japanese world war two soldier in tattered uniform with rifle hiding in dense tropical jungle",
+      "seme": 771,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "output": "guerra-degli-emu.mp4",
+  "output_en": "guerra-degli-emu-EN.mp4",
+  "tempo_voce": 1.08,
+  "titolo": {
+    "testo": "EMÙ 1 · ESERCITO 0",
+    "sotto": "LA GUERRA DEGLI EMÙ",
+    "durata": 2.8
+  },
+  "titolo_en": {
+    "testo": "EMUS 1 · ARMY 0",
+    "sotto": "THE GREAT EMU WAR",
+    "durata": 2.8
+  },
+  "evidenzia": [
+    "emù",
+    "perse",
+    "ritirò",
+    "carri"
+  ],
+  "evidenzia_en": [
+    "emus",
+    "lost",
+    "tanks"
+  ],
+  "musica": {
+    "file": "../../musica/Monkeys-Spinning-Monkeys.mp3",
+    "inizio": "auto",
+    "volume": 0.4
+  },
+  "volume_effetti": 0.45,
+  "scene": [
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Nel 1932 l'esercito australiano dichiarò guerra agli emù. E perse."
+      ],
+      "frasi_en": [
+        "In 1932, the Australian army declared war on emus. And lost."
+      ],
+      "prompt": "a huge flock of emus running across a golden wheat field in Western Australia, 1932",
+      "seme": 1820,
+      "effetti": [
+        "boom",
+        "flash"
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Ventimila emù stavano devastando i campi di grano."
+      ],
+      "frasi_en": [
+        "Twenty thousand emus were destroying the wheat fields."
+      ],
+      "prompt": "1930s Western Australian wheat farm, wide dry landscape, farmhouse, golden wheat",
+      "seme": 1821
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Gli agricoltori, molti ex soldati, chiesero aiuto al governo."
+      ],
+      "frasi_en": [
+        "The farmers, many of them ex-soldiers, asked the government for help."
+      ],
+      "prompt": "group of 1930s australian farmers wearing hats, worried faces, rural australia",
+      "seme": 1822
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Arrivarono un maggiore, due soldati, due mitragliatrici e diecimila proiettili."
+      ],
+      "frasi_en": [
+        "The army sent a major, two soldiers, two machine guns and ten thousand rounds."
+      ],
+      "prompt": "1930s australian soldiers in khaki uniforms with a machine gun on a tripod in a field",
+      "seme": 1823
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Sembrava una passeggiata."
+      ],
+      "frasi_en": [
+        "It looked easy."
+      ],
+      "prompt": "a huge flock of emus running across a golden wheat field in Western Australia, 1932",
+      "seme": 1820,
+      "ritaglio": [
+        0.15,
+        0.1,
+        0.7,
+        0.7
+      ]
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "Ma al primo sparo, gli emù si divisero in piccoli gruppi e scapparono ovunque."
+      ],
+      "frasi_en": [
+        "But at the first shot, the emus split into small groups and ran in every direction."
+      ],
+      "prompt": "dozens of emus running away in a dusty field, motion blur, chaos",
+      "seme": 1824,
+      "effetti": [
+        "boom",
+        "scossa"
+      ]
+    },
+    {
+      "immagine": "immagini/f.png",
+      "frasi": [
+        "I camion non riuscivano a inseguirli. Una mitragliatrice si inceppò."
+      ],
+      "frasi_en": [
+        "The trucks couldn't keep up. One machine gun jammed."
+      ],
+      "prompt": "1930s army truck driving through dust in the australian outback",
+      "seme": 1825
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Dopo pochi giorni, l'esercito si ritirò."
+      ],
+      "frasi_en": [
+        "After a few days, the army pulled out."
+      ],
+      "prompt": "1930s australian soldiers in khaki uniforms with a machine gun on a tripod in a field",
+      "seme": 1823,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "Il maggiore disse che gli emù affrontavano le mitragliatrici come carri armati."
+      ],
+      "frasi_en": [
+        "The major said the emus could face machine guns like tanks."
+      ],
+      "prompt": "dozens of emus running away in a dusty field, motion blur, chaos",
+      "seme": 1824,
+      "ritaglio": [
+        0.1,
+        0.35,
+        0.7,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Ci riprovarono. Alla fine: quasi diecimila colpi per circa mille emù."
+      ],
+      "frasi_en": [
+        "They tried again. Final count: almost ten thousand rounds for about a thousand emus."
+      ],
+      "prompt": "1930s Western Australian wheat farm, wide dry landscape, farmhouse, golden wheat",
+      "seme": 1821,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "E gli emù? Sono ancora lì."
+      ],
+      "frasi_en": [
+        "And the emus? Still there."
+      ],
+      "prompt": "a huge flock of emus running across a golden wheat field in Western Australia, 1932",
+      "seme": 1820,
+      "ritaglio": [
+        0.1,
+        0.35,
+        0.7,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Seguimi per altre storie assurde."
+      ],
+      "frasi_en": [
+        "Follow for more insane history."
+      ],
+      "prompt": "a huge flock of emus running across a golden wheat field in Western Australia, 1932",
+      "seme": 1820,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    }
+  ]
+}

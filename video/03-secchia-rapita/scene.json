@@ -1,0 +1,194 @@
+{
+  "output": "secchia-rapita.mp4",
+  "output_en": "secchia-rapita-EN.mp4",
+  "tempo_voce": 1.08,
+  "titolo": {
+    "testo": "LA GUERRA DEL SECCHIO",
+    "sotto": "MODENA CONTRO BOLOGNA",
+    "durata": 2.8
+  },
+  "titolo_en": {
+    "testo": "THE BUCKET WAR",
+    "sotto": "MODENA VS BOLOGNA",
+    "durata": 2.8
+  },
+  "evidenzia": [
+    "secchio",
+    "modena",
+    "bologna",
+    "trofeo"
+  ],
+  "evidenzia_en": [
+    "bucket",
+    "modena",
+    "bologna",
+    "trophy"
+  ],
+  "musica": {
+    "file": "../../musica/Five-Armies.mp3",
+    "inizio": "auto",
+    "volume": 0.4
+  },
+  "volume_effetti": 0.45,
+  "scene": [
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Una delle più grandi battaglie del Medioevo… per un secchio."
+      ],
+      "frasi_en": [
+        "One of the biggest battles of the Middle Ages… over a bucket."
+      ],
+      "prompt": "huge medieval battle, knights on horses clashing in italian countryside, 14th century, banners",
+      "seme": 1647,
+      "effetti": [
+        "boom",
+        "flash"
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Italia, 1325. Modena contro Bologna."
+      ],
+      "frasi_en": [
+        "Italy, 1325. Modena versus Bologna."
+      ],
+      "prompt": "medieval italian city with tall stone towers and red brick walls, Bologna, 14th century",
+      "seme": 1648
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Le due città si odiano da anni: guelfi contro ghibellini."
+      ],
+      "frasi_en": [
+        "The two cities have hated each other for years."
+      ],
+      "prompt": "medieval italian city with tall stone towers and red brick walls, Bologna, 14th century",
+      "seme": 1648,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Secondo la leggenda, i soldati di Modena entrano a Bologna e rubano… un secchio di legno."
+      ],
+      "frasi_en": [
+        "Legend says Modena's soldiers sneaked into Bologna and stole… a wooden bucket."
+      ],
+      "prompt": "medieval soldiers sneaking at night near a stone well in an italian town square, moonlight",
+      "seme": 1649
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Bologna non la prende bene."
+      ],
+      "frasi_en": [
+        "Bologna did not take it well."
+      ],
+      "prompt": "an old wooden bucket hanging over a stone well, medieval, close-up",
+      "seme": 1650
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "A Zappolino si scontrano circa trentamila bolognesi contro settemila modenesi."
+      ],
+      "frasi_en": [
+        "At Zappolino, about thirty thousand men from Bologna faced seven thousand from Modena."
+      ],
+      "prompt": "medieval army of thousands of soldiers with flags on a hill at dawn, italy",
+      "seme": 1651
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Sembra già scritta. E invece vince Modena."
+      ],
+      "frasi_en": [
+        "It looked decided. Instead, Modena won."
+      ],
+      "prompt": "huge medieval battle, knights on horses clashing in italian countryside, 14th century, banners",
+      "seme": 1647,
+      "ritaglio": [
+        0.15,
+        0.1,
+        0.7,
+        0.7
+      ],
+      "effetti": [
+        "boom",
+        "scossa"
+      ]
+    },
+    {
+      "immagine": "immagini/f.png",
+      "frasi": [
+        "I modenesi inseguono i nemici fino alle porte di Bologna."
+      ],
+      "frasi_en": [
+        "Modena chased the enemy right up to the gates of Bologna."
+      ],
+      "prompt": "medieval knights chasing fleeing soldiers toward city gates, dust, chaos",
+      "seme": 1652
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "E come trofeo si portano a casa… il secchio."
+      ],
+      "frasi_en": [
+        "And as a trophy, they took home… the bucket."
+      ],
+      "prompt": "an old wooden bucket hanging over a stone well, medieval, close-up",
+      "seme": 1650,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Quel secchio è ancora oggi a Modena."
+      ],
+      "frasi_en": [
+        "That bucket is still in Modena today."
+      ],
+      "prompt": "medieval italian city with tall stone towers and red brick walls, Bologna, 14th century",
+      "seme": 1648,
+      "ritaglio": [
+        0.1,
+        0.35,
+        0.7,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "Seguimi per altre storie assurde."
+      ],
+      "frasi_en": [
+        "Follow for more insane history."
+      ],
+      "prompt": "medieval army of thousands of soldiers with flags on a hill at dawn, italy",
+      "seme": 1651,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    }
+  ]
+}

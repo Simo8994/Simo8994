@@ -1,0 +1,191 @@
+{
+  "output": "grande-puzza.mp4",
+  "output_en": "grande-puzza-EN.mp4",
+  "tempo_voce": 1.08,
+  "titolo": {
+    "testo": "LA GRANDE PUZZA",
+    "sotto": "LONDRA 1858",
+    "durata": 2.8
+  },
+  "titolo_en": {
+    "testo": "THE GREAT STINK",
+    "sotto": "LONDON 1858",
+    "durata": 2.8
+  },
+  "evidenzia": [
+    "puzzava",
+    "fogna",
+    "puzza"
+  ],
+  "evidenzia_en": [
+    "stank",
+    "sewer",
+    "smell"
+  ],
+  "musica": {
+    "file": "../../musica/Monkeys-Spinning-Monkeys.mp3",
+    "inizio": "auto",
+    "volume": 0.4
+  },
+  "volume_effetti": 0.45,
+  "scene": [
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Nel 1858 Londra puzzava così tanto che il Parlamento quasi scappò."
+      ],
+      "frasi_en": [
+        "In 1858, London stank so badly that Parliament almost fled."
+      ],
+      "prompt": "victorian London gentlemen covering their noses with handkerchiefs by the dirty Thames river, 1858",
+      "seme": 1479,
+      "effetti": [
+        "boom",
+        "flash"
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Londra, estate 1858. Fa un caldo record."
+      ],
+      "frasi_en": [
+        "London, summer 1858. A heatwave hits."
+      ],
+      "prompt": "victorian London skyline with Houses of Parliament under construction, hazy hot summer, 1858",
+      "seme": 1480
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Il Tamigi è una fogna a cielo aperto: milioni di persone scaricano tutto nel fiume."
+      ],
+      "frasi_en": [
+        "The Thames is an open sewer for millions of people."
+      ],
+      "prompt": "dirty brown polluted river Thames with sewage pipes, victorian London, 1858",
+      "seme": 1481
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Con il caldo, l'odore diventa insopportabile."
+      ],
+      "frasi_en": [
+        "In the heat, the smell becomes unbearable."
+      ],
+      "prompt": "victorian London gentlemen covering their noses with handkerchiefs by the dirty Thames river, 1858",
+      "seme": 1479,
+      "ritaglio": [
+        0.15,
+        0.1,
+        0.7,
+        0.7
+      ]
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "In Parlamento appendono alle finestre tende imbevute di cloruro di calce."
+      ],
+      "frasi_en": [
+        "Parliament hangs curtains soaked in chloride of lime over the windows."
+      ],
+      "prompt": "victorian parliament hall with curtains hanging over tall gothic windows, politicians in top hats",
+      "seme": 1482
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Si pensa perfino di spostare il Parlamento fuori città."
+      ],
+      "frasi_en": [
+        "They even consider moving Parliament out of town."
+      ],
+      "prompt": "victorian parliament hall with curtains hanging over tall gothic windows, politicians in top hats",
+      "seme": 1482,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Poi, in meno di tre settimane, approvano una legge."
+      ],
+      "frasi_en": [
+        "Then, in under three weeks, they pass a law."
+      ],
+      "prompt": "victorian London skyline with Houses of Parliament under construction, hazy hot summer, 1858",
+      "seme": 1480,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ],
+      "effetti": [
+        "flash"
+      ]
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "L'ingegnere Joseph Bazalgette costruisce un'enorme rete di fogne."
+      ],
+      "frasi_en": [
+        "Engineer Joseph Bazalgette builds a massive sewer network."
+      ],
+      "prompt": "victorian engineer with large moustache looking at sewer construction plans",
+      "seme": 1483
+    },
+    {
+      "immagine": "immagini/f.png",
+      "frasi": [
+        "Quelle fogne funzionano ancora oggi."
+      ],
+      "frasi_en": [
+        "Those sewers are still in use today."
+      ],
+      "prompt": "huge victorian brick sewer tunnel under construction, workers, arches",
+      "seme": 1484
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Insomma: Londra è stata salvata da una puzza."
+      ],
+      "frasi_en": [
+        "So yes: London was saved by a bad smell."
+      ],
+      "prompt": "victorian London gentlemen covering their noses with handkerchiefs by the dirty Thames river, 1858",
+      "seme": 1479,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Seguimi per altre storie assurde."
+      ],
+      "frasi_en": [
+        "Follow for more insane history."
+      ],
+      "prompt": "dirty brown polluted river Thames with sewage pipes, victorian London, 1858",
+      "seme": 1481,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    }
+  ]
+}

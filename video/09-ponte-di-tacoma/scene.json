@@ -1,0 +1,182 @@
+{
+  "output": "ponte-di-tacoma.mp4",
+  "output_en": "ponte-di-tacoma-EN.mp4",
+  "tempo_voce": 1.08,
+  "titolo": {
+    "testo": "GALLOPING GERTIE",
+    "sotto": "IL PONTE CHE BALLAVA",
+    "durata": 2.8
+  },
+  "titolo_en": {
+    "testo": "GALLOPING GERTIE",
+    "sotto": "THE BRIDGE THAT DANCED",
+    "durata": 2.8
+  },
+  "evidenzia": [
+    "vento",
+    "crolla",
+    "cane"
+  ],
+  "evidenzia_en": [
+    "wind",
+    "collapses",
+    "dog"
+  ],
+  "musica": {
+    "file": "../../musica/Volatile-Reaction.mp3",
+    "inizio": "auto",
+    "volume": 0.4
+  },
+  "volume_effetti": 0.45,
+  "scene": [
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Questo ponte si è autodistrutto… per colpa del vento."
+      ],
+      "frasi_en": [
+        "This bridge destroyed itself… because of the wind."
+      ],
+      "prompt": "long 1940 suspension bridge twisting violently in strong wind over a river, dramatic",
+      "seme": 1721,
+      "effetti": [
+        "boom",
+        "flash"
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Stato di Washington, 1940. Inaugurano il ponte di Tacoma Narrows."
+      ],
+      "frasi_en": [
+        "Washington State, 1940. The Tacoma Narrows Bridge opens."
+      ],
+      "prompt": "new 1940 suspension bridge over a wide strait, green hills, opening day, cars",
+      "seme": 1722
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Fin dal primo giorno, con un po' di vento, ondeggia su e giù."
+      ],
+      "frasi_en": [
+        "From day one, even a light wind makes it bounce up and down."
+      ],
+      "prompt": "1940s cars driving on a wavy undulating bridge deck, people amazed",
+      "seme": 1723
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Lo chiamano Galloping Gertie. C'è chi lo attraversa apposta per il brivido."
+      ],
+      "frasi_en": [
+        "People nickname it Galloping Gertie. Some drive across just for the thrill."
+      ],
+      "prompt": "1940s cars driving on a wavy undulating bridge deck, people amazed",
+      "seme": 1723,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        {
+          "testo": "7 novembre 1940. Vento a sessanta chilometri all'ora.",
+          "voce": "Sette novembre, millenovecentoquaranta. Vento a sessanta chilometri all'ora."
+        }
+      ],
+      "frasi_en": [
+        "November 7, 1940. Winds of forty miles per hour."
+      ],
+      "prompt": "new 1940 suspension bridge over a wide strait, green hills, opening day, cars",
+      "seme": 1722,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Il ponte inizia a torcersi come un nastro."
+      ],
+      "frasi_en": [
+        "The bridge starts twisting like a ribbon."
+      ],
+      "prompt": "long 1940 suspension bridge twisting violently in strong wind over a river, dramatic",
+      "seme": 1721,
+      "ritaglio": [
+        0.15,
+        0.1,
+        0.7,
+        0.7
+      ],
+      "effetti": [
+        "scossa"
+      ]
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Verso le undici del mattino, crolla in acqua."
+      ],
+      "frasi_en": [
+        "Around eleven a.m., it collapses into the water."
+      ],
+      "prompt": "suspension bridge deck breaking apart and falling into the water, concrete and steel debris",
+      "seme": 1724,
+      "effetti": [
+        "boom",
+        "flash",
+        "scossa"
+      ]
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "Nessuna vittima umana. L'unica fu un cane, rimasto in un'auto sul ponte."
+      ],
+      "frasi_en": [
+        "No people died. The only victim was a dog left in a car on the bridge."
+      ],
+      "prompt": "1940s car abandoned in the middle of a damaged bridge, wind",
+      "seme": 1725
+    },
+    {
+      "immagine": "immagini/f.png",
+      "frasi": [
+        "Quel crollo ha cambiato per sempre il modo di progettare i ponti."
+      ],
+      "frasi_en": [
+        "That collapse changed how bridges are designed forever."
+      ],
+      "prompt": "1940s engineers studying a bridge model in a wind tunnel laboratory",
+      "seme": 1726
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Seguimi per altre storie assurde."
+      ],
+      "frasi_en": [
+        "Follow for more insane history."
+      ],
+      "prompt": "long 1940 suspension bridge twisting violently in strong wind over a river, dramatic",
+      "seme": 1721,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    }
+  ]
+}

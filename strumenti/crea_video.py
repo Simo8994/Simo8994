@@ -293,6 +293,7 @@ def main():
     ap.add_argument("--python-tts", default="python3",
                     help="Python dell'ambiente con chatterbox-tts / kokoro")
     ap.add_argument("--velocita", type=float, default=0.9)
+    ap.add_argument("--lingua", default="it", help="it oppure en (usa i campi *_en)")
     args = ap.parse_args()
 
     scene_path = Path(args.scene).resolve()
@@ -300,6 +301,18 @@ def main():
     tmp = base / "_tmp"
     tmp.mkdir(exist_ok=True)
     dati = json.loads(scene_path.read_text(encoding="utf-8"))
+    if args.lingua != "it":  # versione in un'altra lingua dallo stesso file
+        L = args.lingua
+        dati["lingua"] = L
+        for chiave in ("titolo", "evidenzia", "output"):
+            if f"{chiave}_{L}" in dati:
+                dati[chiave] = dati[f"{chiave}_{L}"]
+        for s in dati["scene"]:
+            s["frasi"] = s[f"frasi_{L}"]
+            if f"didascalia_{L}" in s:
+                s["didascalia"] = s[f"didascalia_{L}"]
+        tmp = base / f"_tmp_{L}"
+        tmp.mkdir(exist_ok=True)
 
     if args.voce:
         voce_wav, inizi_scene = voce_sintetica(
@@ -389,7 +402,10 @@ def main():
            f"[2:a]volume={dati.get('volume_effetti', 0.5)}[sfx];")
     musica = dati.get("musica")
     if musica:
-        cmd += ["-ss", str(musica.get("inizio", 0)), "-i", base / musica["file"]]
+        inizio = musica.get("inizio", "auto")
+        if inizio == "auto":
+            inizio = punto_intenso(base / musica["file"], durata)
+        cmd += ["-ss", str(inizio), "-i", base / musica["file"]]
         mix += (f"[3:a]aresample={SR_MIX},volume={musica.get('volume', 0.35)},"
                 f"afade=t=in:d=0.5,afade=t=out:st={max(durata - 1.5, 0):.2f}:d=1.5[mus];"
                 # la musica si abbassa quando parla la voce
@@ -415,6 +431,19 @@ def main():
          "-c:v", "libx264", "-preset", "fast", "-crf", "28", "-c:a", "aac", "-b:a", "96k",
          "-movflags", "+faststart", anteprima])
     print(f"Creato: {finale} ({durata:.1f} s) + {anteprima.name}")
+
+
+def punto_intenso(brano, durata):
+    """Secondo d'inizio del tratto piu' energico del brano lungo quanto il video."""
+    pcm = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", str(brano), "-ac", "1",
+                          "-ar", "8000", "-f", "s16le", "-"], capture_output=True).stdout
+    a = np.frombuffer(pcm, dtype=np.int16).astype(np.float32) / 32768
+    energia = np.array([np.sqrt(np.mean(a[i:i + 8000] ** 2)) for i in range(0, len(a), 8000)])
+    finestra = int(durata) + 1
+    if len(energia) <= finestra:
+        return 0
+    somme = np.convolve(energia, np.ones(finestra), "valid")
+    return int(np.argmax(somme[: len(energia) - finestra]))
 
 
 # ---------------------------------------------------------------- effetti sonori

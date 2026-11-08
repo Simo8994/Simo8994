@@ -1,0 +1,193 @@
+{
+  "output": "phineas-gage.mp4",
+  "output_en": "phineas-gage-EN.mp4",
+  "tempo_voce": 1.08,
+  "titolo": {
+    "testo": "SOPRAVVISSUTO",
+    "sotto": "PHINEAS GAGE",
+    "durata": 2.8
+  },
+  "titolo_en": {
+    "testo": "HE SURVIVED",
+    "sotto": "PHINEAS GAGE",
+    "durata": 2.8
+  },
+  "evidenzia": [
+    "cranio",
+    "esplosione",
+    "sbarra"
+  ],
+  "evidenzia_en": [
+    "skull",
+    "explosion",
+    "rod"
+  ],
+  "musica": {
+    "file": "../../musica/Volatile-Reaction.mp3",
+    "inizio": "auto",
+    "volume": 0.4
+  },
+  "volume_effetti": 0.45,
+  "scene": [
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Una sbarra di ferro gli attraversò il cranio. E lui si rialzò."
+      ],
+      "frasi_en": [
+        "An iron rod went straight through his skull. And he got up."
+      ],
+      "prompt": "portrait of a 19th century american railroad worker with a scar over one eye holding a long iron rod",
+      "seme": 1438,
+      "effetti": [
+        "boom",
+        "flash"
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Vermont, 1848. Phineas Gage lavora alla costruzione di una ferrovia."
+      ],
+      "frasi_en": [
+        "Vermont, 1848. Phineas Gage is building a railroad."
+      ],
+      "prompt": "1848 railroad construction site in Vermont hills, workers, rocks, tracks",
+      "seme": 1439
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Il suo compito: pressare la polvere da sparo nei fori con una sbarra di ferro."
+      ],
+      "frasi_en": [
+        "His job: pack blasting powder into holes with an iron rod."
+      ],
+      "prompt": "19th century worker pressing powder into a hole in a rock with a long iron rod, close-up",
+      "seme": 1440
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Una scintilla. L'esplosione."
+      ],
+      "frasi_en": [
+        "A spark. An explosion."
+      ],
+      "prompt": "explosion of rock and dust at a railroad construction site, 1848",
+      "seme": 1441,
+      "effetti": [
+        "boom",
+        "flash",
+        "scossa"
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "La sbarra, lunga più di un metro, entra sotto lo zigomo ed esce dalla cima della testa."
+      ],
+      "frasi_en": [
+        "The rod, over three feet long, enters under his cheekbone and exits through the top of his head."
+      ],
+      "prompt": "portrait of a 19th century american railroad worker with a scar over one eye holding a long iron rod",
+      "seme": 1438,
+      "ritaglio": [
+        0.15,
+        0.1,
+        0.7,
+        0.7
+      ]
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Atterra a venticinque metri di distanza."
+      ],
+      "frasi_en": [
+        "It lands about eighty feet away."
+      ],
+      "prompt": "explosion of rock and dust at a railroad construction site, 1848",
+      "seme": 1441,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "Pochi minuti dopo, Phineas è seduto e parla."
+      ],
+      "frasi_en": [
+        "Minutes later, Phineas is sitting up and talking."
+      ],
+      "prompt": "19th century wooden ox cart on a country road, injured man sitting up",
+      "seme": 1442
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Sopravvive. Ma chi lo conosceva dirà che non era più lo stesso."
+      ],
+      "frasi_en": [
+        "He survives. But people who knew him said he was no longer the same man."
+      ],
+      "prompt": "portrait of a 19th century american railroad worker with a scar over one eye holding a long iron rod",
+      "seme": 1438,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Il suo caso ha aiutato a capire come funziona il cervello."
+      ],
+      "frasi_en": [
+        "His case helped scientists understand how the brain works."
+      ],
+      "prompt": "1848 railroad construction site in Vermont hills, workers, rocks, tracks",
+      "seme": 1439,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/f.png",
+      "frasi": [
+        "Il suo cranio e la sbarra sono ancora conservati a Harvard."
+      ],
+      "frasi_en": [
+        "His skull and the rod are still kept at Harvard."
+      ],
+      "prompt": "old human skull and a long iron rod displayed in a museum glass case",
+      "seme": 1443
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Seguimi per altre storie assurde."
+      ],
+      "frasi_en": [
+        "Follow for more insane history."
+      ],
+      "prompt": "portrait of a 19th century american railroad worker with a scar over one eye holding a long iron rod",
+      "seme": 1438,
+      "ritaglio": [
+        0.1,
+        0.35,
+        0.7,
+        0.6
+      ]
+    }
+  ]
+}

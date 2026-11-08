@@ -1,0 +1,211 @@
+{
+  "output": "peste-del-ballo.mp4",
+  "output_en": "peste-del-ballo-EN.mp4",
+  "tempo_voce": 1.08,
+  "titolo": {
+    "testo": "LA PESTE DEL BALLO",
+    "sotto": "STRASBURGO 1518",
+    "durata": 2.8
+  },
+  "titolo_en": {
+    "testo": "THE DANCING PLAGUE",
+    "sotto": "STRASBOURG 1518",
+    "durata": 2.8
+  },
+  "evidenzia": [
+    "ballare",
+    "centinaia",
+    "ballo"
+  ],
+  "evidenzia_en": [
+    "dancing",
+    "hundreds",
+    "dance"
+  ],
+  "musica": {
+    "file": "../../musica/Darkest-Child.mp3",
+    "inizio": "auto",
+    "volume": 0.4
+  },
+  "volume_effetti": 0.45,
+  "scene": [
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Nel 1518 centinaia di persone ballarono per giorni senza riuscire a fermarsi."
+      ],
+      "frasi_en": [
+        "In 1518, hundreds of people danced for days and couldn't stop."
+      ],
+      "prompt": "crowd of people dancing frantically in a medieval cobblestone street, 1518, eerie, exhausted faces",
+      "seme": 1710,
+      "effetti": [
+        "boom",
+        "flash"
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Strasburgo, luglio 1518."
+      ],
+      "frasi_en": [
+        "Strasbourg, July 1518."
+      ],
+      "prompt": "medieval Strasbourg town with gothic cathedral spire, half-timbered houses, summer",
+      "seme": 1711
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Una donna, Frau Troffea, scende in strada e inizia a ballare."
+      ],
+      "frasi_en": [
+        "A woman named Frau Troffea steps into the street and starts dancing."
+      ],
+      "prompt": "a woman in 16th century peasant dress dancing alone in an empty cobblestone street",
+      "seme": 1712
+    },
+    {
+      "immagine": "immagini/c.png",
+      "frasi": [
+        "Non si ferma per giorni."
+      ],
+      "frasi_en": [
+        "She doesn't stop for days."
+      ],
+      "prompt": "a woman in 16th century peasant dress dancing alone in an empty cobblestone street",
+      "seme": 1712,
+      "ritaglio": [
+        0.15,
+        0.1,
+        0.7,
+        0.7
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Dopo una settimana, altre trenta persone ballano con lei."
+      ],
+      "frasi_en": [
+        "Within a week, thirty more people are dancing with her."
+      ],
+      "prompt": "crowd of people dancing frantically in a medieval cobblestone street, 1518, eerie, exhausted faces",
+      "seme": 1710,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Dopo un mese, secondo le cronache, sono centinaia."
+      ],
+      "frasi_en": [
+        "Within a month, chronicles say, there are hundreds."
+      ],
+      "prompt": "crowd of people dancing frantically in a medieval cobblestone street, 1518, eerie, exhausted faces",
+      "seme": 1710,
+      "ritaglio": [
+        0.15,
+        0.1,
+        0.7,
+        0.7
+      ],
+      "effetti": [
+        "boom"
+      ]
+    },
+    {
+      "immagine": "immagini/f.png",
+      "frasi": [
+        "La soluzione delle autorità? Ancora più ballo."
+      ],
+      "frasi_en": [
+        "The authorities' solution? More dancing."
+      ],
+      "prompt": "medieval town council of nobles in robes discussing in a dark hall",
+      "seme": 1715
+    },
+    {
+      "immagine": "immagini/d.png",
+      "frasi": [
+        "Costruiscono un palco e pagano musicisti, convinti che ballando guariranno."
+      ],
+      "frasi_en": [
+        "They built a stage and hired musicians, convinced the dancers would dance it out."
+      ],
+      "prompt": "medieval musicians with drums, pipes and lutes playing on a wooden stage in a town square",
+      "seme": 1713
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "Alcuni, secondo i racconti, crollano sfiniti."
+      ],
+      "frasi_en": [
+        "Some, according to accounts, collapse from exhaustion."
+      ],
+      "prompt": "exhausted medieval people collapsed on the ground in a street, dramatic shadows",
+      "seme": 1714,
+      "effetti": [
+        "scossa"
+      ]
+    },
+    {
+      "immagine": "immagini/b.png",
+      "frasi": [
+        "Ancora oggi nessuno sa con certezza cosa sia successo."
+      ],
+      "frasi_en": [
+        "To this day, no one knows for sure what happened."
+      ],
+      "prompt": "medieval Strasbourg town with gothic cathedral spire, half-timbered houses, summer",
+      "seme": 1711,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/e.png",
+      "frasi": [
+        "L'ipotesi più accreditata: un'isteria di massa, dopo anni di fame e malattie."
+      ],
+      "frasi_en": [
+        "The leading theory: mass hysteria, after years of famine and disease."
+      ],
+      "prompt": "exhausted medieval people collapsed on the ground in a street, dramatic shadows",
+      "seme": 1714,
+      "ritaglio": [
+        0.25,
+        0.2,
+        0.6,
+        0.6
+      ]
+    },
+    {
+      "immagine": "immagini/a.png",
+      "frasi": [
+        "Seguimi per altre storie assurde."
+      ],
+      "frasi_en": [
+        "Follow for more insane history."
+      ],
+      "prompt": "crowd of people dancing frantically in a medieval cobblestone street, 1518, eerie, exhausted faces",
+      "seme": 1710,
+      "ritaglio": [
+        0.1,
+        0.35,
+        0.7,
+        0.6
+      ]
+    }
+  ]
+}
