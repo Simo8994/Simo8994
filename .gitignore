@@ -1,3 +1,6 @@
 _tmp/
 _tmp_*/
 __pycache__/
+# video in alta qualità: si rigenerano con strumenti/produci.sh (su git solo le anteprime)
+video/*/*.mp4
+!video/*/*-anteprima.mp4

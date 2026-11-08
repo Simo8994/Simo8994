@@ -417,11 +417,12 @@ def main():
     # look cinematografico: contrasto, toni caldi/freddi, vignettatura, grana pellicola
     look = ("eq=contrast=1.08:saturation=1.08:gamma=0.97,"
             "colorbalance=rs=-0.04:bs=0.05:rh=0.06:bh=-0.05,"
-            "vignette=angle=PI/4.5,noise=alls=7:allf=t,")
+            "vignette=angle=PI/4.5,noise=alls=4:allf=t,")
     cmd += ["-filter_complex",
             mix + f";[0:v]{look}subtitles={ass_path}:fontsdir={FONT_DIR}[v]",
             "-map", "[v]", "-map", "[a]",
-            "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-pix_fmt", "yuv420p",
+            "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-maxrate", "6M",
+            "-bufsize", "12M", "-pix_fmt", "yuv420p",
             "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "-t", f"{durata:.2f}",
             finale]
     run(cmd)
