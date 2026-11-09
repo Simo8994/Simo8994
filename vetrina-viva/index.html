@@ -3,183 +3,293 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vetrina Viva — Siti con prenotazioni per attività locali del Vicentino</title>
-  <meta name="description" content="Siti web per ristoranti, saloni, officine, artigiani e negozi della provincia di Vicenza: prezzi, orari, prenotazioni e richieste di preventivo online. Pronti in pochi giorni, li aggiorniamo noi.">
-  <meta property="og:title" content="Vetrina Viva — Siti con prenotazioni per attività locali">
-  <meta property="og:description" content="Il sito della tua attività, con prenotazioni online. Pronto in pochi giorni, lo aggiorniamo noi.">
+  <title>Vetrina Viva — Siti con prenotazioni per attività locali, in tutta Italia</title>
+  <meta name="description" content="Siti web per ristoranti, saloni, officine, artigiani e negozi in tutta Italia: prezzi, orari, prenotazioni e richieste di preventivo online. Pronti in pochi giorni, li aggiorniamo noi.">
+  <meta property="og:title" content="Vetrina Viva — Il sito della tua attività, con le prenotazioni dentro">
+  <meta property="og:description" content="Prezzi, orari e prenotazioni in una pagina che i clienti aprono dal telefono. La costruiamo noi e la teniamo aggiornata.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="it_IT">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪟</text></svg>">
+  <meta name="theme-color" content="#0e2a22">
+  <link rel="icon" href="/logo.svg" type="image/svg+xml">
 
   <style>
     :root {
-      --sfondo: #f4f6f3;
-      --carta: #ffffff;
-      --testo: #14201b;
-      --tenue: #5a6861;
-      --accento: #0f6b4f;
-      --accento-forte: #0b5540;
-      --su-accento: #f2fbf7;
-      --evidenza: #e8f3ee;
-      --bordo: #dbe3de;
-      --scuro: #14201b;
-      --su-scuro: #eef3f0;
+      --sfondo: #f6f2e9;
+      --carta: #fffdf8;
+      --testo: #0e2a22;
+      --tenue: #55675f;
+      --verde: #0e2a22;
+      --su-verde: #f6f2e9;
+      --su-verde-tenue: #a9bcb3;
+      --accento: #c9541f;
+      --accento-forte: #a94414;
+      --su-accento: #fff8f2;
+      --velo: #ebe5d7;
+      --bordo: #ddd5c3;
+      --ombra: 0 1px 2px rgba(14, 42, 34, .06), 0 12px 32px -12px rgba(14, 42, 34, .18);
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --sfondo: #0f1513;
-        --carta: #18201d;
-        --testo: #e9efec;
-        --tenue: #9aa9a2;
-        --accento: #4fd1a5;
-        --accento-forte: #74dcb8;
-        --su-accento: #062018;
-        --evidenza: #16261f;
-        --bordo: #2a3530;
-        --scuro: #0a0f0d;
-        --su-scuro: #e9efec;
+        --sfondo: #0b1512;
+        --carta: #13201c;
+        --testo: #ece7da;
+        --tenue: #9fb0a8;
+        --verde: #07100d;
+        --su-verde: #ece7da;
+        --su-verde-tenue: #8fa39a;
+        --accento: #f0834d;
+        --accento-forte: #f59a6c;
+        --su-accento: #1f0d04;
+        --velo: #182822;
+        --bordo: #26372f;
+        --ombra: 0 1px 2px rgba(0, 0, 0, .3), 0 14px 34px -12px rgba(0, 0, 0, .6);
       }
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
     body {
       margin: 0; background: var(--sfondo); color: var(--testo);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.55; -webkit-text-size-adjust: 100%;
+      font-family: var(--sans); line-height: 1.6; -webkit-text-size-adjust: 100%;
     }
-    .contenitore { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+    .contenitore { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+    .stretto { max-width: 760px; }
     a { color: var(--accento); }
+    h1, h2 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+    h3 { font-size: 1.06rem; margin: 0 0 6px; letter-spacing: -0.01em; }
 
-    header { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; gap: 12px; }
-    .marchio { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; }
-    .marchio span { color: var(--accento); }
-    nav a { color: var(--tenue); text-decoration: none; font-size: 0.93rem; margin-left: 18px; }
+    /* Testata */
+    .testata { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--sfondo) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--bordo); }
+    .testata .contenitore { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 68px; }
+    .marchio { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--testo); font-family: var(--serif); font-size: 1.28rem; font-weight: 600; letter-spacing: -0.02em; }
+    .marchio svg { width: 34px; height: 34px; flex: none; }
+    .marchio i { font-style: italic; color: var(--accento); }
+    nav { display: flex; align-items: center; gap: 22px; }
+    nav a { color: var(--tenue); text-decoration: none; font-size: 0.93rem; }
     nav a:hover { color: var(--testo); }
-    @media (max-width: 620px) { nav { display: none; } }
+    nav .pulsante { padding: 9px 16px; font-size: 0.92rem; color: var(--su-accento); }
+    @media (max-width: 820px) { nav a:not(.pulsante) { display: none; } }
 
-    .apertura { padding-top: 36px; padding-bottom: 56px; }
-    .etichetta { display: inline-block; background: var(--evidenza); color: var(--accento); font-weight: 700; font-size: 0.8rem; padding: 6px 12px; border-radius: 999px; margin: 0 0 18px; }
-    h1 { font-size: clamp(2.1rem, 8vw, 3.6rem); line-height: 1.05; letter-spacing: -0.035em; margin: 0 0 18px; text-wrap: balance; }
-    .apertura > p { font-size: 1.14rem; color: var(--tenue); max-width: 33em; margin: 0 0 28px; }
-    .pulsanti { display: flex; flex-wrap: wrap; gap: 12px; }
     .pulsante {
-      display: inline-block; padding: 14px 22px; border-radius: 12px;
+      display: inline-block; padding: 14px 24px; border-radius: 999px;
       font-weight: 700; font-size: 1rem; text-decoration: none; font-family: inherit;
-      background: var(--accento); color: var(--su-accento); border: 2px solid var(--accento); cursor: pointer;
+      background: var(--accento); color: var(--su-accento); border: 2px solid var(--accento);
+      cursor: pointer; transition: background .15s, border-color .15s, transform .15s;
     }
-    .pulsante:hover { background: var(--accento-forte); border-color: var(--accento-forte); }
+    .pulsante:hover { background: var(--accento-forte); border-color: var(--accento-forte); transform: translateY(-1px); }
     .pulsante.vuoto { background: transparent; color: var(--testo); border-color: var(--bordo); }
     .pulsante.vuoto:hover { border-color: var(--testo); background: transparent; }
 
-    section { padding: 52px 0; border-top: 1px solid var(--bordo); }
-    h2 { font-size: 1.75rem; letter-spacing: -0.025em; line-height: 1.15; margin: 0 0 10px; text-wrap: balance; }
-    .sotto { color: var(--tenue); margin: 0 0 26px; max-width: 36em; }
-    h3 { font-size: 1.08rem; margin: 0 0 6px; }
+    /* Apertura */
+    .apertura { padding: 56px 0 72px; overflow: hidden; }
+    .apertura .contenitore { display: grid; gap: 48px; align-items: center; }
+    @media (min-width: 900px) { .apertura .contenitore { grid-template-columns: 1.15fr 0.85fr; } }
+    .occhiello { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accento); margin: 0 0 18px; }
+    h1 { font-size: clamp(2.5rem, 8.4vw, 4.4rem); line-height: 1.02; margin: 0 0 22px; }
+    h1 em { font-style: italic; color: var(--accento); }
+    .apertura .testo > p { font-size: 1.16rem; color: var(--tenue); max-width: 31em; margin: 0 0 30px; }
+    .pulsanti { display: flex; flex-wrap: wrap; gap: 12px; }
+    .garanzie { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 30px 0 0; padding: 0; color: var(--tenue); font-size: 0.93rem; }
+    .garanzie li::before { content: "✓"; color: var(--accento); font-weight: 800; margin-right: 8px; }
 
-    .griglia { display: grid; gap: 14px; }
-    @media (min-width: 640px) { .griglia.due { grid-template-columns: 1fr 1fr; } .griglia.tre { grid-template-columns: repeat(3, 1fr); } }
-    .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
+    /* Telefono disegnato */
+    .scena { position: relative; justify-self: center; padding: 10px 26px 26px; }
+    .telefono { width: 268px; background: var(--carta); border: 9px solid var(--verde); border-radius: 40px; box-shadow: var(--ombra); padding: 20px 16px 18px; font-size: 0.8rem; color: var(--testo); }
+    @media (prefers-color-scheme: dark) { .telefono { border-color: #2c4138; } }
+    .telefono .tacca { width: 74px; height: 6px; border-radius: 6px; background: var(--bordo); margin: 0 auto 16px; }
+    .telefono .nome { font-family: var(--serif); font-size: 1.12rem; font-weight: 600; margin: 0; }
+    .telefono .sub { color: var(--tenue); margin: 0 0 14px; font-size: 0.74rem; }
+    .telefono .campo { border: 1px solid var(--bordo); border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; display: flex; justify-content: space-between; background: var(--sfondo); }
+    .telefono .campo b { font-weight: 600; }
+    .telefono .campo span { color: var(--tenue); }
+    .telefono .etichetta { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tenue); margin: 12px 0 6px; }
+    .telefono .ore { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .telefono .ore span { text-align: center; padding: 7px 0; border: 1px solid var(--bordo); border-radius: 8px; font-variant-numeric: tabular-nums; background: var(--sfondo); }
+    .telefono .ore .scelta { background: var(--accento); border-color: var(--accento); color: var(--su-accento); font-weight: 700; }
+    .telefono .ore .pieno { color: var(--bordo); text-decoration: line-through; }
+    .telefono .invia { margin-top: 14px; text-align: center; padding: 10px; border-radius: 999px; background: var(--verde); color: var(--su-verde); font-weight: 700; }
+    @media (prefers-color-scheme: dark) { .telefono .invia { background: var(--testo); color: var(--sfondo); } }
+    .avviso-flottante { position: absolute; right: -6px; bottom: 0; width: 214px; background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; box-shadow: var(--ombra); padding: 12px 14px; font-size: 0.8rem; }
+    .avviso-flottante b { display: block; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accento); margin-bottom: 2px; }
+    .avviso-flottante span { color: var(--tenue); }
+
+    /* Sezioni */
+    section { padding: 76px 0; }
+    section.velata { background: var(--velo); }
+    .titolo { max-width: 660px; margin: 0 0 40px; }
+    .titolo .occhiello { margin-bottom: 12px; }
+    h2 { font-size: clamp(1.9rem, 5vw, 2.7rem); line-height: 1.1; margin: 0 0 14px; }
+    .titolo p:last-child { color: var(--tenue); font-size: 1.06rem; margin: 0; }
+
+    .griglia { display: grid; gap: 16px; }
+    @media (min-width: 680px) { .griglia.due { grid-template-columns: 1fr 1fr; } .griglia.tre { grid-template-columns: repeat(3, 1fr); } }
+    .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 20px; padding: 24px; }
     .riquadro p { margin: 0; color: var(--tenue); }
 
-    .settore .cosa { display: inline-block; background: var(--evidenza); color: var(--accento); font-size: 0.76rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin: 0 0 10px; }
-    .settore ul { margin: 0; padding-left: 20px; color: var(--tenue); }
-    .settore li { margin: 3px 0; }
+    .domanda .q { font-family: var(--serif); font-size: 1.5rem; font-style: italic; line-height: 1.15; margin: 0 0 10px; color: var(--testo); }
 
-    .demo { display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: inherit; }
-    .demo:hover { border-color: var(--accento); }
-    .demo .icona { font-size: 2rem; line-height: 1; }
-    .demo .vai { color: var(--accento); font-weight: 700; margin-top: 4px; }
+    .settore { padding: 22px; }
+    .settore .cosa { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accento); margin: 0 0 10px; }
+    .settore ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .settore li { font-size: 0.86rem; color: var(--tenue); background: var(--sfondo); border: 1px solid var(--bordo); border-radius: 999px; padding: 3px 11px; }
 
-    .passi { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; counter-reset: passo; }
-    @media (min-width: 640px) { .passi { grid-template-columns: repeat(3, 1fr); } }
-    .passi li { counter-increment: passo; background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
-    .passi li::before {
-      content: counter(passo); display: grid; place-items: center;
-      width: 34px; height: 34px; border-radius: 50%; margin-bottom: 12px;
-      background: var(--accento); color: var(--su-accento); font-weight: 800;
-    }
+    /* Esempi */
+    .demo { display: block; text-decoration: none; color: inherit; padding: 0; overflow: hidden; transition: transform .2s, box-shadow .2s; }
+    .demo:hover { transform: translateY(-3px); box-shadow: var(--ombra); }
+    .anteprima { height: 190px; padding: 22px 24px; display: flex; flex-direction: column; justify-content: flex-end; }
+    .anteprima.barbiere { background: #1d1a16; color: #f5f1e8; }
+    .anteprima.pizzeria { background: #b4231a; color: #fff5f0; }
+    .anteprima small { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.75; }
+    .anteprima strong { font-family: var(--serif); font-size: 1.7rem; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; margin-top: 6px; }
+    .demo .corpo { padding: 22px 24px 24px; }
+    .demo .vai { display: inline-block; color: var(--accento); font-weight: 700; margin-top: 12px; }
+
+    /* Passi */
+    .passi { list-style: none; margin: 0; padding: 0; display: grid; gap: 32px; counter-reset: passo; }
+    @media (min-width: 680px) { .passi { grid-template-columns: repeat(3, 1fr); } }
+    .passi li { counter-increment: passo; border-top: 2px solid var(--testo); padding-top: 18px; }
+    .passi li::before { content: "0" counter(passo); display: block; font-family: var(--serif); font-style: italic; font-size: 2.4rem; line-height: 1; color: var(--accento); margin-bottom: 12px; }
     .passi p { margin: 0; color: var(--tenue); }
 
+    /* Prezzi */
     .pacchetto { display: flex; flex-direction: column; }
-    .pacchetto.consigliato { border: 2px solid var(--accento); }
-    .pacchetto .bollino { align-self: flex-start; background: var(--accento); color: var(--su-accento); font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; margin-bottom: 10px; }
-    .prezzo { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; margin: 8px 0 0; color: var(--testo); }
-    .canone { font-size: 0.92rem; color: var(--tenue); margin: 0 0 14px; }
-    .pacchetto ul { margin: 0 0 18px; padding-left: 20px; color: var(--tenue); flex: 1; }
-    .pacchetto li { margin: 5px 0; }
+    .pacchetto.consigliato { background: var(--verde); color: var(--su-verde); border-color: var(--verde); box-shadow: var(--ombra); }
+    .pacchetto.consigliato ul, .riquadro.pacchetto.consigliato .canone { color: var(--su-verde-tenue); }
+    .pacchetto .bollino { align-self: flex-start; background: var(--accento); color: var(--su-accento); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; margin-bottom: 12px; }
+    .riquadro .prezzo { font-family: var(--serif); font-size: 2.6rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; margin: 10px 0 0; color: var(--testo); }
+    .pacchetto.consigliato .prezzo { color: var(--su-verde); }
+    .riquadro .canone { font-size: 0.92rem; color: var(--tenue); margin: 2px 0 18px; }
+    .pacchetto ul { list-style: none; margin: 0 0 24px; padding: 0; color: var(--tenue); flex: 1; }
+    .pacchetto li { padding: 7px 0 7px 24px; position: relative; border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+    .pacchetto li::before { content: "✓"; position: absolute; left: 0; color: var(--accento); font-weight: 800; }
     .pacchetto .pulsante { text-align: center; }
-    .nota { color: var(--tenue); font-size: 0.92rem; margin: 18px 0 0; }
+    .pacchetto.consigliato .pulsante.vuoto { color: var(--su-verde); }
+    .nota { color: var(--tenue); font-size: 0.93rem; margin: 22px 0 0; max-width: 46em; }
 
-    .dietro { background: var(--evidenza); border-radius: 20px; padding: 26px; }
-    .dietro p { margin: 0 0 12px; max-width: 38em; }
-    .dietro p:last-child { margin-bottom: 0; }
+    /* Fascia scura */
+    .fascia { background: var(--verde); color: var(--su-verde); }
+    .fascia h2 { color: var(--su-verde); }
+    .fascia .colonne { display: grid; gap: 28px; }
+    @media (min-width: 760px) { .fascia .colonne { grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; } }
+    .fascia p { color: var(--su-verde-tenue); margin: 0 0 14px; font-size: 1.05rem; }
+    .fascia p strong { color: var(--su-verde); }
 
-    form { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
-    label { display: block; font-weight: 600; font-size: 0.92rem; margin: 16px 0 6px; }
+    /* Modulo */
+    form { background: var(--carta); border: 1px solid var(--bordo); border-radius: 22px; padding: 26px; box-shadow: var(--ombra); }
+    label { display: block; font-weight: 600; font-size: 0.9rem; margin: 18px 0 6px; }
     form > label:first-of-type { margin-top: 0; }
     input[type="text"], select, textarea {
-      width: 100%; padding: 12px; font: inherit; font-size: 1rem;
+      width: 100%; padding: 13px; font: inherit; font-size: 1rem;
       color: var(--testo); background: var(--sfondo);
-      border: 1px solid var(--bordo); border-radius: 10px;
+      border: 1px solid var(--bordo); border-radius: 12px;
     }
     textarea { min-height: 110px; resize: vertical; }
     input:focus, select:focus, textarea:focus { outline: 2px solid var(--accento); outline-offset: 1px; }
-    .coppia { display: grid; gap: 0 12px; }
+    .coppia { display: grid; gap: 0 14px; }
     @media (min-width: 560px) { .coppia { grid-template-columns: 1fr 1fr; } }
-    .consenso { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; font-size: 0.9rem; color: var(--tenue); margin-top: 18px; }
-    .consenso input { margin-top: 4px; flex: none; width: 18px; height: 18px; }
-    form .pulsante { width: 100%; margin-top: 18px; }
+    .consenso { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; font-size: 0.9rem; color: var(--tenue); margin-top: 20px; }
+    .consenso input { margin-top: 4px; flex: none; width: 18px; height: 18px; accent-color: var(--accento); }
+    form .pulsante { width: 100%; margin-top: 20px; }
     .nascosto { position: absolute; left: -9999px; }
 
-    details { border-bottom: 1px solid var(--bordo); padding: 14px 0; }
-    summary { font-weight: 600; cursor: pointer; }
-    details p { color: var(--tenue); margin: 10px 0 0; }
+    details { border-bottom: 1px solid var(--bordo); padding: 18px 0; }
+    details:first-of-type { border-top: 1px solid var(--bordo); }
+    summary { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--accento); font-family: var(--sans); font-weight: 400; font-size: 1.4rem; line-height: 1; }
+    details[open] summary::after { content: "–"; }
+    details p { color: var(--tenue); margin: 12px 0 0; max-width: 44em; }
 
-    footer { background: var(--scuro); color: var(--su-scuro); padding: 32px 0 40px; font-size: 0.9rem; }
-    footer p { margin: 0 0 10px; opacity: 0.85; }
+    footer { background: var(--verde); color: var(--su-verde-tenue); padding: 44px 0 48px; font-size: 0.9rem; }
+    footer .marchio { color: var(--su-verde); margin-bottom: 16px; }
+    footer p { margin: 0 0 10px; max-width: 52em; }
+    footer strong { color: var(--su-verde); }
+
+    /* Comparsa allo scorrimento (solo se JavaScript è attivo e l'utente non ha chiesto meno animazioni) */
+    @media (prefers-reduced-motion: no-preference) {
+      .js .rivela { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+      .js .rivela.visibile { opacity: 1; transform: none; }
+    }
   </style>
 </head>
 
 <body>
-  <div class="contenitore">
-    <header>
-      <div class="marchio">Vetrina <span>Viva</span></div>
+  <div class="testata">
+    <div class="contenitore">
+      <a class="marchio" href="#" aria-label="Vetrina Viva, torna all'inizio">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#0e2a22"/><path d="M17 49V30a15 15 0 0 1 30 0v19z" fill="#f6f2e9"/><path d="M32 17v32M17 35h30" stroke="#0e2a22" stroke-width="3"/><circle cx="48" cy="16" r="7" fill="#e2703a" stroke="#0e2a22" stroke-width="3"/></svg>
+        <span>Vetrina <i>Viva</i></span>
+      </a>
       <nav>
         <a href="#per-chi">Per chi</a>
         <a href="#esempi">Esempi</a>
         <a href="#prezzi">Prezzi</a>
         <a href="#chi">Chi siamo</a>
-        <a href="#richiesta">Richiedi il sito</a>
+        <a class="pulsante" href="#richiesta">Richiedi il sito</a>
       </nav>
-    </header>
+    </div>
   </div>
 
   <main>
-    <div class="contenitore apertura">
-      <p class="etichetta">Per ristoranti, saloni, officine e botteghe del Vicentino</p>
-      <h1>Il sito della tua attività, con le prenotazioni dentro.</h1>
-      <p>Prezzi, orari e prenotazioni in una pagina che i clienti aprono dal telefono. La costruiamo noi in pochi giorni e la teniamo aggiornata: tu pensi al lavoro.</p>
-      <div class="pulsanti">
-        <a class="pulsante" href="#esempi">Prova un esempio</a>
-        <a class="pulsante vuoto" href="#prezzi">Vedi i prezzi</a>
+    <div class="apertura">
+      <div class="contenitore">
+        <div class="testo">
+          <p class="occhiello">Siti per attività locali · In tutta Italia</p>
+          <h1>La tua attività, aperta anche quando è <em>chiusa</em>.</h1>
+          <p>Prezzi, orari e prenotazioni in una pagina che i clienti aprono dal telefono. La costruiamo noi in pochi giorni e la teniamo aggiornata: tu pensi al lavoro.</p>
+          <div class="pulsanti">
+            <a class="pulsante" href="#richiesta">Richiedi il tuo sito</a>
+            <a class="pulsante vuoto" href="#esempi">Prova un esempio</a>
+          </div>
+          <ul class="garanzie">
+            <li>Online in pochi giorni</li>
+            <li>Modifiche incluse</li>
+            <li>Nessun vincolo</li>
+          </ul>
+        </div>
+
+        <div class="scena" aria-hidden="true">
+          <div class="telefono">
+            <div class="tacca"></div>
+            <p class="nome">Barbieria Aurelio</p>
+            <p class="sub">Prenota il tuo appuntamento</p>
+            <div class="campo"><b>Taglio e barba</b><span>25 €</span></div>
+            <div class="campo"><b>Sabato 14</b><span>cambia</span></div>
+            <p class="etichetta">Orari liberi</p>
+            <div class="ore">
+              <span>9:00</span><span class="pieno">9:30</span><span class="scelta">10:00</span><span>10:30</span>
+              <span class="pieno">11:00</span><span>11:30</span><span>12:00</span><span class="pieno">12:30</span>
+            </div>
+            <div class="invia">Richiedi appuntamento</div>
+          </div>
+          <div class="avviso-flottante">
+            <b>Nuova richiesta</b>
+            Taglio e barba, sabato alle 10:00
+            <span>· Luca</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <section>
+    <section class="velata">
       <div class="contenitore">
-        <h2>Cosa cambia con un sito fatto bene</h2>
-        <p class="sotto">Non serve a "esserci su internet". Serve a rispondere alle tre domande che ogni cliente fa prima di venire.</p>
+        <div class="titolo rivela">
+          <p class="occhiello">Perché serve</p>
+          <h2>Tre domande, prima di ogni cliente.</h2>
+          <p>Un sito non serve a "esserci su internet". Serve a rispondere, subito e da solo, a quello che ognuno si chiede prima di venire da te.</p>
+        </div>
         <div class="griglia tre">
-          <div class="riquadro">
-            <h3>Quanto costa?</h3>
+          <div class="riquadro domanda rivela">
+            <p class="q">«Quanto costa?»</p>
             <p>Listino o menu sempre aggiornato, senza foto storte di un foglio appeso al muro.</p>
           </div>
-          <div class="riquadro">
-            <h3>Siete aperti?</h3>
+          <div class="riquadro domanda rivela">
+            <p class="q">«Siete aperti?»</p>
             <p>Orari, indirizzo e pulsante per chiamare. Giusti anche a Ferragosto.</p>
           </div>
-          <div class="riquadro">
-            <h3>C'è posto?</h3>
+          <div class="riquadro domanda rivela">
+            <p class="q">«C'è posto?»</p>
             <p>Il cliente chiede l'appuntamento o il tavolo da solo, anche a mezzanotte. Tu confermi quando hai un minuto.</p>
           </div>
         </div>
@@ -188,126 +298,85 @@
 
     <section id="per-chi">
       <div class="contenitore">
-        <h2>Per chi lo facciamo</h2>
-        <p class="sotto">Ogni mestiere ha la sua domanda tipica: un tavolo, un appuntamento, un preventivo. Il sito parte da quella.</p>
+        <div class="titolo rivela">
+          <p class="occhiello">Per chi lo facciamo</p>
+          <h2>Ogni mestiere ha la sua richiesta.</h2>
+          <p>Un tavolo, un appuntamento, un preventivo. Il sito parte da quella, non da un modello uguale per tutti.</p>
+        </div>
         <div class="griglia tre">
-          <div class="riquadro settore">
+          <div class="riquadro settore rivela">
             <h3>Ristorazione</h3>
             <span class="cosa">Tavoli e ordini da asporto</span>
-            <ul>
-              <li>Ristoranti e trattorie</li>
-              <li>Pizzerie</li>
-              <li>Agriturismi</li>
-              <li>Bar e caffetterie</li>
-              <li>Pasticcerie e gelaterie</li>
-              <li>Gastronomie e rosticcerie</li>
-            </ul>
+            <ul><li>Ristoranti</li><li>Trattorie</li><li>Pizzerie</li><li>Agriturismi</li><li>Bar</li><li>Pasticcerie</li><li>Gelaterie</li><li>Gastronomie</li></ul>
           </div>
-          <div class="riquadro settore">
+          <div class="riquadro settore rivela">
             <h3>Cura della persona</h3>
             <span class="cosa">Appuntamenti</span>
-            <ul>
-              <li>Barbieri</li>
-              <li>Parrucchieri</li>
-              <li>Centri estetici</li>
-              <li>Onicotecniche</li>
-              <li>Tatuatori</li>
-              <li>Centri massaggi</li>
-            </ul>
+            <ul><li>Barbieri</li><li>Parrucchieri</li><li>Centri estetici</li><li>Onicotecniche</li><li>Tatuatori</li><li>Centri massaggi</li></ul>
           </div>
-          <div class="riquadro settore">
+          <div class="riquadro settore rivela">
             <h3>Sport e tempo libero</h3>
             <span class="cosa">Lezioni e campi</span>
-            <ul>
-              <li>Palestre</li>
-              <li>Personal trainer</li>
-              <li>Studi di yoga e pilates</li>
-              <li>Scuole di danza</li>
-              <li>Campi da padel, tennis e calcetto</li>
-            </ul>
+            <ul><li>Palestre</li><li>Personal trainer</li><li>Yoga e pilates</li><li>Scuole di danza</li><li>Padel</li><li>Tennis</li><li>Calcetto</li></ul>
           </div>
-          <div class="riquadro settore">
+          <div class="riquadro settore rivela">
             <h3>Auto e moto</h3>
             <span class="cosa">Appuntamenti in officina</span>
-            <ul>
-              <li>Officine meccaniche</li>
-              <li>Gommisti</li>
-              <li>Carrozzerie</li>
-              <li>Autolavaggi</li>
-              <li>Centri revisione</li>
-            </ul>
+            <ul><li>Officine</li><li>Gommisti</li><li>Carrozzerie</li><li>Autolavaggi</li><li>Centri revisione</li></ul>
           </div>
-          <div class="riquadro settore">
+          <div class="riquadro settore rivela">
             <h3>Casa e artigiani</h3>
             <span class="cosa">Preventivi e sopralluoghi</span>
-            <ul>
-              <li>Idraulici ed elettricisti</li>
-              <li>Imbianchini</li>
-              <li>Giardinieri</li>
-              <li>Fabbri e falegnami</li>
-              <li>Imprese di pulizie</li>
-            </ul>
+            <ul><li>Idraulici</li><li>Elettricisti</li><li>Imbianchini</li><li>Giardinieri</li><li>Fabbri</li><li>Falegnami</li><li>Imprese di pulizie</li></ul>
           </div>
-          <div class="riquadro settore">
+          <div class="riquadro settore rivela">
             <h3>Negozi e botteghe</h3>
             <span class="cosa">Ordini e ritiri</span>
-            <ul>
-              <li>Fioristi</li>
-              <li>Panifici e macellerie</li>
-              <li>Sartorie e lavanderie</li>
-              <li>Ottici</li>
-              <li>Negozi di quartiere</li>
-            </ul>
+            <ul><li>Fioristi</li><li>Panifici</li><li>Macellerie</li><li>Sartorie</li><li>Lavanderie</li><li>Ottici</li></ul>
           </div>
-          <div class="riquadro settore">
+          <div class="riquadro settore rivela">
             <h3>Ospitalità</h3>
             <span class="cosa">Richieste di disponibilità</span>
-            <ul>
-              <li>Bed and breakfast</li>
-              <li>Affittacamere</li>
-              <li>Case vacanza</li>
-            </ul>
+            <ul><li>Bed and breakfast</li><li>Affittacamere</li><li>Case vacanza</li></ul>
           </div>
-          <div class="riquadro settore">
+          <div class="riquadro settore rivela">
             <h3>Animali</h3>
             <span class="cosa">Appuntamenti</span>
-            <ul>
-              <li>Toelettature</li>
-              <li>Pensioni per animali</li>
-              <li>Educatori cinofili</li>
-            </ul>
+            <ul><li>Toelettature</li><li>Pensioni per animali</li><li>Educatori cinofili</li></ul>
           </div>
-          <div class="riquadro settore">
+          <div class="riquadro settore rivela">
             <h3>Corsi e servizi</h3>
             <span class="cosa">Lezioni e consulenze</span>
-            <ul>
-              <li>Fotografi</li>
-              <li>Autoscuole</li>
-              <li>Insegnanti e ripetizioni</li>
-              <li>Scuole di musica</li>
-            </ul>
+            <ul><li>Fotografi</li><li>Autoscuole</li><li>Ripetizioni</li><li>Scuole di musica</li></ul>
           </div>
         </div>
-        <p class="nota">La tua attività non è in elenco? Scrivici lo stesso dal modulo in fondo: quasi sempre si può fare.</p>
+        <p class="nota">La tua attività non è in elenco? Scrivici lo stesso: quasi sempre si può fare.</p>
       </div>
     </section>
 
-    <section id="esempi">
+    <section id="esempi" class="velata">
       <div class="contenitore">
-        <h2>Provali dal telefono</h2>
-        <p class="sotto">Due siti dimostrativi, con attività di fantasia. Prova a prenotare: funziona tutto, ma non viene inviato nessun dato.</p>
+        <div class="titolo rivela">
+          <p class="occhiello">Esempi</p>
+          <h2>Provali dal telefono.</h2>
+          <p>Due siti dimostrativi, con attività di fantasia. Prova a prenotare: funziona tutto, ma non viene inviato nessun dato.</p>
+        </div>
         <div class="griglia due">
-          <a class="riquadro demo" href="/demo/barbiere/">
-            <span class="icona">💈</span>
-            <h3>Barbieria Aurelio</h3>
-            <p>Listino, orari e appuntamento con scelta del servizio, del giorno e della fascia oraria libera.</p>
-            <span class="vai">Apri l'esempio →</span>
+          <a class="riquadro demo rivela" href="/demo/barbiere/">
+            <div class="anteprima barbiere"><small>Taglio · Barba · Rasatura</small><strong>Entri di fretta, esci in ordine.</strong></div>
+            <div class="corpo">
+              <h3>Barbieria Aurelio</h3>
+              <p>Listino, orari e appuntamento con scelta del servizio, del giorno e della fascia oraria libera.</p>
+              <span class="vai">Apri l'esempio →</span>
+            </div>
           </a>
-          <a class="riquadro demo" href="/demo/pizzeria/">
-            <span class="icona">🍕</span>
-            <h3>Pizzeria Da Nives</h3>
-            <p>Menu con prezzi, orari e prenotazione del tavolo per giorno, ora e numero di persone.</p>
-            <span class="vai">Apri l'esempio →</span>
+          <a class="riquadro demo rivela" href="/demo/pizzeria/">
+            <div class="anteprima pizzeria"><small>Forno a legna</small><strong>La pizza del giovedì, tutte le sere.</strong></div>
+            <div class="corpo">
+              <h3>Pizzeria Da Nives</h3>
+              <p>Menu con prezzi, orari e prenotazione del tavolo per giorno, ora e numero di persone.</p>
+              <span class="vai">Apri l'esempio →</span>
+            </div>
           </a>
         </div>
         <p class="nota">Fai un altro mestiere? La struttura è la stessa: cambiano le parole e il tipo di richiesta, per esempio un preventivo al posto di un tavolo.</p>
@@ -316,18 +385,21 @@
 
     <section>
       <div class="contenitore">
-        <h2>Come funziona</h2>
-        <p class="sotto">Tre passaggi, e l'unico che tocca a te dura dieci minuti.</p>
+        <div class="titolo rivela">
+          <p class="occhiello">Come funziona</p>
+          <h2>A te restano dieci minuti.</h2>
+          <p>Tutto da remoto, ovunque tu sia: ci sentiamo per telefono o in videochiamata.</p>
+        </div>
         <ol class="passi">
-          <li>
+          <li class="rivela">
             <h3>Ci dai i dati</h3>
             <p>Nome, servizi, prezzi, orari, indirizzo. Dal modulo qui sotto o a voce, come preferisci.</p>
           </li>
-          <li>
+          <li class="rivela">
             <h3>Costruiamo il sito</h3>
             <p>Ti mandiamo il link di prova. Chiedi le modifiche che vuoi prima che vada online.</p>
           </li>
-          <li>
+          <li class="rivela">
             <h3>Lo teniamo vivo</h3>
             <p>Cambi un prezzo o chiudi per ferie? Ce lo scrivi e lo aggiorniamo noi.</p>
           </li>
@@ -335,12 +407,15 @@
       </div>
     </section>
 
-    <section id="prezzi">
+    <section id="prezzi" class="velata">
       <div class="contenitore">
-        <h2>Prezzi chiari</h2>
-        <p class="sotto">Una quota per la creazione e un canone mensile che copre pubblicazione, modifiche e assistenza.</p>
+        <div class="titolo rivela">
+          <p class="occhiello">Prezzi</p>
+          <h2>Chiari, dal primo giorno.</h2>
+          <p>Una quota per la creazione e un canone mensile che copre pubblicazione, modifiche e assistenza.</p>
+        </div>
         <div class="griglia tre">
-          <div class="riquadro pacchetto">
+          <div class="riquadro pacchetto rivela">
             <h3>Vetrina</h3>
             <p class="prezzo">290 €</p>
             <p class="canone">poi 15 € al mese</p>
@@ -352,20 +427,20 @@
             </ul>
             <a class="pulsante vuoto" href="#richiesta">Scelgo Vetrina</a>
           </div>
-          <div class="riquadro pacchetto consigliato">
+          <div class="riquadro pacchetto consigliato rivela">
             <span class="bollino">Il più richiesto</span>
             <h3>Prenotazioni</h3>
             <p class="prezzo">490 €</p>
             <p class="canone">poi 25 € al mese</p>
             <ul>
               <li>Tutto quello che c'è in Vetrina</li>
-              <li>Richiesta di appuntamento o tavolo online</li>
+              <li>Richieste di appuntamento, tavolo o preventivo</li>
               <li>Le richieste ti arrivano per email</li>
               <li>Galleria fotografica</li>
             </ul>
             <a class="pulsante" href="#richiesta">Scelgo Prenotazioni</a>
           </div>
-          <div class="riquadro pacchetto">
+          <div class="riquadro pacchetto rivela">
             <h3>Su misura</h3>
             <p class="prezzo">Preventivo</p>
             <p class="canone">in base a cosa ti serve</p>
@@ -381,21 +456,29 @@
       </div>
     </section>
 
-    <section id="chi">
+    <section id="chi" class="fascia">
       <div class="contenitore">
-        <h2>Chi c'è dietro</h2>
-        <div class="dietro">
-          <p><strong>Una persona, non un centralino.</strong> Vetrina Viva lavora solo con attività della provincia di Vicenza, perché un sito fatto bene nasce da una chiacchierata, non da un modulo compilato di fretta.</p>
-          <p>Chi ti segue all'inizio è la stessa persona che ti risponde dopo, quando c'è da cambiare un prezzo o aggiungere un servizio.</p>
+        <div class="colonne">
+          <div class="rivela">
+            <p class="occhiello">Chi c'è dietro</p>
+            <h2>Una persona, non un centralino.</h2>
+          </div>
+          <div class="rivela">
+            <p><strong>Lavoriamo con attività di tutta Italia, una alla volta.</strong> Un sito fatto bene nasce da una chiacchierata, non da un modulo compilato di fretta: per questo prima ti ascoltiamo, poi costruiamo.</p>
+            <p>Chi ti segue all'inizio è la stessa persona che ti risponde dopo, quando c'è da cambiare un prezzo o aggiungere un servizio.</p>
+          </div>
         </div>
       </div>
     </section>
 
     <section id="richiesta">
-      <div class="contenitore">
-        <h2>Richiedi il tuo sito</h2>
-        <p class="sotto">Lasciaci due informazioni: ti ricontattiamo per i dettagli. Nessun impegno.</p>
-        <form name="richiesta-sito" method="POST" action="/grazie.html" data-netlify="true" netlify-honeypot="campo-bot">
+      <div class="contenitore stretto">
+        <div class="titolo rivela">
+          <p class="occhiello">Inizia da qui</p>
+          <h2>Richiedi il tuo sito.</h2>
+          <p>Lasciaci due informazioni: ti ricontattiamo per i dettagli. Nessun impegno.</p>
+        </div>
+        <form class="rivela" name="richiesta-sito" method="POST" action="/grazie.html" data-netlify="true" netlify-honeypot="campo-bot">
           <input type="hidden" name="form-name" value="richiesta-sito">
           <p class="nascosto"><label>Non compilare: <input name="campo-bot"></label></p>
 
@@ -421,7 +504,7 @@
               </select>
             </div>
             <div>
-              <label for="r-comune">Comune</label>
+              <label for="r-comune">Comune e provincia</label>
               <input id="r-comune" name="comune" type="text" autocomplete="address-level2" required>
             </div>
           </div>
@@ -458,9 +541,16 @@
       </div>
     </section>
 
-    <section>
-      <div class="contenitore">
-        <h2>Domande frequenti</h2>
+    <section class="velata">
+      <div class="contenitore stretto">
+        <div class="titolo rivela">
+          <p class="occhiello">Domande frequenti</p>
+          <h2>Prima che tu lo chieda.</h2>
+        </div>
+        <details>
+          <summary>Lavorate anche nella mia zona?</summary>
+          <p>Sì, in tutta Italia. Il lavoro si fa da remoto: ci sentiamo per telefono o in videochiamata e il sito lo vedi dal tuo telefono prima che vada online.</p>
+        </details>
         <details>
           <summary>Ho già Instagram e la scheda su Google. Mi serve un sito?</summary>
           <p>Quelle restano utili. Il sito è l'unico posto che è tuo: ci metti il listino completo e le prenotazioni, e da Instagram e Google mandi lì le persone.</p>
@@ -483,9 +573,29 @@
 
   <footer id="privacy">
     <div class="contenitore">
+      <div class="marchio">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#f6f2e9"/><path d="M17 49V30a15 15 0 0 1 30 0v19z" fill="#0e2a22"/><path d="M32 17v32M17 35h30" stroke="#f6f2e9" stroke-width="3"/><circle cx="48" cy="16" r="7" fill="#e2703a" stroke="#f6f2e9" stroke-width="3"/></svg>
+        <span>Vetrina <i>Viva</i></span>
+      </div>
+      <p>Siti con prenotazioni per attività locali, in tutta Italia.</p>
       <p><strong>Nota sui dati.</strong> I dati che invii dal modulo vengono usati solo per ricontattarti riguardo alla tua richiesta. Non vengono ceduti a terzi né usati per pubblicità. Il modulo è gestito tramite Netlify, che ospita il sito. Puoi chiedere in qualsiasi momento la cancellazione dei tuoi dati rispondendo al messaggio con cui ti ricontattiamo.</p>
-      <p>Vetrina Viva — siti per attività locali della provincia di Vicenza.</p>
     </div>
   </footer>
+
+  <script>
+    // Fa comparire le sezioni man mano che entrano nello schermo.
+    document.documentElement.classList.add('js');
+    const elementi = document.querySelectorAll('.rivela');
+    if ('IntersectionObserver' in window) {
+      const osservatore = new IntersectionObserver((voci) => {
+        for (const voce of voci) {
+          if (voce.isIntersecting) { voce.target.classList.add('visibile'); osservatore.unobserve(voce.target); }
+        }
+      }, { rootMargin: '0px 0px -8% 0px' });
+      elementi.forEach((e) => osservatore.observe(e));
+    } else {
+      elementi.forEach((e) => e.classList.add('visibile'));
+    }
+  </script>
 </body>
 </html>

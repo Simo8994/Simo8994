@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Vetrina Viva">
+  <rect width="64" height="64" rx="15" fill="#0e2a22"/>
+  <path d="M17 49V30a15 15 0 0 1 30 0v19z" fill="#f6f2e9"/>
+  <path d="M32 17v32M17 35h30" stroke="#0e2a22" stroke-width="3"/>
+  <circle cx="48" cy="16" r="7" fill="#e2703a" stroke="#0e2a22" stroke-width="3"/>
+</svg>
