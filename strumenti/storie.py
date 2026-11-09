@@ -186,7 +186,7 @@ STORIE = {
         immagini={
             "a": "portrait of a 19th century american railroad worker with a scar over one eye holding a long iron rod",
             "b": "1848 railroad construction site in Vermont hills, workers, rocks, tracks",
-            "c": "19th century worker pressing powder into a hole in a rock with a long iron rod, close-up",
+            "c": "19th century bearded male railroad worker pushing a long iron rod into a hole drilled in a rock, close-up",
             "d": "explosion of rock and dust at a railroad construction site, 1848",
             "e": "19th century wooden ox cart on a country road, injured man sitting up",
             "f": "old human skull and a long iron rod displayed in a museum glass case",
@@ -216,7 +216,7 @@ STORIE = {
         musica="Hitman.mp3",
         evidenzia=["nucleare", "allarme", "cinque", "falso"], evidenzia_en=["nuclear", "alarm", "five", "false"],
         immagini={
-            "a": "soviet officer in 1980s uniform staring at glowing red alarm screens in a dark command bunker",
+            "a": "close-up portrait of a serious soviet officer in 1980s uniform, face lit by red glow, dark room, tension",
             "b": "snowy soviet military bunker entrance at night near Moscow, 1983, cold war",
             "c": "1980s soviet control room with large world map display and blinking red lights",
             "d": "red flashing warning light and big red button in a dark room, tension",
@@ -250,7 +250,7 @@ STORIE = {
         musica="Volatile-Reaction.mp3",
         evidenzia=["vento", "crolla", "cane"], evidenzia_en=["wind", "collapses", "dog"],
         immagini={
-            "a": "long 1940 suspension bridge twisting violently in strong wind over a river, dramatic",
+            "a": "suspension bridge deck twisting and buckling like a ribbon over water in a storm, 1940, cables, dramatic",
             "b": "new 1940 suspension bridge over a wide strait, green hills, opening day, cars",
             "c": "1940s cars driving on a wavy undulating bridge deck, people amazed",
             "d": "suspension bridge deck breaking apart and falling into the water, concrete and steel debris",
