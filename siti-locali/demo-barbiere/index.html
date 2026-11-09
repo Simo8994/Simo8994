@@ -59,7 +59,7 @@
     nav a:hover { color: var(--testo); }
     @media (max-width: 560px) { nav { display: none; } }
 
-    .apertura { padding: 36px 0 48px; }
+    .apertura { padding-top: 36px; padding-bottom: 48px; }
     .etichetta { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accento); font-weight: 700; margin: 0 0 12px; }
     h1 { font-size: clamp(2.3rem, 9vw, 4rem); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 18px; font-weight: 700; text-wrap: balance; }
     .apertura p { font-size: 1.1rem; color: var(--tenue); max-width: 30em; margin: 0 0 26px; }
@@ -86,7 +86,7 @@
     .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
     .riquadro h3 { margin: 0 0 10px; font-size: 1.05rem; }
     .orari { width: 100%; border-collapse: collapse; }
-    .orari td { padding: 5px 0; }
+    .orari td { padding: 5px 0; vertical-align: top; white-space: nowrap; }
     .orari td:last-child { text-align: right; font-variant-numeric: tabular-nums; color: var(--tenue); }
     .orari .chiuso td:last-child { color: var(--accento); font-weight: 600; }
     .riquadro p { margin: 0 0 8px; color: var(--tenue); }
@@ -156,7 +156,7 @@
             <h3>Quando siamo aperti</h3>
             <table class="orari">
               <tr><td>Lunedì</td><td>15:00 – 19:30</td></tr>
-              <tr><td>Martedì – Venerdì</td><td>9:00 – 13:00 · 15:00 – 19:30</td></tr>
+              <tr><td>Martedì – Venerdì</td><td>9:00 – 13:00<br>15:00 – 19:30</td></tr>
               <tr><td>Sabato</td><td>9:00 – 18:00</td></tr>
               <tr class="chiuso"><td>Domenica</td><td>Chiuso</td></tr>
             </table>
