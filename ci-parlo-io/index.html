@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ci parlo io — Le telefonate scomode le facciamo noi</title>
+  <meta name="description" content="Disdette, rimborsi, bollette sbagliate, preventivi da trattare: una persona vera fa la telefonata al posto tuo. Raccontaci il caso in due minuti.">
+  <meta property="og:title" content="Ci parlo io — Le telefonate scomode le facciamo noi">
+  <meta property="og:description" content="Disdette, rimborsi, bollette sbagliate, preventivi da trattare: una persona vera fa la telefonata al posto tuo.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📞</text></svg>">
+
+  <style>
+    :root {
+      --sfondo: #faf7f2;
+      --carta: #ffffff;
+      --testo: #1c1f23;
+      --tenue: #5f6672;
+      --accento: #d9480f;
+      --accento-scuro: #b53a0a;
+      --su-accento: #ffffff;
+      --bordo: #e6e0d6;
+      --fascia: #1c1f23;
+      --su-fascia: #f4f1ea;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --sfondo: #131518;
+        --carta: #1c1f23;
+        --testo: #edeae4;
+        --tenue: #a0a6b0;
+        --accento: #ff7a3d;
+        --accento-scuro: #ff9463;
+        --su-accento: #1a0d05;
+        --bordo: #2e3238;
+        --fascia: #1c1f23;
+        --su-fascia: #edeae4;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--sfondo);
+      color: var(--testo);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.55;
+      -webkit-text-size-adjust: 100%;
+    }
+    .contenitore { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+    a { color: var(--accento); }
+
+    header { padding: 20px 0; }
+    .marchio { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em; }
+    .marchio span { color: var(--accento); }
+
+    .apertura { padding: 28px 0 44px; }
+    h1 {
+      font-size: clamp(2rem, 7.5vw, 3.2rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin: 0 0 16px;
+      text-wrap: balance;
+    }
+    .apertura p { font-size: 1.12rem; color: var(--tenue); margin: 0 0 26px; max-width: 34em; }
+    .pulsanti { display: flex; flex-wrap: wrap; gap: 12px; }
+    .pulsante {
+      display: inline-block;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      border: 2px solid var(--accento);
+      background: var(--accento);
+      color: var(--su-accento);
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .pulsante:hover { background: var(--accento-scuro); border-color: var(--accento-scuro); }
+    .pulsante.vuoto { background: transparent; color: var(--testo); border-color: var(--bordo); }
+    .pulsante.vuoto:hover { border-color: var(--testo); background: transparent; }
+
+    section { padding: 44px 0; border-top: 1px solid var(--bordo); }
+    h2 { font-size: 1.6rem; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 20px; text-wrap: balance; }
+    h3 { font-size: 1.05rem; margin: 0 0 4px; }
+
+    .passi { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; counter-reset: passo; }
+    .passi li {
+      counter-increment: passo;
+      background: var(--carta);
+      border: 1px solid var(--bordo);
+      border-radius: 14px;
+      padding: 18px 18px 18px 64px;
+      position: relative;
+    }
+    .passi li::before {
+      content: counter(passo);
+      position: absolute; left: 18px; top: 18px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--accento); color: var(--su-accento);
+      display: grid; place-items: center; font-weight: 800;
+    }
+    .passi p { margin: 0; color: var(--tenue); }
+
+    .due-colonne { display: grid; gap: 14px; }
+    @media (min-width: 620px) { .due-colonne { grid-template-columns: 1fr 1fr; } }
+    .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 14px; padding: 18px; }
+    .riquadro ul { margin: 8px 0 0; padding-left: 20px; color: var(--tenue); }
+    .riquadro li { margin: 4px 0; }
+
+    .nota { color: var(--tenue); font-size: 0.95rem; }
+
+    form { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
+    label { display: block; font-weight: 600; font-size: 0.92rem; margin: 16px 0 6px; }
+    form > label:first-of-type { margin-top: 0; }
+    input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+      width: 100%;
+      padding: 12px;
+      font: inherit;
+      font-size: 1rem;
+      color: var(--testo);
+      background: var(--sfondo);
+      border: 1px solid var(--bordo);
+      border-radius: 10px;
+    }
+    textarea { min-height: 120px; resize: vertical; }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--accento); outline-offset: 1px; }
+    .aiuto { font-size: 0.85rem; color: var(--tenue); margin: 6px 0 0; }
+    .consenso { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; font-size: 0.9rem; color: var(--tenue); margin-top: 18px; }
+    .consenso input { margin-top: 4px; flex: none; width: 18px; height: 18px; }
+    form .pulsante { width: 100%; margin-top: 18px; }
+    .nascosto { position: absolute; left: -9999px; }
+
+    details { border-bottom: 1px solid var(--bordo); padding: 14px 0; }
+    summary { font-weight: 600; cursor: pointer; }
+    details p { color: var(--tenue); margin: 10px 0 0; }
+
+    footer { background: var(--fascia); color: var(--su-fascia); padding: 32px 0 40px; margin-top: 20px; font-size: 0.9rem; }
+    footer p { margin: 0 0 10px; opacity: 0.85; }
+    footer a { color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="contenitore">
+    <div class="marchio">Ci parlo <span>io</span></div>
+  </header>
+
+  <main>
+    <div class="contenitore apertura">
+      <h1>Le telefonate scomode le facciamo noi.</h1>
+      <p>Disdette che non passano, rimborsi che non arrivano, bollette sbagliate, preventivi da trattare. Tu ci racconti il caso, una persona vera fa la chiamata al posto tuo.</p>
+      <div class="pulsanti">
+        <a class="pulsante" href="#delega">Ho una chiamata da delegare</a>
+        <a class="pulsante vuoto" href="#negoziatori">Voglio fare il negoziatore</a>
+      </div>
+    </div>
+
+    <section>
+      <div class="contenitore">
+        <h2>Come funziona</h2>
+        <ol class="passi">
+          <li>
+            <h3>Ci racconti il caso</h3>
+            <p>Due minuti, dal modulo qui sotto: con chi bisogna parlare e cosa vuoi ottenere.</p>
+          </li>
+          <li>
+            <h3>Ti ricontattiamo</h3>
+            <p>Ti diciamo se possiamo occuparcene, cosa ci serve da te e quali sono le condizioni. Prima di iniziare, non dopo.</p>
+          </li>
+          <li>
+            <h3>Facciamo la chiamata</h3>
+            <p>Parliamo noi, con calma e preparati. Poi ti riferiamo com'è andata e cosa abbiamo ottenuto.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <div class="contenitore">
+        <h2>Di cosa ci occupiamo</h2>
+        <div class="due-colonne">
+          <div class="riquadro">
+            <h3>Sì</h3>
+            <ul>
+              <li>Disdette di abbonamenti e contratti</li>
+              <li>Rimborsi e reclami</li>
+              <li>Bollette e addebiti sbagliati</li>
+              <li>Sconti su preventivi e rinnovi</li>
+              <li>Trattative su affitti e acquisti</li>
+            </ul>
+          </div>
+          <div class="riquadro">
+            <h3>No</h3>
+            <ul>
+              <li>Recupero crediti</li>
+              <li>Consulenza o assistenza legale</li>
+              <li>Mediazione civile formale</li>
+              <li>Pratiche che richiedono un professionista abilitato</li>
+            </ul>
+          </div>
+        </div>
+        <p class="nota">Il servizio è in fase di lancio. Le condizioni vengono concordate con te prima di iniziare qualsiasi chiamata.</p>
+      </div>
+    </section>
+
+    <section id="delega">
+      <div class="contenitore">
+        <h2>Ho una chiamata da delegare</h2>
+        <form name="delega" method="POST" action="/grazie.html" data-netlify="true" netlify-honeypot="campo-bot">
+          <input type="hidden" name="form-name" value="delega">
+          <p class="nascosto"><label>Non compilare: <input name="campo-bot"></label></p>
+
+          <label for="d-nome">Come ti chiami</label>
+          <input id="d-nome" name="nome" type="text" autocomplete="given-name" required>
+
+          <label for="d-contatto">Dove ti ricontattiamo</label>
+          <input id="d-contatto" name="contatto" type="text" placeholder="Telefono o email" required>
+
+          <label for="d-tipo">Di che si tratta</label>
+          <select id="d-tipo" name="tipo">
+            <option>Disdetta</option>
+            <option>Rimborso o reclamo</option>
+            <option>Bolletta o addebito sbagliato</option>
+            <option>Sconto su preventivo o rinnovo</option>
+            <option>Trattativa su affitto o acquisto</option>
+            <option>Altro</option>
+          </select>
+
+          <label for="d-caso">Raccontaci il caso</label>
+          <textarea id="d-caso" name="caso" required placeholder="Con chi bisogna parlare, cosa è successo, cosa vorresti ottenere."></textarea>
+          <p class="aiuto">Non scrivere qui password, codici di accesso o dati bancari. Se servono, te li chiederemo in un secondo momento.</p>
+
+          <label class="consenso">
+            <input type="checkbox" name="consenso" value="si" required>
+            <span>Acconsento a essere ricontattato per questa richiesta. Ho letto la <a href="#privacy">nota sui dati</a>.</span>
+          </label>
+
+          <button class="pulsante" type="submit">Invia il caso</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="negoziatori">
+      <div class="contenitore">
+        <h2>Voglio fare il negoziatore</h2>
+        <p class="nota" style="margin-top:-8px;margin-bottom:20px">Sai parlare con le persone e non ti fai smontare da un "non è possibile"? Stiamo raccogliendo le candidature per costruire la rete. Lasciaci i tuoi dati: ti scriviamo quando partiamo.</p>
+        <form name="negoziatori" method="POST" action="/grazie.html" data-netlify="true" netlify-honeypot="campo-bot">
+          <input type="hidden" name="form-name" value="negoziatori">
+          <p class="nascosto"><label>Non compilare: <input name="campo-bot"></label></p>
+
+          <label for="n-nome">Come ti chiami</label>
+          <input id="n-nome" name="nome" type="text" autocomplete="given-name" required>
+
+          <label for="n-contatto">Dove ti ricontattiamo</label>
+          <input id="n-contatto" name="contatto" type="text" placeholder="Telefono o email" required>
+
+          <label for="n-citta">Città</label>
+          <input id="n-citta" name="citta" type="text" autocomplete="address-level2">
+
+          <label for="n-perche">Perché saresti bravo</label>
+          <textarea id="n-perche" name="perche" placeholder="Un'esperienza, un lavoro, una trattativa che hai portato a casa."></textarea>
+
+          <label class="consenso">
+            <input type="checkbox" name="consenso" value="si" required>
+            <span>Acconsento a essere ricontattato per questa candidatura. Ho letto la <a href="#privacy">nota sui dati</a>.</span>
+          </label>
+
+          <button class="pulsante" type="submit">Invia la candidatura</button>
+        </form>
+      </div>
+    </section>
+
+    <section>
+      <div class="contenitore">
+        <h2>Domande frequenti</h2>
+        <details>
+          <summary>Quanto costa?</summary>
+          <p>Il servizio è in fase di lancio. Le condizioni te le comunichiamo quando ti ricontattiamo, prima di fare qualsiasi chiamata: decidi tu se procedere.</p>
+        </details>
+        <details>
+          <summary>Potete chiamare davvero a nome mio?</summary>
+          <p>Dipende dal caso. Per alcune richieste basta una chiamata informativa, per altre l'azienda vuole parlare con l'intestatario o chiede una delega scritta. Te lo diciamo dopo aver letto il caso.</p>
+        </details>
+        <details>
+          <summary>Garantite il risultato?</summary>
+          <p>No. Garantiamo preparazione, pazienza e un resoconto onesto di com'è andata.</p>
+        </details>
+        <details>
+          <summary>Siete avvocati o mediatori?</summary>
+          <p>No. Facciamo telefonate e trattative informali per conto di chi non ha tempo o voglia di farle. Per questioni legali serve un professionista abilitato.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer id="privacy">
+    <div class="contenitore">
+      <p><strong>Nota sui dati.</strong> I dati che invii dai moduli vengono usati solo per ricontattarti riguardo alla tua richiesta o candidatura. Non vengono ceduti a terzi né usati per pubblicità. I moduli sono gestiti tramite Netlify, che ospita il sito. Puoi chiedere in qualsiasi momento la cancellazione dei tuoi dati rispondendo al messaggio con cui ti ricontattiamo.</p>
+      <p>Ci parlo io non offre consulenza legale, mediazione civile né recupero crediti.</p>
+    </div>
+  </footer>
+</body>
+</html>
