@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vetrina Viva — Siti con prenotazioni per barbieri e pizzerie del Vicentino</title>
-  <meta name="description" content="Siti web per barbieri, pizzerie e attività locali della provincia di Vicenza: prezzi, orari e prenotazioni online. Pronti in pochi giorni, li aggiorniamo noi.">
+  <title>Vetrina Viva — Siti con prenotazioni per attività locali del Vicentino</title>
+  <meta name="description" content="Siti web per ristoranti, saloni, officine, artigiani e negozi della provincia di Vicenza: prezzi, orari, prenotazioni e richieste di preventivo online. Pronti in pochi giorni, li aggiorniamo noi.">
   <meta property="og:title" content="Vetrina Viva — Siti con prenotazioni per attività locali">
   <meta property="og:description" content="Il sito della tua attività, con prenotazioni online. Pronto in pochi giorni, lo aggiorniamo noi.">
   <meta property="og:type" content="website">
@@ -81,6 +81,10 @@
     .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
     .riquadro p { margin: 0; color: var(--tenue); }
 
+    .settore .cosa { display: inline-block; background: var(--evidenza); color: var(--accento); font-size: 0.76rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin: 0 0 10px; }
+    .settore ul { margin: 0; padding-left: 20px; color: var(--tenue); }
+    .settore li { margin: 3px 0; }
+
     .demo { display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: inherit; }
     .demo:hover { border-color: var(--accento); }
     .demo .icona { font-size: 2rem; line-height: 1; }
@@ -141,6 +145,7 @@
     <header>
       <div class="marchio">Vetrina <span>Viva</span></div>
       <nav>
+        <a href="#per-chi">Per chi</a>
         <a href="#esempi">Esempi</a>
         <a href="#prezzi">Prezzi</a>
         <a href="#chi">Chi siamo</a>
@@ -151,9 +156,9 @@
 
   <main>
     <div class="contenitore apertura">
-      <p class="etichetta">Per barbieri, pizzerie e attività del Vicentino</p>
+      <p class="etichetta">Per ristoranti, saloni, officine e botteghe del Vicentino</p>
       <h1>Il sito della tua attività, con le prenotazioni dentro.</h1>
-      <p>Prezzi, orari e appuntamenti in una pagina che i clienti aprono dal telefono. La costruiamo noi in pochi giorni e la teniamo aggiornata: tu pensi al lavoro.</p>
+      <p>Prezzi, orari e prenotazioni in una pagina che i clienti aprono dal telefono. La costruiamo noi in pochi giorni e la teniamo aggiornata: tu pensi al lavoro.</p>
       <div class="pulsanti">
         <a class="pulsante" href="#esempi">Prova un esempio</a>
         <a class="pulsante vuoto" href="#prezzi">Vedi i prezzi</a>
@@ -181,6 +186,112 @@
       </div>
     </section>
 
+    <section id="per-chi">
+      <div class="contenitore">
+        <h2>Per chi lo facciamo</h2>
+        <p class="sotto">Ogni mestiere ha la sua domanda tipica: un tavolo, un appuntamento, un preventivo. Il sito parte da quella.</p>
+        <div class="griglia tre">
+          <div class="riquadro settore">
+            <h3>Ristorazione</h3>
+            <span class="cosa">Tavoli e ordini da asporto</span>
+            <ul>
+              <li>Ristoranti e trattorie</li>
+              <li>Pizzerie</li>
+              <li>Agriturismi</li>
+              <li>Bar e caffetterie</li>
+              <li>Pasticcerie e gelaterie</li>
+              <li>Gastronomie e rosticcerie</li>
+            </ul>
+          </div>
+          <div class="riquadro settore">
+            <h3>Cura della persona</h3>
+            <span class="cosa">Appuntamenti</span>
+            <ul>
+              <li>Barbieri</li>
+              <li>Parrucchieri</li>
+              <li>Centri estetici</li>
+              <li>Onicotecniche</li>
+              <li>Tatuatori</li>
+              <li>Centri massaggi</li>
+            </ul>
+          </div>
+          <div class="riquadro settore">
+            <h3>Sport e tempo libero</h3>
+            <span class="cosa">Lezioni e campi</span>
+            <ul>
+              <li>Palestre</li>
+              <li>Personal trainer</li>
+              <li>Studi di yoga e pilates</li>
+              <li>Scuole di danza</li>
+              <li>Campi da padel, tennis e calcetto</li>
+            </ul>
+          </div>
+          <div class="riquadro settore">
+            <h3>Auto e moto</h3>
+            <span class="cosa">Appuntamenti in officina</span>
+            <ul>
+              <li>Officine meccaniche</li>
+              <li>Gommisti</li>
+              <li>Carrozzerie</li>
+              <li>Autolavaggi</li>
+              <li>Centri revisione</li>
+            </ul>
+          </div>
+          <div class="riquadro settore">
+            <h3>Casa e artigiani</h3>
+            <span class="cosa">Preventivi e sopralluoghi</span>
+            <ul>
+              <li>Idraulici ed elettricisti</li>
+              <li>Imbianchini</li>
+              <li>Giardinieri</li>
+              <li>Fabbri e falegnami</li>
+              <li>Imprese di pulizie</li>
+            </ul>
+          </div>
+          <div class="riquadro settore">
+            <h3>Negozi e botteghe</h3>
+            <span class="cosa">Ordini e ritiri</span>
+            <ul>
+              <li>Fioristi</li>
+              <li>Panifici e macellerie</li>
+              <li>Sartorie e lavanderie</li>
+              <li>Ottici</li>
+              <li>Negozi di quartiere</li>
+            </ul>
+          </div>
+          <div class="riquadro settore">
+            <h3>Ospitalità</h3>
+            <span class="cosa">Richieste di disponibilità</span>
+            <ul>
+              <li>Bed and breakfast</li>
+              <li>Affittacamere</li>
+              <li>Case vacanza</li>
+            </ul>
+          </div>
+          <div class="riquadro settore">
+            <h3>Animali</h3>
+            <span class="cosa">Appuntamenti</span>
+            <ul>
+              <li>Toelettature</li>
+              <li>Pensioni per animali</li>
+              <li>Educatori cinofili</li>
+            </ul>
+          </div>
+          <div class="riquadro settore">
+            <h3>Corsi e servizi</h3>
+            <span class="cosa">Lezioni e consulenze</span>
+            <ul>
+              <li>Fotografi</li>
+              <li>Autoscuole</li>
+              <li>Insegnanti e ripetizioni</li>
+              <li>Scuole di musica</li>
+            </ul>
+          </div>
+        </div>
+        <p class="nota">La tua attività non è in elenco? Scrivici lo stesso dal modulo in fondo: quasi sempre si può fare.</p>
+      </div>
+    </section>
+
     <section id="esempi">
       <div class="contenitore">
         <h2>Provali dal telefono</h2>
@@ -199,7 +310,7 @@
             <span class="vai">Apri l'esempio →</span>
           </a>
         </div>
-        <p class="nota">Fai un altro mestiere? Estetista, officina, bar, studio: la struttura si adatta. Scrivici dal modulo in fondo.</p>
+        <p class="nota">Fai un altro mestiere? La struttura è la stessa: cambiano le parole e il tipo di richiesta, per esempio un preventivo al posto di un tavolo.</p>
       </div>
     </section>
 
@@ -295,10 +406,17 @@
             <div>
               <label for="r-tipo">Tipo di attività</label>
               <select id="r-tipo" name="tipo">
+                <option>Ristorante, pizzeria o agriturismo</option>
+                <option>Bar, pasticceria o gelateria</option>
                 <option>Barbiere o parrucchiere</option>
-                <option>Pizzeria o ristorante</option>
-                <option>Bar o pasticceria</option>
-                <option>Estetica</option>
+                <option>Estetica, unghie o tatuaggi</option>
+                <option>Palestra, corsi o campi sportivi</option>
+                <option>Officina, gommista o carrozzeria</option>
+                <option>Artigiano o impresa di servizi per la casa</option>
+                <option>Negozio o bottega</option>
+                <option>Bed and breakfast o casa vacanza</option>
+                <option>Toelettatura o servizi per animali</option>
+                <option>Corsi, lezioni o fotografia</option>
                 <option>Altro</option>
               </select>
             </div>
