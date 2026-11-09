@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pizzeria Da Nives — Forno a legna, tavoli su prenotazione</title>
+  <meta name="description" content="Sito dimostrativo: pizzeria con menu, orari e prenotazione del tavolo online.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍕</text></svg>">
+
+  <style>
+    :root {
+      --sfondo: #fbf6ee;
+      --carta: #ffffff;
+      --testo: #22160f;
+      --tenue: #75675b;
+      --accento: #b4231a;
+      --su-accento: #fff5f0;
+      --verde: #2f6b3a;
+      --bordo: #eadfce;
+      --scuro: #22160f;
+      --su-scuro: #fbf6ee;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --sfondo: #16110d;
+        --carta: #211a14;
+        --testo: #f3ebe0;
+        --tenue: #b0a293;
+        --accento: #ff6b5e;
+        --su-accento: #2a0906;
+        --verde: #7cc48a;
+        --bordo: #382d23;
+        --scuro: #0d0a07;
+        --su-scuro: #f3ebe0;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--sfondo); color: var(--testo);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.55; -webkit-text-size-adjust: 100%;
+      padding-bottom: 76px;
+    }
+    .contenitore { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+    .avviso { background: var(--scuro); color: var(--su-scuro); text-align: center; font-size: 0.82rem; padding: 8px 16px; }
+
+    header { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; gap: 12px; }
+    .insegna { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; }
+    .insegna em { font-style: normal; color: var(--accento); }
+    nav a { color: var(--tenue); text-decoration: none; font-size: 0.92rem; margin-left: 16px; }
+    @media (max-width: 560px) { nav { display: none; } }
+
+    .apertura { padding-top: 32px; padding-bottom: 48px; }
+    .etichetta { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--verde); font-weight: 700; margin: 0 0 12px; }
+    h1 { font-size: clamp(2.3rem, 9vw, 3.8rem); line-height: 1.03; letter-spacing: -0.03em; margin: 0 0 18px; text-wrap: balance; }
+    .apertura p { font-size: 1.1rem; color: var(--tenue); max-width: 30em; margin: 0 0 26px; }
+    .pulsanti { display: flex; flex-wrap: wrap; gap: 12px; }
+    .pulsante {
+      display: inline-block; padding: 14px 22px; border-radius: 12px;
+      font-weight: 700; text-decoration: none; font-size: 1rem; font-family: inherit;
+      background: var(--accento); color: var(--su-accento); border: 2px solid var(--accento); cursor: pointer;
+    }
+    .pulsante.vuoto { background: transparent; color: var(--testo); border-color: var(--bordo); }
+
+    section { padding: 44px 0; border-top: 1px solid var(--bordo); }
+    h2 { font-size: 1.8rem; letter-spacing: -0.02em; margin: 0 0 22px; line-height: 1.15; }
+    h3 { font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--verde); margin: 26px 0 4px; }
+    h3:first-of-type { margin-top: 0; }
+
+    .menu { list-style: none; margin: 0; padding: 0; }
+    .menu li { display: flex; align-items: baseline; gap: 10px; padding: 12px 0; border-bottom: 1px dashed var(--bordo); }
+    .menu .nome { font-weight: 600; }
+    .menu .nota { display: block; font-weight: 400; font-size: 0.88rem; color: var(--tenue); }
+    .menu .riempi { flex: 1; }
+    .menu .prezzo { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    .prenota, .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
+    .prenota label { display: block; font-weight: 600; font-size: 0.92rem; margin: 16px 0 6px; }
+    .prenota label:first-child { margin-top: 0; }
+    .prenota input, .prenota select {
+      width: 100%; padding: 12px; font: inherit; font-size: 1rem;
+      color: var(--testo); background: var(--sfondo);
+      border: 1px solid var(--bordo); border-radius: 10px;
+    }
+    .due { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .prenota .pulsante { width: 100%; margin-top: 20px; }
+    .esito { margin-top: 16px; padding: 14px; border-radius: 12px; border: 1px solid var(--accento); }
+    .esito small { display: block; color: var(--tenue); margin-top: 6px; }
+    [hidden] { display: none !important; }
+
+    .griglia { display: grid; gap: 14px; }
+    @media (min-width: 620px) { .griglia { grid-template-columns: 1fr 1fr; } }
+    .riquadro h4 { margin: 0 0 10px; font-size: 1.05rem; }
+    .riquadro p { margin: 0 0 8px; color: var(--tenue); }
+    .riquadro a { color: var(--accento); font-weight: 600; }
+    .orari { width: 100%; border-collapse: collapse; }
+    .orari td { padding: 5px 0; vertical-align: top; }
+    .orari td:last-child { text-align: right; color: var(--tenue); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .orari .chiuso td:last-child { color: var(--accento); font-weight: 600; }
+
+    footer { padding: 28px 0 36px; border-top: 1px solid var(--bordo); color: var(--tenue); font-size: 0.86rem; }
+    .barra {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+      background: var(--carta); border-top: 1px solid var(--bordo);
+    }
+    .barra a { text-align: center; padding: 13px 8px; }
+    @media (min-width: 760px) { .barra { display: none; } body { padding-bottom: 0; } }
+  </style>
+</head>
+
+<body>
+  <div class="avviso">Sito dimostrativo: attività, menu, prezzi e recapiti sono di fantasia.</div>
+
+  <div class="contenitore">
+    <header>
+      <div class="insegna">Da <em>Nives</em></div>
+      <nav>
+        <a href="#menu">Menu</a>
+        <a href="#prenota">Prenota</a>
+        <a href="#orari">Orari</a>
+      </nav>
+    </header>
+  </div>
+
+  <main>
+    <div class="contenitore apertura">
+      <p class="etichetta">Forno a legna · Impasto a lunga lievitazione</p>
+      <h1>La pizza del giovedì, tutte le sere.</h1>
+      <p>Quaranta coperti, un forno solo, impasto che riposa due giorni. Il tavolo conviene prenotarlo: bastano trenta secondi.</p>
+      <div class="pulsanti">
+        <a class="pulsante" href="#prenota">Prenota un tavolo</a>
+        <a class="pulsante vuoto" href="#menu">Guarda il menu</a>
+      </div>
+    </div>
+
+    <section id="menu">
+      <div class="contenitore">
+        <h2>Menu</h2>
+        <h3>Le classiche</h3>
+        <ul class="menu">
+          <li><span class="nome">Margherita<span class="nota">Pomodoro, fiordilatte, basilico</span></span><span class="riempi"></span><span class="prezzo">7,00 €</span></li>
+          <li><span class="nome">Marinara<span class="nota">Pomodoro, aglio, origano</span></span><span class="riempi"></span><span class="prezzo">6,00 €</span></li>
+          <li><span class="nome">Diavola<span class="nota">Pomodoro, fiordilatte, salame piccante</span></span><span class="riempi"></span><span class="prezzo">8,50 €</span></li>
+          <li><span class="nome">Capricciosa<span class="nota">Prosciutto cotto, funghi, carciofi, olive</span></span><span class="riempi"></span><span class="prezzo">9,50 €</span></li>
+        </ul>
+        <h3>Le nostre</h3>
+        <ul class="menu">
+          <li><span class="nome">Nives<span class="nota">Fiordilatte, zucca, speck, noci</span></span><span class="riempi"></span><span class="prezzo">11,00 €</span></li>
+          <li><span class="nome">Orto<span class="nota">Verdure di stagione grigliate, ricotta affumicata</span></span><span class="riempi"></span><span class="prezzo">10,00 €</span></li>
+        </ul>
+        <h3>Da bere</h3>
+        <ul class="menu">
+          <li><span class="nome">Birra alla spina<span class="nota">Media, 0,4 l</span></span><span class="riempi"></span><span class="prezzo">5,00 €</span></li>
+          <li><span class="nome">Acqua<span class="nota">Bottiglia 0,75 l</span></span><span class="riempi"></span><span class="prezzo">2,50 €</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="prenota">
+      <div class="contenitore">
+        <h2>Prenota un tavolo</h2>
+        <form class="prenota" id="modulo-prenota">
+          <label for="p-giorno">Giorno</label>
+          <input id="p-giorno" type="date" required>
+
+          <div class="due">
+            <div>
+              <label for="p-ora">Orario</label>
+              <select id="p-ora" required></select>
+            </div>
+            <div>
+              <label for="p-persone">Persone</label>
+              <select id="p-persone">
+                <option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="p-nome">Nome</label>
+          <input id="p-nome" type="text" autocomplete="given-name" required>
+
+          <label for="p-tel">Telefono</label>
+          <input id="p-tel" type="tel" autocomplete="tel" required>
+
+          <button class="pulsante" type="submit">Richiedi il tavolo</button>
+          <div class="esito" id="esito" hidden></div>
+        </form>
+      </div>
+    </section>
+
+    <section id="orari">
+      <div class="contenitore">
+        <h2>Orari e indirizzo</h2>
+        <div class="griglia">
+          <div class="riquadro">
+            <h4>Quando siamo aperti</h4>
+            <table class="orari">
+              <tr class="chiuso"><td>Lunedì</td><td>Chiuso</td></tr>
+              <tr><td>Martedì – Giovedì</td><td>18:30 – 22:30</td></tr>
+              <tr><td>Venerdì – Domenica</td><td>18:30 – 23:30</td></tr>
+            </table>
+          </div>
+          <div class="riquadro">
+            <h4>Dove siamo</h4>
+            <p>Piazza dell'Esempio 3<br>00000 Città di Prova</p>
+            <p>Telefono: <a href="tel:+390000000000">000 000 0000</a></p>
+            <p>Anche da asporto, su ordinazione telefonica.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="contenitore">Pizzeria Da Nives è un'attività di fantasia. Questa pagina mostra come può essere il sito di un'attività locale.</div>
+  </footer>
+
+  <div class="barra">
+    <a class="pulsante" href="#prenota">Prenota</a>
+    <a class="pulsante vuoto" href="tel:+390000000000">Chiama</a>
+  </div>
+
+  <script>
+    // Ultimo orario prenotabile per giorno della settimana (0 = domenica). null = chiuso.
+    const ULTIMO = { 0: '22:00', 1: null, 2: '21:00', 3: '21:00', 4: '21:00', 5: '22:00', 6: '22:00' };
+    const PRIMO = '18:30';
+
+    const giorno = document.getElementById('p-giorno');
+    const ora = document.getElementById('p-ora');
+    const esito = document.getElementById('esito');
+
+    const minuti = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+    const testo = (min) => `${Math.floor(min / 60)}:${String(min % 60).padStart(2, '0')}`;
+    const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+    // Riempie il menu degli orari in base al giorno scelto.
+    function mostraOrari() {
+      ora.innerHTML = '';
+      if (!giorno.value) { ora.add(new Option('Scegli un giorno', '')); return; }
+      const [a, m, g] = giorno.value.split('-').map(Number);
+      const ultimo = ULTIMO[new Date(a, m - 1, g).getDay()];
+      if (!ultimo) { ora.add(new Option('Chiuso', '')); return; }
+      for (let t = minuti(PRIMO); t <= minuti(ultimo); t += 30) ora.add(new Option(testo(t), testo(t)));
+    }
+
+    giorno.min = iso(new Date());
+    giorno.addEventListener('change', mostraOrari);
+    mostraOrari();
+
+    document.getElementById('modulo-prenota').addEventListener('submit', (e) => {
+      e.preventDefault();
+      esito.hidden = false;
+      if (!ora.value) { esito.textContent = 'Quel giorno siamo chiusi: scegline un altro.'; return; }
+      const [a, m, g] = giorno.value.split('-');
+      const nome = document.getElementById('p-nome').value.trim();
+      const persone = document.getElementById('p-persone').value;
+      esito.innerHTML = '';
+      esito.append(`Grazie ${nome}: tavolo per ${persone} il ${g}/${m}/${a} alle ${ora.value}. Ti confermiamo per telefono.`);
+      const nota = document.createElement('small');
+      nota.textContent = 'Dimostrazione: nessun dato è stato inviato o salvato.';
+      esito.append(nota);
+    });
+  </script>
+</body>
+</html>

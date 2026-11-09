@@ -97,6 +97,27 @@
     .voci blockquote { margin: 0; background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 18px; font-size: 0.97rem; }
     .voci cite { display: block; margin-top: 10px; font-style: normal; font-size: 0.85rem; color: var(--tenue); }
 
+    .prenota { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
+    .prenota label { display: block; font-weight: 600; font-size: 0.92rem; margin: 16px 0 6px; }
+    .prenota label:first-child { margin-top: 0; }
+    .prenota input, .prenota select {
+      width: 100%; padding: 12px; font: inherit; font-size: 1rem;
+      color: var(--testo); background: var(--sfondo);
+      border: 1px solid var(--bordo); border-radius: 10px;
+    }
+    .fasce { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; }
+    .fasce button {
+      padding: 10px 0; font: inherit; font-variant-numeric: tabular-nums;
+      color: var(--testo); background: var(--sfondo);
+      border: 1px solid var(--bordo); border-radius: 10px; cursor: pointer;
+    }
+    .fasce button[aria-pressed="true"] { background: var(--accento); color: var(--su-accento); border-color: var(--accento); font-weight: 700; }
+    .fasce p { grid-column: 1 / -1; margin: 0; color: var(--tenue); }
+    .prenota .pulsante { width: 100%; margin-top: 20px; cursor: pointer; font-family: inherit; }
+    .esito { margin-top: 16px; padding: 14px; border-radius: 12px; border: 1px solid var(--accento); }
+    .esito small { display: block; color: var(--tenue); margin-top: 6px; }
+    [hidden] { display: none !important; }
+
     footer { padding: 28px 0 36px; border-top: 1px solid var(--bordo); color: var(--tenue); font-size: 0.86rem; }
 
     .barra {
@@ -118,6 +139,7 @@
       <div class="insegna serif">Barbieria Aurelio <small>dal lunedì al sabato</small></div>
       <nav>
         <a href="#servizi">Servizi</a>
+        <a href="#prenota">Prenota</a>
         <a href="#orari">Orari</a>
         <a href="#contatti">Contatti</a>
       </nav>
@@ -130,7 +152,7 @@
       <h1 class="serif">Entri di fretta, esci in ordine.</h1>
       <p>Barbieria di quartiere, su appuntamento. Mezz'ora per il taglio, niente attese in piedi, il caffè lo offriamo noi.</p>
       <div class="pulsanti">
-        <a class="pulsante" href="tel:+390000000000">Chiama per prenotare</a>
+        <a class="pulsante" href="#prenota">Prenota online</a>
         <a class="pulsante vuoto" href="#servizi">Guarda i prezzi</a>
       </div>
     </div>
@@ -145,6 +167,37 @@
           <li><span class="nome">Rasatura tradizionale<span class="nota">Panno caldo e rasoio a mano libera</span></span><span class="riempi"></span><span class="prezzo">15 €</span></li>
           <li><span class="nome">Taglio bambino<span class="nota">Fino a 12 anni</span></span><span class="riempi"></span><span class="prezzo">12 €</span></li>
         </ul>
+      </div>
+    </section>
+
+    <section id="prenota">
+      <div class="contenitore">
+        <h2 class="serif">Prenota online</h2>
+        <form class="prenota" id="modulo-prenota">
+          <label for="p-servizio">Servizio</label>
+          <select id="p-servizio">
+            <option>Taglio</option>
+            <option>Barba</option>
+            <option>Taglio e barba</option>
+            <option>Rasatura tradizionale</option>
+            <option>Taglio bambino</option>
+          </select>
+
+          <label for="p-giorno">Giorno</label>
+          <input id="p-giorno" type="date" required>
+
+          <label id="etichetta-fasce">Orario</label>
+          <div class="fasce" id="fasce" role="group" aria-labelledby="etichetta-fasce"></div>
+
+          <label for="p-nome">Nome</label>
+          <input id="p-nome" type="text" autocomplete="given-name" required>
+
+          <label for="p-tel">Telefono</label>
+          <input id="p-tel" type="tel" autocomplete="tel" required>
+
+          <button class="pulsante" type="submit">Richiedi appuntamento</button>
+          <div class="esito" id="esito" hidden></div>
+        </form>
       </div>
     </section>
 
@@ -189,7 +242,72 @@
 
   <div class="barra">
     <a class="pulsante" href="tel:+390000000000">Chiama</a>
-    <a class="pulsante vuoto" href="#orari">Orari</a>
+    <a class="pulsante vuoto" href="#prenota">Prenota</a>
   </div>
+
+  <script>
+    // Orari di apertura per giorno della settimana (0 = domenica). Ogni coppia è [apertura, chiusura].
+    const ORARI = {
+      0: [],
+      1: [['15:00', '19:30']],
+      2: [['9:00', '13:00'], ['15:00', '19:30']],
+      3: [['9:00', '13:00'], ['15:00', '19:30']],
+      4: [['9:00', '13:00'], ['15:00', '19:30']],
+      5: [['9:00', '13:00'], ['15:00', '19:30']],
+      6: [['9:00', '18:00']]
+    };
+    const DURATA = 30; // minuti per appuntamento
+
+    const giorno = document.getElementById('p-giorno');
+    const fasce = document.getElementById('fasce');
+    const esito = document.getElementById('esito');
+    let scelta = null;
+
+    const minuti = (ora) => { const [h, m] = ora.split(':').map(Number); return h * 60 + m; };
+    const testo = (min) => `${Math.floor(min / 60)}:${String(min % 60).padStart(2, '0')}`;
+    const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+    // Mostra le fasce libere del giorno scelto.
+    function mostraFasce() {
+      scelta = null;
+      fasce.innerHTML = '';
+      if (!giorno.value) { fasce.innerHTML = '<p>Scegli prima un giorno.</p>'; return; }
+      const [a, m, g] = giorno.value.split('-').map(Number);
+      const turni = ORARI[new Date(a, m - 1, g).getDay()];
+      if (!turni.length) { fasce.innerHTML = '<p>Quel giorno siamo chiusi.</p>'; return; }
+      for (const [da, fino] of turni) {
+        for (let t = minuti(da); t + DURATA <= minuti(fino); t += DURATA) {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.textContent = testo(t);
+          b.setAttribute('aria-pressed', 'false');
+          b.addEventListener('click', () => {
+            fasce.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', 'false'));
+            b.setAttribute('aria-pressed', 'true');
+            scelta = b.textContent;
+          });
+          fasce.appendChild(b);
+        }
+      }
+    }
+
+    giorno.min = iso(new Date());
+    giorno.addEventListener('change', mostraFasce);
+    mostraFasce();
+
+    document.getElementById('modulo-prenota').addEventListener('submit', (e) => {
+      e.preventDefault();
+      esito.hidden = false;
+      if (!scelta) { esito.textContent = 'Scegli un orario tra quelli disponibili.'; return; }
+      const [a, m, g] = giorno.value.split('-');
+      const servizio = document.getElementById('p-servizio').value;
+      const nome = document.getElementById('p-nome').value.trim();
+      esito.innerHTML = '';
+      esito.append(`Grazie ${nome}: richiesta per ${servizio.toLowerCase()} il ${g}/${m}/${a} alle ${scelta}. Ti confermiamo per telefono.`);
+      const nota = document.createElement('small');
+      nota.textContent = 'Dimostrazione: nessun dato è stato inviato o salvato.';
+      esito.append(nota);
+    });
+  </script>
 </body>
 </html>
