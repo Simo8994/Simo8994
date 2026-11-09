@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barbieria Aurelio — Taglio e barba su appuntamento</title>
+  <meta name="description" content="Sito dimostrativo: barbieria di quartiere con servizi, prezzi, orari e prenotazione rapida via telefono o WhatsApp.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
+
+  <style>
+    :root {
+      --sfondo: #f5f1e8;
+      --carta: #fffdf8;
+      --testo: #1d1a16;
+      --tenue: #6a6258;
+      --accento: #9a3412;
+      --su-accento: #fff7ed;
+      --bordo: #e2d9c8;
+      --scuro: #1d1a16;
+      --su-scuro: #f5f1e8;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --sfondo: #14120f;
+        --carta: #1e1b17;
+        --testo: #f0ebe1;
+        --tenue: #a89f92;
+        --accento: #f59e5b;
+        --su-accento: #1d1206;
+        --bordo: #332e27;
+        --scuro: #0c0b09;
+        --su-scuro: #f0ebe1;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--sfondo);
+      color: var(--testo);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.55;
+      -webkit-text-size-adjust: 100%;
+      padding-bottom: 76px; /* spazio per la barra fissa su telefono */
+    }
+    .contenitore { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+    .serif { font-family: Georgia, "Times New Roman", serif; }
+
+    .avviso {
+      background: var(--scuro); color: var(--su-scuro);
+      text-align: center; font-size: 0.82rem; padding: 8px 16px;
+    }
+
+    header { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; gap: 12px; }
+    .insegna { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.01em; }
+    .insegna small { display: block; font-family: system-ui, sans-serif; font-weight: 400; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tenue); }
+    nav a { color: var(--tenue); text-decoration: none; font-size: 0.92rem; margin-left: 16px; }
+    nav a:hover { color: var(--testo); }
+    @media (max-width: 560px) { nav { display: none; } }
+
+    .apertura { padding: 36px 0 48px; }
+    .etichetta { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accento); font-weight: 700; margin: 0 0 12px; }
+    h1 { font-size: clamp(2.3rem, 9vw, 4rem); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 18px; font-weight: 700; text-wrap: balance; }
+    .apertura p { font-size: 1.1rem; color: var(--tenue); max-width: 30em; margin: 0 0 26px; }
+    .pulsanti { display: flex; flex-wrap: wrap; gap: 12px; }
+    .pulsante {
+      display: inline-block; padding: 14px 22px; border-radius: 999px;
+      font-weight: 700; text-decoration: none; font-size: 1rem;
+      background: var(--accento); color: var(--su-accento); border: 2px solid var(--accento);
+    }
+    .pulsante.vuoto { background: transparent; color: var(--testo); border-color: var(--bordo); }
+
+    section { padding: 44px 0; border-top: 1px solid var(--bordo); }
+    h2 { font-size: 1.9rem; letter-spacing: -0.01em; margin: 0 0 22px; line-height: 1.15; }
+
+    .listino { list-style: none; margin: 0; padding: 0; }
+    .listino li { display: flex; align-items: baseline; gap: 10px; padding: 14px 0; border-bottom: 1px dashed var(--bordo); }
+    .listino .nome { font-weight: 600; }
+    .listino .nota { display: block; font-weight: 400; font-size: 0.88rem; color: var(--tenue); }
+    .listino .riempi { flex: 1; }
+    .listino .prezzo { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    .griglia { display: grid; gap: 14px; }
+    @media (min-width: 620px) { .griglia { grid-template-columns: 1fr 1fr; } }
+    .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
+    .riquadro h3 { margin: 0 0 10px; font-size: 1.05rem; }
+    .orari { width: 100%; border-collapse: collapse; }
+    .orari td { padding: 5px 0; }
+    .orari td:last-child { text-align: right; font-variant-numeric: tabular-nums; color: var(--tenue); }
+    .orari .chiuso td:last-child { color: var(--accento); font-weight: 600; }
+    .riquadro p { margin: 0 0 8px; color: var(--tenue); }
+    .riquadro a { color: var(--accento); font-weight: 600; }
+
+    .voci { display: grid; gap: 14px; }
+    @media (min-width: 620px) { .voci { grid-template-columns: repeat(3, 1fr); } }
+    .voci blockquote { margin: 0; background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 18px; font-size: 0.97rem; }
+    .voci cite { display: block; margin-top: 10px; font-style: normal; font-size: 0.85rem; color: var(--tenue); }
+
+    footer { padding: 28px 0 36px; border-top: 1px solid var(--bordo); color: var(--tenue); font-size: 0.86rem; }
+
+    .barra {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+      background: var(--carta); border-top: 1px solid var(--bordo);
+    }
+    .barra a { text-align: center; padding: 13px 8px; }
+    @media (min-width: 760px) { .barra { display: none; } body { padding-bottom: 0; } }
+  </style>
+</head>
+
+<body>
+  <div class="avviso">Sito dimostrativo: attività, prezzi, recapiti e recensioni sono di fantasia.</div>
+
+  <div class="contenitore">
+    <header>
+      <div class="insegna serif">Barbieria Aurelio <small>dal lunedì al sabato</small></div>
+      <nav>
+        <a href="#servizi">Servizi</a>
+        <a href="#orari">Orari</a>
+        <a href="#contatti">Contatti</a>
+      </nav>
+    </header>
+  </div>
+
+  <main>
+    <div class="contenitore apertura">
+      <p class="etichetta">Taglio · Barba · Rasatura</p>
+      <h1 class="serif">Entri di fretta, esci in ordine.</h1>
+      <p>Barbieria di quartiere, su appuntamento. Mezz'ora per il taglio, niente attese in piedi, il caffè lo offriamo noi.</p>
+      <div class="pulsanti">
+        <a class="pulsante" href="tel:+390000000000">Chiama per prenotare</a>
+        <a class="pulsante vuoto" href="#servizi">Guarda i prezzi</a>
+      </div>
+    </div>
+
+    <section id="servizi">
+      <div class="contenitore">
+        <h2 class="serif">Servizi e prezzi</h2>
+        <ul class="listino">
+          <li><span class="nome">Taglio<span class="nota">Forbice o macchinetta, lavaggio incluso</span></span><span class="riempi"></span><span class="prezzo">18 €</span></li>
+          <li><span class="nome">Barba<span class="nota">Regolazione e rifinitura a lama</span></span><span class="riempi"></span><span class="prezzo">10 €</span></li>
+          <li><span class="nome">Taglio e barba</span><span class="riempi"></span><span class="prezzo">25 €</span></li>
+          <li><span class="nome">Rasatura tradizionale<span class="nota">Panno caldo e rasoio a mano libera</span></span><span class="riempi"></span><span class="prezzo">15 €</span></li>
+          <li><span class="nome">Taglio bambino<span class="nota">Fino a 12 anni</span></span><span class="riempi"></span><span class="prezzo">12 €</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="orari">
+      <div class="contenitore">
+        <h2 class="serif">Orari e indirizzo</h2>
+        <div class="griglia">
+          <div class="riquadro">
+            <h3>Quando siamo aperti</h3>
+            <table class="orari">
+              <tr><td>Lunedì</td><td>15:00 – 19:30</td></tr>
+              <tr><td>Martedì – Venerdì</td><td>9:00 – 13:00 · 15:00 – 19:30</td></tr>
+              <tr><td>Sabato</td><td>9:00 – 18:00</td></tr>
+              <tr class="chiuso"><td>Domenica</td><td>Chiuso</td></tr>
+            </table>
+          </div>
+          <div class="riquadro" id="contatti">
+            <h3>Dove siamo</h3>
+            <p>Via dell'Esempio 12<br>00000 Città di Prova</p>
+            <p>Telefono: <a href="tel:+390000000000">000 000 0000</a></p>
+            <p>Parcheggio libero davanti al negozio.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="contenitore">
+        <h2 class="serif">Cosa dicono i clienti</h2>
+        <div class="voci">
+          <blockquote>Preciso e puntuale. Prenoti, arrivi, in mezz'ora sei fuori.<cite>Recensione di esempio</cite></blockquote>
+          <blockquote>La rasatura con il panno caldo vale il viaggio.<cite>Recensione di esempio</cite></blockquote>
+          <blockquote>Finalmente uno che ascolta come vuoi il taglio.<cite>Recensione di esempio</cite></blockquote>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="contenitore">Barbieria Aurelio è un'attività di fantasia. Questa pagina mostra come può essere il sito di un'attività locale.</div>
+  </footer>
+
+  <div class="barra">
+    <a class="pulsante" href="tel:+390000000000">Chiama</a>
+    <a class="pulsante vuoto" href="#orari">Orari</a>
+  </div>
+</body>
+</html>
