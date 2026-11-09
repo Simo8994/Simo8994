@@ -206,6 +206,64 @@
     footer p { margin: 0 0 10px; max-width: 52em; }
     footer strong { color: var(--su-verde); }
 
+    /* ===== Versione scenica: testata e apertura scure, telefono animato ===== */
+    .testata { background: color-mix(in srgb, var(--verde) 90%, transparent); border-bottom-color: color-mix(in srgb, var(--su-verde) 12%, transparent); }
+    .testata .marchio { color: var(--su-verde); }
+    .testata nav a:not(.pulsante) { color: var(--su-verde-tenue); }
+    .testata nav a:not(.pulsante):hover { color: var(--su-verde); }
+
+    .apertura { position: relative; background: var(--verde); color: var(--su-verde); padding: 72px 0 96px; isolation: isolate; }
+    .apertura::before, .apertura::after { content: ""; position: absolute; z-index: -1; border-radius: 50%; filter: blur(70px); pointer-events: none; }
+    .apertura::before { width: 520px; height: 520px; right: -120px; top: -160px; background: color-mix(in srgb, var(--accento) 46%, transparent); }
+    .apertura::after { width: 460px; height: 460px; left: -180px; bottom: -220px; background: color-mix(in srgb, #2f8f6f 40%, transparent); }
+    .apertura .occhiello { color: var(--su-verde-tenue); }
+    .apertura h1 { font-size: clamp(2.7rem, 9vw, 5rem); line-height: 1; color: var(--su-verde); }
+    .apertura h1 em { color: var(--accento); }
+    .apertura .testo > p { color: var(--su-verde-tenue); }
+    .apertura .pulsante.vuoto { color: var(--su-verde); border-color: color-mix(in srgb, var(--su-verde) 30%, transparent); }
+    .apertura .pulsante.vuoto:hover { border-color: var(--su-verde); }
+    .apertura .garanzie { color: var(--su-verde-tenue); }
+    @media (prefers-color-scheme: light) { .apertura h1 em, .apertura .garanzie li::before { color: #f08a55; } }
+
+    .parola { display: inline-block; font-style: italic; color: #f08a55; transition: opacity .22s ease, transform .22s ease; }
+    .parola.esce { opacity: 0; transform: translateY(0.25em); }
+
+    .scena { padding: 0; display: grid; justify-items: center; gap: 22px; }
+    .mestieri { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 360px; }
+    .mestieri button {
+      font: inherit; font-size: 0.86rem; font-weight: 600; padding: 7px 14px; border-radius: 999px; cursor: pointer;
+      color: var(--su-verde-tenue); background: transparent;
+      border: 1px solid color-mix(in srgb, var(--su-verde) 24%, transparent);
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .mestieri button:hover { color: var(--su-verde); border-color: var(--su-verde); }
+    .mestieri button[aria-pressed="true"] { background: var(--su-verde); color: var(--verde); border-color: var(--su-verde); }
+    .palco { position: relative; padding: 0 30px 72px; }
+    .telefono { transform: rotate(-2.5deg); border-color: #06140f; box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .65), 0 0 0 1px rgba(255, 255, 255, .08); }
+    .schermo { transition: opacity .25s ease, transform .25s ease; }
+    .schermo.cambio { opacity: 0; transform: translateY(8px); }
+    .telefono .ore span { transition: background .25s, color .25s, border-color .25s, transform .25s; }
+    .telefono .ore .scelta { transform: scale(1.06); }
+    .telefono .invia { transition: background .25s, transform .15s; }
+    .telefono .invia.premuto { background: var(--accento); color: var(--su-accento); transform: scale(.97); }
+    .avviso-flottante { right: 0; bottom: 0; transform: rotate(2deg); transition: opacity .45s ease, transform .45s cubic-bezier(.2, 1.3, .4, 1); color: var(--testo); }
+    .avviso-flottante span { color: var(--testo); }
+    .js .avviso-flottante:not(.su) { opacity: 0; transform: translateY(18px) scale(.94) rotate(2deg); }
+
+    .nastro { background: var(--accento); color: var(--su-accento); overflow: hidden; padding: 13px 0; font-family: var(--serif); font-style: italic; font-size: 1.15rem; white-space: nowrap; }
+    .nastro-riga { display: inline-flex; animation: scorri 46s linear infinite; }
+    .nastro span { padding: 0 18px; }
+    .nastro span::after { content: "✳"; font-style: normal; font-size: 0.8em; margin-left: 36px; opacity: .7; }
+    @keyframes scorri { to { transform: translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .nastro-riga { animation: none; } }
+
+    .riquadro { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+    .settore:hover, .domanda:hover { transform: translateY(-3px); box-shadow: var(--ombra); border-color: color-mix(in srgb, var(--accento) 45%, var(--bordo)); }
+    .griglia > .rivela:nth-child(3n+2) { transition-delay: .08s; }
+    .griglia > .rivela:nth-child(3n+3) { transition-delay: .16s; }
+    .passi > .rivela:nth-child(2) { transition-delay: .1s; }
+    .passi > .rivela:nth-child(3) { transition-delay: .2s; }
+
     /* Comparsa allo scorrimento (solo se JavaScript è attivo e l'utente non ha chiesto meno animazioni) */
     @media (prefers-reduced-motion: no-preference) {
       .js .rivela { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
@@ -218,7 +276,7 @@
   <div class="testata">
     <div class="contenitore">
       <a class="marchio" href="#" aria-label="Vetrina Viva, torna all'inizio">
-        <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#0e2a22"/><path d="M17 49V30a15 15 0 0 1 30 0v19z" fill="#f6f2e9"/><path d="M32 17v32M17 35h30" stroke="#0e2a22" stroke-width="3"/><circle cx="48" cy="16" r="7" fill="#e2703a" stroke="#0e2a22" stroke-width="3"/></svg>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#f6f2e9"/><path d="M17 49V30a15 15 0 0 1 30 0v19z" fill="#0e2a22"/><path d="M32 17v32M17 35h30" stroke="#f6f2e9" stroke-width="3"/><circle cx="48" cy="16" r="7" fill="#e2703a" stroke="#f6f2e9" stroke-width="3"/></svg>
         <span>Vetrina <i>Viva</i></span>
       </a>
       <nav>
@@ -236,7 +294,7 @@
       <div class="contenitore">
         <div class="testo">
           <p class="occhiello">Siti per attività locali · In tutta Italia</p>
-          <h1>La tua attività, aperta anche quando è <em>chiusa</em>.</h1>
+          <h1 aria-label="La tua attività, aperta anche quando è chiusa.">La tua <span class="parola" id="parola">barbieria</span>,<br>aperta anche<br>quando è <em>chiusa</em>.</h1>
           <p>Prezzi, orari e prenotazioni in una pagina che i clienti aprono dal telefono. La costruiamo noi in pochi giorni e la teniamo aggiornata: tu pensi al lavoro.</p>
           <div class="pulsanti">
             <a class="pulsante" href="#richiesta">Richiedi il tuo sito</a>
@@ -249,26 +307,42 @@
           </ul>
         </div>
 
-        <div class="scena" aria-hidden="true">
-          <div class="telefono">
-            <div class="tacca"></div>
-            <p class="nome">Barbieria Aurelio</p>
-            <p class="sub">Prenota il tuo appuntamento</p>
-            <div class="campo"><b>Taglio e barba</b><span>25 €</span></div>
-            <div class="campo"><b>Sabato 14</b><span>cambia</span></div>
-            <p class="etichetta">Orari liberi</p>
-            <div class="ore">
-              <span>9:00</span><span class="pieno">9:30</span><span class="scelta">10:00</span><span>10:30</span>
-              <span class="pieno">11:00</span><span>11:30</span><span>12:00</span><span class="pieno">12:30</span>
-            </div>
-            <div class="invia">Richiedi appuntamento</div>
+        <div class="scena">
+          <div class="mestieri" role="group" aria-label="Guarda l'esempio per un tipo di attività">
+            <button type="button" data-i="0" aria-pressed="true">Barbiere</button>
+            <button type="button" data-i="1" aria-pressed="false">Ristorante</button>
+            <button type="button" data-i="2" aria-pressed="false">Officina</button>
+            <button type="button" data-i="3" aria-pressed="false">Palestra</button>
+            <button type="button" data-i="4" aria-pressed="false">Idraulico</button>
           </div>
-          <div class="avviso-flottante">
-            <b>Nuova richiesta</b>
-            Taglio e barba, sabato alle 10:00
-            <span>· Luca</span>
+          <div class="palco" aria-hidden="true">
+            <div class="telefono">
+              <div class="tacca"></div>
+              <div class="schermo" id="schermo">
+                <p class="nome">Barbieria Aurelio</p>
+                <p class="sub">Prenota il tuo appuntamento</p>
+                <div class="campo"><b>Taglio e barba</b><span>25 €</span></div>
+                <div class="campo"><b>Sabato 14</b><span>cambia</span></div>
+                <p class="etichetta">Orari liberi</p>
+                <div class="ore">
+                  <span>9:00</span><span class="pieno">9:30</span><span class="scelta">10:00</span><span>10:30</span>
+                  <span class="pieno">11:00</span><span>11:30</span><span>12:00</span><span class="pieno">12:30</span>
+                </div>
+                <div class="invia">Richiedi appuntamento</div>
+              </div>
+            </div>
+            <div class="avviso-flottante su" id="avviso">
+              <b>Nuova richiesta</b>
+              <span id="avviso-testo">Taglio e barba, sabato alle 10:00 · Luca</span>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="nastro" aria-hidden="true">
+      <div class="nastro-riga">
+        <span>Ristoranti</span><span>Barbieri</span><span>Officine</span><span>Pizzerie</span><span>Parrucchieri</span><span>Palestre</span><span>Idraulici</span><span>Pasticcerie</span><span>Centri estetici</span><span>Gommisti</span><span>Agriturismi</span><span>Fioristi</span><span>Elettricisti</span><span>Bed and breakfast</span><span>Toelettature</span><span>Fotografi</span><span>Ristoranti</span><span>Barbieri</span><span>Officine</span><span>Pizzerie</span><span>Parrucchieri</span><span>Palestre</span><span>Idraulici</span><span>Pasticcerie</span><span>Centri estetici</span><span>Gommisti</span><span>Agriturismi</span><span>Fioristi</span><span>Elettricisti</span><span>Bed and breakfast</span><span>Toelettature</span><span>Fotografi</span>
       </div>
     </div>
 
@@ -581,6 +655,75 @@
       <p><strong>Nota sui dati.</strong> I dati che invii dal modulo vengono usati solo per ricontattarti riguardo alla tua richiesta. Non vengono ceduti a terzi né usati per pubblicità. Il modulo è gestito tramite Netlify, che ospita il sito. Puoi chiedere in qualsiasi momento la cancellazione dei tuoi dati rispondendo al messaggio con cui ti ricontattiamo.</p>
     </div>
   </footer>
+
+  <script>
+    // Telefono animato dell'apertura: mostra la stessa idea per mestieri diversi.
+    (() => {
+      const MESTIERI = [
+        { parola: 'barbieria', nome: 'Barbieria Aurelio', sub: 'Prenota il tuo appuntamento', a: ['Taglio e barba', '25 €'], b: ['Sabato 14', 'cambia'], titolo: 'Orari liberi',
+          ore: ['9:00', '-9:30', '10:00', '10:30', '-11:00', '11:30', '12:00', '-12:30'], scelta: 2, pulsante: 'Richiedi appuntamento', avviso: 'Taglio e barba, sabato alle 10:00 · Luca' },
+        { parola: 'trattoria', nome: 'Trattoria Da Nives', sub: 'Prenota un tavolo', a: ['4 persone', 'sala'], b: ['Venerdì 13', 'cambia'], titolo: 'Orari liberi',
+          ore: ['19:00', '19:30', '-20:00', '20:30', '21:00', '-21:30', '22:00', '-22:30'], scelta: 3, pulsante: 'Richiedi il tavolo', avviso: 'Tavolo per 4, venerdì alle 20:30 · Anna' },
+        { parola: 'officina', nome: 'Officina Bressan', sub: 'Fissa un appuntamento', a: ['Tagliando', 'da 120 €'], b: ['Martedì 17', 'cambia'], titolo: 'Orari liberi',
+          ore: ['8:00', '-8:30', '9:00', '-9:30', '14:00', '14:30', '-15:00', '15:30'], scelta: 4, pulsante: 'Richiedi appuntamento', avviso: 'Tagliando, martedì alle 14:00 · Paolo' },
+        { parola: 'palestra', nome: 'Studio Equilibrio', sub: 'Prenota la tua lezione', a: ['Pilates', '12 €'], b: ['Giovedì 19', 'cambia'], titolo: 'Lezioni con posti',
+          ore: ['7:30', '9:00', '-12:30', '13:15', '-17:30', '18:30', '19:30', '-20:30'], scelta: 5, pulsante: 'Prenota il posto', avviso: 'Pilates, giovedì alle 18:30 · Sara' },
+        { parola: 'impresa', nome: 'Idraulica Zanin', sub: 'Chiedi un sopralluogo', a: ['Perdita in bagno', 'preventivo'], b: ['Lunedì 16', 'cambia'], titolo: 'Fasce disponibili',
+          ore: ['8:00', '-9:00', '10:00', '11:00', '-14:00', '15:00', '16:00', '-17:00'], scelta: 2, pulsante: 'Richiedi sopralluogo', avviso: 'Sopralluogo, lunedì alle 10:00 · Marta' }
+      ];
+      const schermo = document.getElementById('schermo');
+      const avviso = document.getElementById('avviso');
+      const avvisoTesto = document.getElementById('avviso-testo');
+      const parola = document.getElementById('parola');
+      const tasti = [...document.querySelectorAll('.mestieri button')];
+      const calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let attuale = 0, automatico = !calmo, attese = [];
+
+      const dopo = (ms, fn) => attese.push(setTimeout(fn, ms));
+      const ferma = () => { attese.forEach(clearTimeout); attese = []; };
+
+      // Disegna lo schermo del telefono per un mestiere. "finale" mostra già la scelta fatta.
+      function disegna(m, finale) {
+        const ore = m.ore.map((o, i) => o.startsWith('-')
+          ? `<span class="pieno">${o.slice(1)}</span>`
+          : `<span${finale && i === m.scelta ? ' class="scelta"' : ''}>${o}</span>`).join('');
+        schermo.innerHTML = `<p class="nome">${m.nome}</p><p class="sub">${m.sub}</p>`
+          + `<div class="campo"><b>${m.a[0]}</b><span>${m.a[1]}</span></div>`
+          + `<div class="campo"><b>${m.b[0]}</b><span>${m.b[1]}</span></div>`
+          + `<p class="etichetta">${m.titolo}</p><div class="ore">${ore}</div>`
+          + `<div class="invia${finale ? ' premuto' : ''}">${finale ? 'Richiesta inviata ✓' : m.pulsante}</div>`;
+        avvisoTesto.textContent = m.avviso;
+        avviso.classList.toggle('su', finale);
+      }
+
+      function mostra(i) {
+        ferma();
+        attuale = i;
+        const m = MESTIERI[i];
+        tasti.forEach((t, n) => t.setAttribute('aria-pressed', String(n === i)));
+        if (calmo) { parola.textContent = m.parola; disegna(m, true); return; }
+
+        avviso.classList.remove('su');
+        schermo.classList.add('cambio');
+        parola.classList.add('esce');
+        dopo(240, () => {
+          parola.textContent = m.parola;
+          parola.classList.remove('esce');
+          disegna(m, false);
+          schermo.classList.remove('cambio');
+        });
+        dopo(1300, () => schermo.querySelectorAll('.ore span')[m.scelta].classList.add('scelta'));
+        dopo(2200, () => { const b = schermo.querySelector('.invia'); b.classList.add('premuto'); b.textContent = 'Richiesta inviata ✓'; });
+        dopo(2900, () => avviso.classList.add('su'));
+        if (automatico) dopo(6200, () => mostra((attuale + 1) % MESTIERI.length));
+      }
+
+      tasti.forEach((t) => t.addEventListener('click', () => { automatico = false; mostra(Number(t.dataset.i)); }));
+      // Mette in pausa la rotazione quando la scheda del browser non è visibile.
+      document.addEventListener('visibilitychange', () => { if (document.hidden) ferma(); else if (automatico) mostra(attuale); });
+      mostra(0);
+    })();
+  </script>
 
   <script>
     // Fa comparire le sezioni man mano che entrano nello schermo.
