@@ -4,218 +4,285 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Barbieria Aurelio — Taglio e barba su appuntamento</title>
-  <meta name="description" content="Sito dimostrativo: barbieria di quartiere con servizi, prezzi, orari e prenotazione rapida via telefono o WhatsApp.">
+  <meta name="description" content="Sito dimostrativo: barbieria con listino, orari e prenotazione online dell'appuntamento.">
   <meta name="robots" content="noindex">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
+  <meta name="theme-color" content="#0f0d0b">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230f0d0b'/><text x='32' y='45' font-family='Georgia,serif' font-size='38' font-weight='700' text-anchor='middle' fill='%23d4a55a'>A</text></svg>">
 
   <style>
     :root {
-      --sfondo: #f5f1e8;
-      --carta: #fffdf8;
-      --testo: #1d1a16;
-      --tenue: #6a6258;
-      --accento: #9a3412;
-      --su-accento: #fff7ed;
-      --bordo: #e2d9c8;
-      --scuro: #1d1a16;
-      --su-scuro: #f5f1e8;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --sfondo: #14120f;
-        --carta: #1e1b17;
-        --testo: #f0ebe1;
-        --tenue: #a89f92;
-        --accento: #f59e5b;
-        --su-accento: #1d1206;
-        --bordo: #332e27;
-        --scuro: #0c0b09;
-        --su-scuro: #f0ebe1;
-      }
+      --nero: #0f0d0b;
+      --carbone: #191613;
+      --pietra: #24201b;
+      --bordo: #3a342c;
+      --avorio: #f3ece0;
+      --tenue: #b3a998;
+      --ottone: #d4a55a;
+      --ottone-chiaro: #ecc888;
+      --su-ottone: #1c1407;
+      --verde: #58c08a;
+      --rosso: #e0745c;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--sfondo);
-      color: var(--testo);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.55;
-      -webkit-text-size-adjust: 100%;
-      padding-bottom: 76px; /* spazio per la barra fissa su telefono */
-    }
-    .contenitore { max-width: 760px; margin: 0 auto; padding: 0 20px; }
-    .serif { font-family: Georgia, "Times New Roman", serif; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body { margin: 0; background: var(--nero); color: var(--avorio); font-family: var(--sans); line-height: 1.6; -webkit-text-size-adjust: 100%; padding-bottom: 78px; }
+    @media (min-width: 760px) { body { padding-bottom: 0; } }
+    img { display: block; max-width: 100%; }
+    .contenitore { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+    h1, h2 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+    em { font-style: italic; color: var(--ottone); }
 
-    .avviso {
-      background: var(--scuro); color: var(--su-scuro);
-      text-align: center; font-size: 0.82rem; padding: 8px 16px;
-    }
+    .avviso-demo { background: var(--ottone); color: var(--su-ottone); text-align: center; font-size: 0.82rem; font-weight: 600; padding: 8px 16px; }
+    .avviso-demo a { color: inherit; font-weight: 800; }
 
-    header { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; gap: 12px; }
-    .insegna { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.01em; }
-    .insegna small { display: block; font-family: system-ui, sans-serif; font-weight: 400; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tenue); }
-    nav a { color: var(--tenue); text-decoration: none; font-size: 0.92rem; margin-left: 16px; }
-    nav a:hover { color: var(--testo); }
-    @media (max-width: 560px) { nav { display: none; } }
+    .testata { position: sticky; top: 0; z-index: 20; background: rgba(15, 13, 11, .86); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, .07); }
+    .testata .contenitore { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 66px; }
+    .insegna { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; letter-spacing: 0.01em; color: var(--avorio); text-decoration: none; }
+    .insegna span { color: var(--ottone); }
+    nav { display: flex; align-items: center; gap: 24px; }
+    nav a:not(.pulsante) { color: var(--tenue); text-decoration: none; font-size: 0.92rem; }
+    nav a:not(.pulsante):hover { color: var(--avorio); }
+    @media (max-width: 720px) { nav a:not(.pulsante) { display: none; } }
 
-    .apertura { padding-top: 36px; padding-bottom: 48px; }
-    .etichetta { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accento); font-weight: 700; margin: 0 0 12px; }
-    h1 { font-size: clamp(2.3rem, 9vw, 4rem); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 18px; font-weight: 700; text-wrap: balance; }
-    .apertura p { font-size: 1.1rem; color: var(--tenue); max-width: 30em; margin: 0 0 26px; }
+    .pulsante { display: inline-block; padding: 14px 24px; border: 0; border-radius: 4px; font: inherit; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; cursor: pointer; background: var(--ottone); color: var(--su-ottone); transition: background .2s, transform .15s; }
+    .pulsante:hover { background: var(--ottone-chiaro); transform: translateY(-1px); }
+    .pulsante.vuoto { background: transparent; color: var(--avorio); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35); }
+    .pulsante.vuoto:hover { box-shadow: inset 0 0 0 1px var(--avorio); background: transparent; }
+    nav .pulsante { padding: 10px 18px; font-size: 0.82rem; }
+
+    /* Apertura con foto a tutto schermo */
+    .apertura { position: relative; min-height: min(88vh, 760px); display: flex; align-items: flex-end; isolation: isolate; overflow: hidden; }
+    .apertura img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; animation: respiro 18s ease-in-out infinite alternate; }
+    @keyframes respiro { from { transform: scale(1); } to { transform: scale(1.08); } }
+    .apertura::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, var(--nero) 4%, rgba(15, 13, 11, .72) 46%, rgba(15, 13, 11, .35) 100%); }
+    .apertura .contenitore { width: 100%; padding-top: 110px; padding-bottom: 54px; }
+    .stato { display: inline-flex; align-items: center; gap: 9px; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; background: rgba(15, 13, 11, .6); border: 1px solid rgba(255, 255, 255, .16); margin: 0 0 22px; }
+    .stato::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--rosso); }
+    .stato.aperto::before { background: var(--verde); box-shadow: 0 0 0 4px rgba(88, 192, 138, .25); }
+    h1 { font-size: clamp(2.8rem, 10vw, 5.6rem); line-height: 0.98; margin: 0 0 20px; }
+    .apertura p.sotto { font-size: 1.14rem; color: #ddd3c2; max-width: 30em; margin: 0 0 30px; }
     .pulsanti { display: flex; flex-wrap: wrap; gap: 12px; }
-    .pulsante {
-      display: inline-block; padding: 14px 22px; border-radius: 999px;
-      font-weight: 700; text-decoration: none; font-size: 1rem;
-      background: var(--accento); color: var(--su-accento); border: 2px solid var(--accento);
-    }
-    .pulsante.vuoto { background: transparent; color: var(--testo); border-color: var(--bordo); }
+    .numeri { list-style: none; display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 12px 40px; margin: 44px 0 0; padding: 26px 0 0; border-top: 1px solid rgba(255, 255, 255, .16); }
+    .numeri b { display: block; font-family: var(--serif); font-size: 1.9rem; font-weight: 600; color: var(--ottone); line-height: 1.1; }
+    .numeri span { font-size: 0.82rem; color: var(--tenue); letter-spacing: 0.06em; text-transform: uppercase; }
 
-    section { padding: 44px 0; border-top: 1px solid var(--bordo); }
-    h2 { font-size: 1.9rem; letter-spacing: -0.01em; margin: 0 0 22px; line-height: 1.15; }
+    section { padding: 78px 0; }
+    section.scura { background: var(--carbone); }
+    .occhiello { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ottone); margin: 0 0 12px; }
+    h2 { font-size: clamp(2rem, 5.4vw, 3.1rem); line-height: 1.06; margin: 0 0 14px; }
+    .intro { color: var(--tenue); max-width: 36em; margin: 0 0 40px; font-size: 1.05rem; }
 
-    .listino { list-style: none; margin: 0; padding: 0; }
-    .listino li { display: flex; align-items: baseline; gap: 10px; padding: 14px 0; border-bottom: 1px dashed var(--bordo); }
-    .listino .nome { font-weight: 600; }
-    .listino .nota { display: block; font-weight: 400; font-size: 0.88rem; color: var(--tenue); }
-    .listino .riempi { flex: 1; }
-    .listino .prezzo { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    /* Listino */
+    .listino { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 56px; }
+    @media (min-width: 760px) { .listino { grid-template-columns: 1fr 1fr; } }
+    .listino li { display: flex; align-items: baseline; gap: 12px; padding: 20px 0; border-bottom: 1px solid var(--bordo); }
+    .listino .nome { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; }
+    .listino .nota { display: block; font-family: var(--sans); font-weight: 400; font-size: 0.9rem; color: var(--tenue); }
+    .listino .punti { flex: 1; border-bottom: 1px dotted var(--bordo); transform: translateY(-5px); }
+    .listino .prezzo { font-family: var(--serif); font-size: 1.3rem; color: var(--ottone); white-space: nowrap; font-variant-numeric: tabular-nums; }
 
-    .griglia { display: grid; gap: 14px; }
-    @media (min-width: 620px) { .griglia { grid-template-columns: 1fr 1fr; } }
-    .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
-    .riquadro h3 { margin: 0 0 10px; font-size: 1.05rem; }
-    .orari { width: 100%; border-collapse: collapse; }
-    .orari td { padding: 5px 0; vertical-align: top; white-space: nowrap; }
-    .orari td:last-child { text-align: right; font-variant-numeric: tabular-nums; color: var(--tenue); }
-    .orari .chiuso td:last-child { color: var(--accento); font-weight: 600; }
-    .riquadro p { margin: 0 0 8px; color: var(--tenue); }
-    .riquadro a { color: var(--accento); font-weight: 600; }
+    /* Prenotazione */
+    .prenota { background: var(--pietra); border: 1px solid var(--bordo); border-radius: 10px; padding: 26px; display: grid; gap: 28px; }
+    @media (min-width: 880px) { .prenota { grid-template-columns: 1.3fr 0.9fr; padding: 36px; gap: 44px; } }
+    .prenota > div { min-width: 0; }
+    .passo { margin: 0 0 26px; }
+    .passo:last-child { margin-bottom: 0; }
+    .passo > p { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tenue); margin: 0 0 12px; }
+    .passo > p b { color: var(--ottone); margin-right: 8px; }
+    .scelte { display: flex; flex-wrap: wrap; gap: 8px; }
+    .scelte.giorni { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+    .scelte button { font: inherit; font-size: 0.95rem; color: var(--avorio); background: var(--carbone); border: 1px solid var(--bordo); border-radius: 6px; padding: 10px 14px; cursor: pointer; white-space: nowrap; transition: border-color .15s, background .15s, color .15s; }
+    .scelte button:hover:not(:disabled) { border-color: var(--ottone); }
+    .scelte button[aria-pressed="true"] { background: var(--ottone); border-color: var(--ottone); color: var(--su-ottone); font-weight: 700; }
+    .scelte button:disabled { opacity: .35; cursor: not-allowed; text-decoration: line-through; }
+    .giorni button { flex: none; min-width: 68px; text-align: center; padding: 9px 8px; line-height: 1.25; }
+    .giorni button small { display: block; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: .8; }
+    .giorni button b { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; }
+    .ore { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 8px; }
+    .ore button { padding: 10px 0; text-align: center; font-variant-numeric: tabular-nums; }
+    .vuoto-ore { color: var(--tenue); margin: 0; }
 
-    .voci { display: grid; gap: 14px; }
-    @media (min-width: 620px) { .voci { grid-template-columns: repeat(3, 1fr); } }
-    .voci blockquote { margin: 0; background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 18px; font-size: 0.97rem; }
-    .voci cite { display: block; margin-top: 10px; font-style: normal; font-size: 0.85rem; color: var(--tenue); }
-
-    .prenota { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
-    .prenota label { display: block; font-weight: 600; font-size: 0.92rem; margin: 16px 0 6px; }
-    .prenota label:first-child { margin-top: 0; }
-    .prenota input, .prenota select {
-      width: 100%; padding: 12px; font: inherit; font-size: 1rem;
-      color: var(--testo); background: var(--sfondo);
-      border: 1px solid var(--bordo); border-radius: 10px;
-    }
-    .fasce { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; }
-    .fasce button {
-      padding: 10px 0; font: inherit; font-variant-numeric: tabular-nums;
-      color: var(--testo); background: var(--sfondo);
-      border: 1px solid var(--bordo); border-radius: 10px; cursor: pointer;
-    }
-    .fasce button[aria-pressed="true"] { background: var(--accento); color: var(--su-accento); border-color: var(--accento); font-weight: 700; }
-    .fasce p { grid-column: 1 / -1; margin: 0; color: var(--tenue); }
-    .prenota .pulsante { width: 100%; margin-top: 20px; cursor: pointer; font-family: inherit; }
-    .esito { margin-top: 16px; padding: 14px; border-radius: 12px; border: 1px solid var(--accento); }
+    .riepilogo { background: var(--carbone); border: 1px solid var(--bordo); border-radius: 8px; padding: 22px; align-self: start; }
+    .riepilogo h3 { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; margin: 0 0 14px; }
+    .riepilogo dl { margin: 0 0 18px; display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: 0.95rem; }
+    .riepilogo dt { color: var(--tenue); }
+    .riepilogo dd { margin: 0; text-align: right; font-weight: 600; }
+    .riepilogo label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--tenue); margin: 12px 0 5px; }
+    .riepilogo input { width: 100%; padding: 12px; font: inherit; font-size: 1rem; color: var(--avorio); background: var(--pietra); border: 1px solid var(--bordo); border-radius: 6px; }
+    .riepilogo input:focus { outline: 2px solid var(--ottone); outline-offset: 1px; }
+    .riepilogo .pulsante { width: 100%; margin-top: 18px; text-align: center; }
+    .esito { margin-top: 14px; padding: 14px; border-radius: 6px; border: 1px solid var(--ottone); font-size: 0.95rem; }
+    .esito.ok { border-color: var(--verde); }
     .esito small { display: block; color: var(--tenue); margin-top: 6px; }
     [hidden] { display: none !important; }
 
-    footer { padding: 28px 0 36px; border-top: 1px solid var(--bordo); color: var(--tenue); font-size: 0.86rem; }
+    /* Il salone */
+    .salone { display: grid; gap: 34px; align-items: center; }
+    @media (min-width: 860px) { .salone { grid-template-columns: 1fr 1fr; gap: 60px; } }
+    .salone figure { margin: 0; border-radius: 10px; overflow: hidden; position: relative; }
+    .salone figure::after { content: ""; position: absolute; inset: 14px; border: 1px solid rgba(212, 165, 90, .55); border-radius: 4px; pointer-events: none; }
+    .salone p { color: var(--tenue); font-size: 1.06rem; margin: 0 0 14px; }
+    .firma { font-family: var(--serif); font-style: italic; font-size: 1.5rem; color: var(--ottone); margin-top: 22px !important; }
 
-    .barra {
-      position: fixed; left: 0; right: 0; bottom: 0;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
-      background: var(--carta); border-top: 1px solid var(--bordo);
+    /* Orari e contatti */
+    .griglia { display: grid; gap: 18px; }
+    @media (min-width: 760px) { .griglia { grid-template-columns: 1fr 1fr; } }
+    .riquadro { background: var(--pietra); border: 1px solid var(--bordo); border-radius: 10px; padding: 26px; }
+    .riquadro h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; margin: 0 0 14px; }
+    .orari { width: 100%; border-collapse: collapse; }
+    .orari td { padding: 8px 0; border-bottom: 1px solid var(--bordo); vertical-align: top; }
+    .orari tr:last-child td { border-bottom: 0; }
+    .orari td:last-child { text-align: right; color: var(--tenue); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .orari .oggi td { color: var(--ottone); font-weight: 700; }
+    .riquadro p { margin: 0 0 10px; color: var(--tenue); }
+    .riquadro a { color: var(--ottone); font-weight: 600; }
+
+    .voci { display: grid; gap: 18px; }
+    @media (min-width: 760px) { .voci { grid-template-columns: repeat(3, 1fr); } }
+    .voci blockquote { margin: 0; padding: 26px; background: var(--pietra); border: 1px solid var(--bordo); border-radius: 10px; font-family: var(--serif); font-size: 1.15rem; line-height: 1.45; }
+    .voci blockquote::before { content: "“"; display: block; font-size: 3rem; line-height: 0.7; color: var(--ottone); margin-bottom: 8px; }
+    .voci cite { display: block; margin-top: 14px; font-family: var(--sans); font-style: normal; font-size: 0.8rem; color: var(--tenue); letter-spacing: 0.06em; text-transform: uppercase; }
+
+    footer { padding: 40px 0 46px; border-top: 1px solid var(--bordo); color: var(--tenue); font-size: 0.88rem; }
+    footer a { color: var(--ottone); }
+
+    .barra { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: rgba(15, 13, 11, .94); backdrop-filter: blur(12px); border-top: 1px solid var(--bordo); }
+    .barra a { text-align: center; padding: 13px 8px; font-size: 0.85rem; }
+    @media (min-width: 760px) { .barra { display: none; } }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .js .rivela { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+      .js .rivela.visibile { opacity: 1; transform: none; }
     }
-    .barra a { text-align: center; padding: 13px 8px; }
-    @media (min-width: 760px) { .barra { display: none; } body { padding-bottom: 0; } }
+    @media (prefers-reduced-motion: reduce) { .apertura img { animation: none; } }
   </style>
 </head>
 
 <body>
-  <div class="avviso">Sito dimostrativo: attività, prezzi, recapiti e recensioni sono di fantasia.</div>
+  <div class="avviso-demo">Sito dimostrativo di <a href="/">Vetrina Viva</a>: attività, prezzi, recapiti e recensioni sono di fantasia.</div>
 
-  <div class="contenitore">
-    <header>
-      <div class="insegna serif">Barbieria Aurelio <small>dal lunedì al sabato</small></div>
+  <div class="testata">
+    <div class="contenitore">
+      <a class="insegna" href="#">Barbieria <span>Aurelio</span></a>
       <nav>
         <a href="#servizi">Servizi</a>
-        <a href="#prenota">Prenota</a>
+        <a href="#salone">Il salone</a>
         <a href="#orari">Orari</a>
-        <a href="#contatti">Contatti</a>
+        <a class="pulsante" href="#prenota">Prenota</a>
       </nav>
-    </header>
+    </div>
   </div>
 
   <main>
-    <div class="contenitore apertura">
-      <p class="etichetta">Taglio · Barba · Rasatura</p>
-      <h1 class="serif">Entri di fretta, esci in ordine.</h1>
-      <p>Barbieria di quartiere, su appuntamento. Mezz'ora per il taglio, niente attese in piedi, il caffè lo offriamo noi.</p>
-      <div class="pulsanti">
-        <a class="pulsante" href="#prenota">Prenota online</a>
-        <a class="pulsante vuoto" href="#servizi">Guarda i prezzi</a>
+    <div class="apertura">
+      <img src="/img/barbiere.webp" alt="" width="960" height="720">
+      <div class="contenitore">
+        <p class="stato" id="stato">Controllo orari…</p>
+        <h1>Entri di fretta,<br>esci <em>in ordine</em>.</h1>
+        <p class="sotto">Barbieria di quartiere, su appuntamento. Mezz'ora per il taglio, niente attese in piedi, il caffè lo offriamo noi.</p>
+        <div class="pulsanti">
+          <a class="pulsante" href="#prenota">Prenota online</a>
+          <a class="pulsante vuoto" href="#servizi">Listino</a>
+        </div>
+        <ul class="numeri">
+          <li><b>30′</b><span>per un taglio</span></li>
+          <li><b>6</b><span>giorni su 7</span></li>
+          <li><b>0</b><span>attese in piedi</span></li>
+        </ul>
       </div>
     </div>
 
     <section id="servizi">
       <div class="contenitore">
-        <h2 class="serif">Servizi e prezzi</h2>
-        <ul class="listino">
-          <li><span class="nome">Taglio<span class="nota">Forbice o macchinetta, lavaggio incluso</span></span><span class="riempi"></span><span class="prezzo">18 €</span></li>
-          <li><span class="nome">Barba<span class="nota">Regolazione e rifinitura a lama</span></span><span class="riempi"></span><span class="prezzo">10 €</span></li>
-          <li><span class="nome">Taglio e barba</span><span class="riempi"></span><span class="prezzo">25 €</span></li>
-          <li><span class="nome">Rasatura tradizionale<span class="nota">Panno caldo e rasoio a mano libera</span></span><span class="riempi"></span><span class="prezzo">15 €</span></li>
-          <li><span class="nome">Taglio bambino<span class="nota">Fino a 12 anni</span></span><span class="riempi"></span><span class="prezzo">12 €</span></li>
+        <p class="occhiello rivela">Listino</p>
+        <h2 class="rivela">Poche cose, <em>fatte bene</em>.</h2>
+        <p class="intro rivela">Ogni servizio include lavaggio e rifinitura. I prezzi sono questi, senza sorprese alla cassa.</p>
+        <ul class="listino rivela">
+          <li><span class="nome">Taglio<span class="nota">Forbice o macchinetta · 30 min</span></span><span class="punti"></span><span class="prezzo">18 €</span></li>
+          <li><span class="nome">Barba<span class="nota">Regolazione e rifinitura a lama · 20 min</span></span><span class="punti"></span><span class="prezzo">10 €</span></li>
+          <li><span class="nome">Taglio e barba<span class="nota">Il completo · 45 min</span></span><span class="punti"></span><span class="prezzo">25 €</span></li>
+          <li><span class="nome">Rasatura tradizionale<span class="nota">Panno caldo e rasoio a mano libera · 30 min</span></span><span class="punti"></span><span class="prezzo">15 €</span></li>
+          <li><span class="nome">Taglio bambino<span class="nota">Fino a 12 anni · 20 min</span></span><span class="punti"></span><span class="prezzo">12 €</span></li>
+          <li><span class="nome">Sposo<span class="nota">Taglio, barba e prova la settimana prima</span></span><span class="punti"></span><span class="prezzo">60 €</span></li>
         </ul>
       </div>
     </section>
 
-    <section id="prenota">
+    <section id="prenota" class="scura">
       <div class="contenitore">
-        <h2 class="serif">Prenota online</h2>
-        <form class="prenota" id="modulo-prenota">
-          <label for="p-servizio">Servizio</label>
-          <select id="p-servizio">
-            <option>Taglio</option>
-            <option>Barba</option>
-            <option>Taglio e barba</option>
-            <option>Rasatura tradizionale</option>
-            <option>Taglio bambino</option>
-          </select>
+        <p class="occhiello rivela">Prenotazione</p>
+        <h2 class="rivela">Il tuo posto, in <em>tre tocchi</em>.</h2>
+        <p class="intro rivela">Scegli servizio, giorno e orario. Ti confermiamo per telefono.</p>
 
-          <label for="p-giorno">Giorno</label>
-          <input id="p-giorno" type="date" required>
+        <form class="prenota rivela" id="modulo" novalidate>
+          <div>
+            <div class="passo">
+              <p><b>1</b>Servizio</p>
+              <div class="scelte" id="servizi-scelta"></div>
+            </div>
+            <div class="passo">
+              <p><b>2</b>Giorno</p>
+              <div class="scelte giorni" id="giorni"></div>
+            </div>
+            <div class="passo">
+              <p><b>3</b>Orario</p>
+              <div class="scelte ore" id="ore"></div>
+            </div>
+          </div>
 
-          <label id="etichetta-fasce">Orario</label>
-          <div class="fasce" id="fasce" role="group" aria-labelledby="etichetta-fasce"></div>
-
-          <label for="p-nome">Nome</label>
-          <input id="p-nome" type="text" autocomplete="given-name" required>
-
-          <label for="p-tel">Telefono</label>
-          <input id="p-tel" type="tel" autocomplete="tel" required>
-
-          <button class="pulsante" type="submit">Richiedi appuntamento</button>
-          <div class="esito" id="esito" hidden></div>
+          <div class="riepilogo">
+            <h3>Il tuo appuntamento</h3>
+            <dl>
+              <dt>Servizio</dt><dd id="r-servizio">—</dd>
+              <dt>Giorno</dt><dd id="r-giorno">—</dd>
+              <dt>Orario</dt><dd id="r-ora">—</dd>
+              <dt>Prezzo</dt><dd id="r-prezzo">—</dd>
+            </dl>
+            <label for="nome">Nome</label>
+            <input id="nome" type="text" autocomplete="given-name">
+            <label for="tel">Telefono</label>
+            <input id="tel" type="tel" autocomplete="tel">
+            <button class="pulsante" type="submit">Richiedi appuntamento</button>
+            <div class="esito" id="esito" hidden role="status"></div>
+          </div>
         </form>
       </div>
     </section>
 
-    <section id="orari">
+    <section id="salone">
+      <div class="contenitore salone">
+        <figure class="rivela"><img src="/img/barbiere.webp" alt="La poltrona e gli specchi della barbieria" width="960" height="720" loading="lazy"></figure>
+        <div class="rivela">
+          <p class="occhiello">Il salone</p>
+          <h2>Una poltrona, <em>il tempo giusto</em>.</h2>
+          <p>Qui si lavora su appuntamento perché un taglio fatto bene non si fa guardando l'orologio. Ti siedi all'ora che hai scelto, e per mezz'ora la poltrona è tua.</p>
+          <p>Forbici, rasoio a mano libera, panno caldo. Gli strumenti di sempre, usati con calma.</p>
+          <p class="firma">Aurelio</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="orari" class="scura">
       <div class="contenitore">
-        <h2 class="serif">Orari e indirizzo</h2>
-        <div class="griglia">
-          <div class="riquadro">
-            <h3>Quando siamo aperti</h3>
-            <table class="orari">
-              <tr><td>Lunedì</td><td>15:00 – 19:30</td></tr>
-              <tr><td>Martedì – Venerdì</td><td>9:00 – 13:00<br>15:00 – 19:30</td></tr>
-              <tr><td>Sabato</td><td>9:00 – 18:00</td></tr>
-              <tr class="chiuso"><td>Domenica</td><td>Chiuso</td></tr>
+        <p class="occhiello rivela">Dove e quando</p>
+        <h2 class="rivela">Passa a <em>trovarci</em>.</h2>
+        <div class="griglia" style="margin-top:34px">
+          <div class="riquadro rivela">
+            <h3>Orari</h3>
+            <table class="orari" id="tabella-orari">
+              <tr data-g="1"><td>Lunedì</td><td>15:00 – 19:30</td></tr>
+              <tr data-g="2"><td>Martedì</td><td>9:00 – 13:00 · 15:00 – 19:30</td></tr>
+              <tr data-g="3"><td>Mercoledì</td><td>9:00 – 13:00 · 15:00 – 19:30</td></tr>
+              <tr data-g="4"><td>Giovedì</td><td>9:00 – 13:00 · 15:00 – 19:30</td></tr>
+              <tr data-g="5"><td>Venerdì</td><td>9:00 – 13:00 · 15:00 – 19:30</td></tr>
+              <tr data-g="6"><td>Sabato</td><td>9:00 – 18:00</td></tr>
+              <tr data-g="0"><td>Domenica</td><td>Chiuso</td></tr>
             </table>
           </div>
-          <div class="riquadro" id="contatti">
-            <h3>Dove siamo</h3>
+          <div class="riquadro rivela">
+            <h3>Contatti</h3>
             <p>Via dell'Esempio 12<br>00000 Città di Prova</p>
             <p>Telefono: <a href="tel:+390000000000">000 000 0000</a></p>
             <p>Parcheggio libero davanti al negozio.</p>
@@ -226,88 +293,122 @@
 
     <section>
       <div class="contenitore">
-        <h2 class="serif">Cosa dicono i clienti</h2>
-        <div class="voci">
-          <blockquote>Preciso e puntuale. Prenoti, arrivi, in mezz'ora sei fuori.<cite>Recensione di esempio</cite></blockquote>
-          <blockquote>La rasatura con il panno caldo vale il viaggio.<cite>Recensione di esempio</cite></blockquote>
-          <blockquote>Finalmente uno che ascolta come vuoi il taglio.<cite>Recensione di esempio</cite></blockquote>
+        <p class="occhiello rivela">Dicono di noi</p>
+        <h2 class="rivela">Chi torna, <em>torna</em>.</h2>
+        <div class="voci" style="margin-top:34px">
+          <blockquote class="rivela">Preciso e puntuale. Prenoti, arrivi, in mezz'ora sei fuori.<cite>Recensione di esempio</cite></blockquote>
+          <blockquote class="rivela">La rasatura con il panno caldo vale il viaggio.<cite>Recensione di esempio</cite></blockquote>
+          <blockquote class="rivela">Finalmente uno che ascolta come vuoi il taglio.<cite>Recensione di esempio</cite></blockquote>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="contenitore">Barbieria Aurelio è un'attività di fantasia. Questa pagina mostra come può essere il sito di un'attività locale.</div>
+    <div class="contenitore">Barbieria Aurelio è un'attività di fantasia: questa pagina mostra come può essere il sito di un'attività locale. Fotografia illustrativa generata al computer. Realizzato da <a href="/">Vetrina Viva</a>.</div>
   </footer>
 
   <div class="barra">
-    <a class="pulsante" href="tel:+390000000000">Chiama</a>
-    <a class="pulsante vuoto" href="#prenota">Prenota</a>
+    <a class="pulsante" href="#prenota">Prenota</a>
+    <a class="pulsante vuoto" href="tel:+390000000000">Chiama</a>
   </div>
 
   <script>
-    // Orari di apertura per giorno della settimana (0 = domenica). Ogni coppia è [apertura, chiusura].
+    document.documentElement.classList.add('js');
+
+    // Orari per giorno della settimana (0 = domenica): coppie [apertura, chiusura].
     const ORARI = {
-      0: [],
-      1: [['15:00', '19:30']],
-      2: [['9:00', '13:00'], ['15:00', '19:30']],
-      3: [['9:00', '13:00'], ['15:00', '19:30']],
-      4: [['9:00', '13:00'], ['15:00', '19:30']],
-      5: [['9:00', '13:00'], ['15:00', '19:30']],
+      0: [], 1: [['15:00', '19:30']],
+      2: [['9:00', '13:00'], ['15:00', '19:30']], 3: [['9:00', '13:00'], ['15:00', '19:30']],
+      4: [['9:00', '13:00'], ['15:00', '19:30']], 5: [['9:00', '13:00'], ['15:00', '19:30']],
       6: [['9:00', '18:00']]
     };
-    const DURATA = 30; // minuti per appuntamento
+    const SERVIZI = [['Taglio', 18], ['Barba', 10], ['Taglio e barba', 25], ['Rasatura tradizionale', 15], ['Taglio bambino', 12]];
+    const GIORNI = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'];
+    const MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+    const minuti = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+    const testo = (n) => `${Math.floor(n / 60)}:${String(n % 60).padStart(2, '0')}`;
+    const el = (id) => document.getElementById(id);
+    const scelta = { servizio: null, giorno: null, ora: null };
 
-    const giorno = document.getElementById('p-giorno');
-    const fasce = document.getElementById('fasce');
-    const esito = document.getElementById('esito');
-    let scelta = null;
+    // Stato "aperto ora" e riga di oggi evidenziata nella tabella.
+    (() => {
+      const ora = new Date(), adesso = ora.getHours() * 60 + ora.getMinutes();
+      const turno = ORARI[ora.getDay()].find(([a, c]) => adesso >= minuti(a) && adesso < minuti(c));
+      const stato = el('stato');
+      if (turno) { stato.textContent = `Aperto ora · fino alle ${turno[1]}`; stato.classList.add('aperto'); }
+      else stato.textContent = 'Chiuso ora · prenota online';
+      document.querySelector(`#tabella-orari tr[data-g="${ora.getDay()}"]`).classList.add('oggi');
+    })();
 
-    const minuti = (ora) => { const [h, m] = ora.split(':').map(Number); return h * 60 + m; };
-    const testo = (min) => `${Math.floor(min / 60)}:${String(min % 60).padStart(2, '0')}`;
-    const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    function premi(contenitore, tasto) {
+      contenitore.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === tasto)));
+    }
+    function aggiorna() {
+      el('r-servizio').textContent = scelta.servizio ? scelta.servizio[0] : '—';
+      el('r-prezzo').textContent = scelta.servizio ? `${scelta.servizio[1]} €` : '—';
+      el('r-giorno').textContent = scelta.giorno ? `${GIORNI[scelta.giorno.getDay()]} ${scelta.giorno.getDate()} ${MESI[scelta.giorno.getMonth()]}` : '—';
+      el('r-ora').textContent = scelta.ora || '—';
+    }
 
-    // Mostra le fasce libere del giorno scelto.
-    function mostraFasce() {
-      scelta = null;
-      fasce.innerHTML = '';
-      if (!giorno.value) { fasce.innerHTML = '<p>Scegli prima un giorno.</p>'; return; }
-      const [a, m, g] = giorno.value.split('-').map(Number);
-      const turni = ORARI[new Date(a, m - 1, g).getDay()];
-      if (!turni.length) { fasce.innerHTML = '<p>Quel giorno siamo chiusi.</p>'; return; }
-      for (const [da, fino] of turni) {
-        for (let t = minuti(da); t + DURATA <= minuti(fino); t += DURATA) {
+    // 1. Servizi
+    SERVIZI.forEach((s) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = `${s[0]} · ${s[1]} €`; b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', () => { scelta.servizio = s; premi(el('servizi-scelta'), b); aggiorna(); });
+      el('servizi-scelta').appendChild(b);
+    });
+
+    // 3. Orari del giorno scelto. Alcune fasce risultano già occupate, in modo fisso per ogni data.
+    function mostraOre() {
+      const ore = el('ore');
+      ore.innerHTML = ''; scelta.ora = null;
+      if (!scelta.giorno) { ore.innerHTML = '<p class="vuoto-ore">Scegli prima un giorno.</p>'; return; }
+      const seme = scelta.giorno.getDate() * 7 + scelta.giorno.getMonth();
+      let n = 0;
+      for (const [da, fino] of ORARI[scelta.giorno.getDay()]) {
+        for (let t = minuti(da); t + 30 <= minuti(fino); t += 30, n++) {
           const b = document.createElement('button');
-          b.type = 'button';
-          b.textContent = testo(t);
-          b.setAttribute('aria-pressed', 'false');
-          b.addEventListener('click', () => {
-            fasce.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', 'false'));
-            b.setAttribute('aria-pressed', 'true');
-            scelta = b.textContent;
-          });
-          fasce.appendChild(b);
+          b.type = 'button'; b.textContent = testo(t); b.setAttribute('aria-pressed', 'false');
+          if ((n * 5 + seme) % 4 === 0) b.disabled = true;
+          else b.addEventListener('click', () => { scelta.ora = b.textContent; premi(ore, b); aggiorna(); });
+          ore.appendChild(b);
         }
       }
     }
 
-    giorno.min = iso(new Date());
-    giorno.addEventListener('change', mostraFasce);
-    mostraFasce();
+    // 2. Prossimi dieci giorni; quelli di chiusura non si possono scegliere.
+    for (let i = 0; i < 10; i++) {
+      const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + i + 1);
+      const b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+      b.innerHTML = `<small>${GIORNI[d.getDay()]}</small><b>${d.getDate()}</b>`;
+      b.setAttribute('aria-label', `${GIORNI[d.getDay()]} ${d.getDate()} ${MESI[d.getMonth()]}`);
+      if (!ORARI[d.getDay()].length) b.disabled = true;
+      else b.addEventListener('click', () => { scelta.giorno = d; premi(el('giorni'), b); mostraOre(); aggiorna(); });
+      el('giorni').appendChild(b);
+    }
+    mostraOre();
 
-    document.getElementById('modulo-prenota').addEventListener('submit', (e) => {
+    el('modulo').addEventListener('submit', (e) => {
       e.preventDefault();
-      esito.hidden = false;
-      if (!scelta) { esito.textContent = 'Scegli un orario tra quelli disponibili.'; return; }
-      const [a, m, g] = giorno.value.split('-');
-      const servizio = document.getElementById('p-servizio').value;
-      const nome = document.getElementById('p-nome').value.trim();
-      esito.innerHTML = '';
-      esito.append(`Grazie ${nome}: richiesta per ${servizio.toLowerCase()} il ${g}/${m}/${a} alle ${scelta}. Ti confermiamo per telefono.`);
+      const esito = el('esito'), nome = el('nome').value.trim(), tel = el('tel').value.trim();
+      esito.hidden = false; esito.classList.remove('ok');
+      const manca = !scelta.servizio ? 'un servizio' : !scelta.giorno ? 'un giorno' : !scelta.ora ? 'un orario' : !nome ? 'il tuo nome' : !tel ? 'un telefono' : null;
+      if (manca) { esito.textContent = `Manca ancora ${manca}.`; return; }
+      esito.classList.add('ok');
+      esito.textContent = `Grazie ${nome}: ${scelta.servizio[0].toLowerCase()}, ${el('r-giorno').textContent} alle ${scelta.ora}. Ti confermiamo per telefono.`;
       const nota = document.createElement('small');
       nota.textContent = 'Dimostrazione: nessun dato è stato inviato o salvato.';
-      esito.append(nota);
+      esito.appendChild(nota);
     });
+
+    // Comparsa allo scorrimento.
+    const elementi = document.querySelectorAll('.rivela');
+    if ('IntersectionObserver' in window) {
+      const oss = new IntersectionObserver((voci) => voci.forEach((v) => { if (v.isIntersecting) { v.target.classList.add('visibile'); oss.unobserve(v.target); } }), { rootMargin: '0px 0px -8% 0px' });
+      elementi.forEach((e) => oss.observe(e));
+    } else elementi.forEach((e) => e.classList.add('visibile'));
   </script>
 </body>
 </html>

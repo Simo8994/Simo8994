@@ -6,206 +6,314 @@
   <title>Pizzeria Da Nives — Forno a legna, tavoli su prenotazione</title>
   <meta name="description" content="Sito dimostrativo: pizzeria con menu, orari e prenotazione del tavolo online.">
   <meta name="robots" content="noindex">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍕</text></svg>">
+  <meta name="theme-color" content="#1b120d">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23c2301f'/><text x='32' y='45' font-family='Georgia,serif' font-size='38' font-weight='700' font-style='italic' text-anchor='middle' fill='%23fff6ea'>N</text></svg>">
 
   <style>
     :root {
-      --sfondo: #fbf6ee;
+      --crema: #fbf5ea;
       --carta: #ffffff;
-      --testo: #22160f;
-      --tenue: #75675b;
-      --accento: #b4231a;
-      --su-accento: #fff5f0;
-      --verde: #2f6b3a;
-      --bordo: #eadfce;
-      --scuro: #22160f;
-      --su-scuro: #fbf6ee;
+      --testo: #1b120d;
+      --tenue: #6f6156;
+      --pomodoro: #c2301f;
+      --pomodoro-scuro: #a02516;
+      --basilico: #2f6b3a;
+      --legno: #1b120d;
+      --su-legno: #fbf5ea;
+      --su-legno-tenue: #c9b9a8;
+      --bordo: #e9dcc8;
+      --sabbia: #f3e8d6;
+      --ombra: 0 1px 2px rgba(27, 18, 13, .06), 0 18px 40px -18px rgba(27, 18, 13, .3);
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --sfondo: #16110d;
-        --carta: #211a14;
-        --testo: #f3ebe0;
-        --tenue: #b0a293;
-        --accento: #ff6b5e;
-        --su-accento: #2a0906;
-        --verde: #7cc48a;
-        --bordo: #382d23;
-        --scuro: #0d0a07;
-        --su-scuro: #f3ebe0;
+        --crema: #17100c;
+        --carta: #221812;
+        --testo: #f6ecdd;
+        --tenue: #b8a898;
+        --pomodoro: #ef5a45;
+        --pomodoro-scuro: #f47a68;
+        --basilico: #7cc48a;
+        --legno: #0e0906;
+        --bordo: #3a2c22;
+        --sabbia: #1d1510;
+        --ombra: 0 1px 2px rgba(0, 0, 0, .4), 0 18px 44px -18px rgba(0, 0, 0, .8);
       }
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0; background: var(--sfondo); color: var(--testo);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.55; -webkit-text-size-adjust: 100%;
-      padding-bottom: 76px;
-    }
-    .contenitore { max-width: 760px; margin: 0 auto; padding: 0 20px; }
-    .avviso { background: var(--scuro); color: var(--su-scuro); text-align: center; font-size: 0.82rem; padding: 8px 16px; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body { margin: 0; background: var(--crema); color: var(--testo); font-family: var(--sans); line-height: 1.6; -webkit-text-size-adjust: 100%; padding-bottom: 78px; }
+    @media (min-width: 760px) { body { padding-bottom: 0; } }
+    img { display: block; max-width: 100%; }
+    .contenitore { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+    h1, h2 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+    em { font-style: italic; color: var(--pomodoro); }
 
-    header { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; gap: 12px; }
-    .insegna { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; }
-    .insegna em { font-style: normal; color: var(--accento); }
-    nav a { color: var(--tenue); text-decoration: none; font-size: 0.92rem; margin-left: 16px; }
-    @media (max-width: 560px) { nav { display: none; } }
+    .avviso-demo { background: var(--basilico); color: #fff; text-align: center; font-size: 0.82rem; font-weight: 600; padding: 8px 16px; }
+    @media (prefers-color-scheme: dark) { .avviso-demo { color: #0e1a10; } }
+    .avviso-demo a { color: inherit; font-weight: 800; }
 
-    .apertura { padding-top: 32px; padding-bottom: 48px; }
-    .etichetta { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--verde); font-weight: 700; margin: 0 0 12px; }
-    h1 { font-size: clamp(2.3rem, 9vw, 3.8rem); line-height: 1.03; letter-spacing: -0.03em; margin: 0 0 18px; text-wrap: balance; }
-    .apertura p { font-size: 1.1rem; color: var(--tenue); max-width: 30em; margin: 0 0 26px; }
+    .testata { position: sticky; top: 0; z-index: 20; background: rgba(27, 18, 13, .9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, .08); }
+    .testata .contenitore { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 66px; }
+    .insegna { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; font-style: italic; color: var(--su-legno); text-decoration: none; }
+    .insegna span { color: #ff8a73; }
+    nav { display: flex; align-items: center; gap: 24px; }
+    nav a:not(.pulsante) { color: var(--su-legno-tenue); text-decoration: none; font-size: 0.92rem; }
+    nav a:not(.pulsante):hover { color: var(--su-legno); }
+    @media (max-width: 720px) { nav a:not(.pulsante) { display: none; } }
+
+    .pulsante { display: inline-block; padding: 14px 24px; border: 0; border-radius: 999px; font: inherit; font-weight: 700; font-size: 1rem; text-decoration: none; cursor: pointer; background: #c2301f; color: #fff; transition: background .2s, transform .15s; }
+    .pulsante:hover { background: #a02516; transform: translateY(-1px); }
+    .pulsante.vuoto { background: transparent; color: var(--testo); box-shadow: inset 0 0 0 2px var(--bordo); }
+    .pulsante.vuoto:hover { box-shadow: inset 0 0 0 2px var(--testo); background: transparent; }
+    nav .pulsante { padding: 10px 20px; font-size: 0.9rem; }
+
+    /* Apertura con foto */
+    .apertura { position: relative; min-height: min(88vh, 760px); display: flex; align-items: flex-end; isolation: isolate; overflow: hidden; color: #fff6ea; }
+    .apertura img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; animation: respiro 18s ease-in-out infinite alternate; }
+    @keyframes respiro { from { transform: scale(1); } to { transform: scale(1.08); } }
+    .apertura::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgba(20, 12, 8, .95) 6%, rgba(20, 12, 8, .6) 50%, rgba(20, 12, 8, .25) 100%); }
+    .apertura .contenitore { width: 100%; padding-top: 110px; padding-bottom: 56px; }
+    .stato { display: inline-flex; align-items: center; gap: 9px; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; background: rgba(20, 12, 8, .6); border: 1px solid rgba(255, 255, 255, .18); margin: 0 0 22px; }
+    .stato::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #ff8a73; }
+    .stato.aperto::before { background: #6fd28c; box-shadow: 0 0 0 4px rgba(111, 210, 140, .25); }
+    h1 { font-size: clamp(2.8rem, 10vw, 5.6rem); line-height: 0.98; margin: 0 0 20px; }
+    h1 em { color: #ff8a73; }
+    .apertura p.sotto { font-size: 1.14rem; color: #ecdfce; max-width: 30em; margin: 0 0 30px; }
     .pulsanti { display: flex; flex-wrap: wrap; gap: 12px; }
-    .pulsante {
-      display: inline-block; padding: 14px 22px; border-radius: 12px;
-      font-weight: 700; text-decoration: none; font-size: 1rem; font-family: inherit;
-      background: var(--accento); color: var(--su-accento); border: 2px solid var(--accento); cursor: pointer;
-    }
-    .pulsante.vuoto { background: transparent; color: var(--testo); border-color: var(--bordo); }
+    .apertura .pulsante.vuoto { color: #fff6ea; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .4); }
+    .apertura .pulsante.vuoto:hover { box-shadow: inset 0 0 0 2px #fff6ea; }
+    .numeri { list-style: none; display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 12px 40px; margin: 44px 0 0; padding: 26px 0 0; border-top: 1px solid rgba(255, 255, 255, .2); }
+    .numeri b { display: block; font-family: var(--serif); font-size: 1.9rem; font-weight: 600; line-height: 1.1; }
+    .numeri span { font-size: 0.82rem; color: #d9c9b6; letter-spacing: 0.06em; text-transform: uppercase; }
 
-    section { padding: 44px 0; border-top: 1px solid var(--bordo); }
-    h2 { font-size: 1.8rem; letter-spacing: -0.02em; margin: 0 0 22px; line-height: 1.15; }
-    h3 { font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--verde); margin: 26px 0 4px; }
-    h3:first-of-type { margin-top: 0; }
+    section { padding: 78px 0; }
+    section.sabbia { background: var(--sabbia); }
+    .occhiello { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--basilico); margin: 0 0 12px; }
+    h2 { font-size: clamp(2rem, 5.4vw, 3.1rem); line-height: 1.06; margin: 0 0 14px; }
+    .intro { color: var(--tenue); max-width: 36em; margin: 0 0 34px; font-size: 1.05rem; }
 
-    .menu { list-style: none; margin: 0; padding: 0; }
-    .menu li { display: flex; align-items: baseline; gap: 10px; padding: 12px 0; border-bottom: 1px dashed var(--bordo); }
-    .menu .nome { font-weight: 600; }
-    .menu .nota { display: block; font-weight: 400; font-size: 0.88rem; color: var(--tenue); }
-    .menu .riempi { flex: 1; }
-    .menu .prezzo { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    /* Menu a schede */
+    .schede { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 26px; }
+    .schede button { font: inherit; font-weight: 700; font-size: 0.95rem; padding: 10px 20px; border-radius: 999px; cursor: pointer; color: var(--testo); background: transparent; border: 2px solid var(--bordo); transition: background .2s, color .2s, border-color .2s; }
+    .schede button:hover { border-color: var(--testo); }
+    .schede button[aria-selected="true"] { background: var(--testo); color: var(--crema); border-color: var(--testo); }
+    .piatti { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+    @media (min-width: 760px) { .piatti { grid-template-columns: 1fr 1fr; } }
+    .piatti li { background: var(--carta); border: 1px solid var(--bordo); border-radius: 18px; padding: 20px 22px; display: flex; gap: 16px; align-items: flex-start; justify-content: space-between; transition: transform .2s, box-shadow .2s; }
+    .piatti li:hover { transform: translateY(-3px); box-shadow: var(--ombra); }
+    .piatti .nome { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; display: block; }
+    .piatti .ingredienti { color: var(--tenue); font-size: 0.93rem; }
+    .piatti .marca { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--basilico); border: 1px solid currentColor; border-radius: 999px; padding: 1px 8px; margin-left: 8px; vertical-align: middle; font-family: var(--sans); }
+    .piatti .prezzo { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--pomodoro); white-space: nowrap; font-variant-numeric: tabular-nums; }
 
-    .prenota, .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 20px; }
-    .prenota label { display: block; font-weight: 600; font-size: 0.92rem; margin: 16px 0 6px; }
-    .prenota label:first-child { margin-top: 0; }
-    .prenota input, .prenota select {
-      width: 100%; padding: 12px; font: inherit; font-size: 1rem;
-      color: var(--testo); background: var(--sfondo);
-      border: 1px solid var(--bordo); border-radius: 10px;
-    }
-    .due { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .prenota .pulsante { width: 100%; margin-top: 20px; }
-    .esito { margin-top: 16px; padding: 14px; border-radius: 12px; border: 1px solid var(--accento); }
+    /* Prenotazione */
+    .prenota { background: var(--carta); border: 1px solid var(--bordo); border-radius: 24px; padding: 26px; display: grid; gap: 28px; box-shadow: var(--ombra); }
+    @media (min-width: 880px) { .prenota { grid-template-columns: 1.3fr 0.9fr; padding: 36px; gap: 44px; } }
+    .prenota > div { min-width: 0; }
+    .passo { margin: 0 0 26px; }
+    .passo:last-child { margin-bottom: 0; }
+    .passo > p { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tenue); margin: 0 0 12px; }
+    .passo > p b { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--pomodoro); color: #fff; margin-right: 8px; letter-spacing: 0; font-size: 0.78rem; }
+    .scelte { display: flex; flex-wrap: wrap; gap: 8px; }
+    .scelte.giorni { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+    .scelte button { font: inherit; font-size: 0.95rem; color: var(--testo); background: var(--crema); border: 1px solid var(--bordo); border-radius: 12px; padding: 10px 14px; cursor: pointer; white-space: nowrap; transition: border-color .15s, background .15s, color .15s; }
+    .scelte button:hover:not(:disabled) { border-color: var(--pomodoro); }
+    .scelte button[aria-pressed="true"] { background: #c2301f; border-color: #c2301f; color: #fff; font-weight: 700; }
+    .scelte button:disabled { opacity: .4; cursor: not-allowed; text-decoration: line-through; }
+    .giorni button { flex: none; min-width: 68px; text-align: center; padding: 9px 8px; line-height: 1.25; }
+    .giorni button small { display: block; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: .8; }
+    .giorni button b { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; }
+    .persone { display: inline-flex; align-items: center; gap: 6px; background: var(--crema); border: 1px solid var(--bordo); border-radius: 999px; padding: 5px; }
+    .persone button { width: 42px; height: 42px; border-radius: 50%; border: 0; font: inherit; font-size: 1.4rem; line-height: 1; cursor: pointer; background: var(--carta); color: var(--testo); box-shadow: inset 0 0 0 1px var(--bordo); }
+    .persone button:hover { box-shadow: inset 0 0 0 1px var(--pomodoro); }
+    .persone output { min-width: 106px; text-align: center; font-weight: 700; }
+    .ore { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 8px; }
+    .ore button { padding: 10px 0; text-align: center; font-variant-numeric: tabular-nums; }
+    .vuoto-ore { color: var(--tenue); margin: 0; }
+
+    .riepilogo { background: var(--sabbia); border-radius: 18px; padding: 22px; align-self: start; }
+    .riepilogo h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; margin: 0 0 14px; }
+    .riepilogo dl { margin: 0 0 18px; display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: 0.95rem; }
+    .riepilogo dt { color: var(--tenue); }
+    .riepilogo dd { margin: 0; text-align: right; font-weight: 700; }
+    .riepilogo label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--tenue); margin: 12px 0 5px; }
+    .riepilogo input { width: 100%; padding: 12px; font: inherit; font-size: 1rem; color: var(--testo); background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; }
+    .riepilogo input:focus { outline: 2px solid var(--pomodoro); outline-offset: 1px; }
+    .riepilogo .pulsante { width: 100%; margin-top: 18px; text-align: center; }
+    .esito { margin-top: 14px; padding: 14px; border-radius: 12px; border: 1px solid var(--pomodoro); font-size: 0.95rem; background: var(--carta); }
+    .esito.ok { border-color: var(--basilico); }
     .esito small { display: block; color: var(--tenue); margin-top: 6px; }
     [hidden] { display: none !important; }
 
-    .griglia { display: grid; gap: 14px; }
-    @media (min-width: 620px) { .griglia { grid-template-columns: 1fr 1fr; } }
-    .riquadro h4 { margin: 0 0 10px; font-size: 1.05rem; }
-    .riquadro p { margin: 0 0 8px; color: var(--tenue); }
-    .riquadro a { color: var(--accento); font-weight: 600; }
-    .orari { width: 100%; border-collapse: collapse; }
-    .orari td { padding: 5px 0; vertical-align: top; }
-    .orari td:last-child { text-align: right; color: var(--tenue); font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .orari .chiuso td:last-child { color: var(--accento); font-weight: 600; }
+    /* Il forno */
+    .forno { background: var(--legno); color: var(--su-legno); }
+    .forno .colonne { display: grid; gap: 34px; align-items: center; }
+    @media (min-width: 860px) { .forno .colonne { grid-template-columns: 1fr 1fr; gap: 60px; } }
+    .forno figure { margin: 0; border-radius: 22px; overflow: hidden; }
+    .forno .occhiello { color: #9fd8ab; }
+    .forno em { color: #ff8a73; }
+    .forno p:not(.occhiello) { color: var(--su-legno-tenue); font-size: 1.06rem; margin: 0 0 14px; }
+    .fatti { list-style: none; margin: 26px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .fatti li { border: 1px solid rgba(255, 255, 255, .16); border-radius: 16px; padding: 14px 12px; text-align: center; }
+    .fatti b { display: block; font-family: var(--serif); font-size: 1.6rem; font-weight: 600; color: var(--su-legno); line-height: 1.15; }
+    .fatti span { font-size: 0.76rem; color: var(--su-legno-tenue); letter-spacing: 0.04em; text-transform: uppercase; }
 
-    footer { padding: 28px 0 36px; border-top: 1px solid var(--bordo); color: var(--tenue); font-size: 0.86rem; }
-    .barra {
-      position: fixed; left: 0; right: 0; bottom: 0;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
-      background: var(--carta); border-top: 1px solid var(--bordo);
+    /* Orari */
+    .griglia { display: grid; gap: 18px; }
+    @media (min-width: 760px) { .griglia { grid-template-columns: 1fr 1fr; } }
+    .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 22px; padding: 26px; }
+    .riquadro h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; margin: 0 0 14px; }
+    .orari { width: 100%; border-collapse: collapse; }
+    .orari td { padding: 8px 0; border-bottom: 1px solid var(--bordo); }
+    .orari tr:last-child td { border-bottom: 0; }
+    .orari td:last-child { text-align: right; color: var(--tenue); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .orari .oggi td { color: var(--pomodoro); font-weight: 700; }
+    .riquadro p { margin: 0 0 10px; color: var(--tenue); }
+    .riquadro a { color: var(--pomodoro); font-weight: 700; }
+
+    footer { padding: 40px 0 46px; border-top: 1px solid var(--bordo); color: var(--tenue); font-size: 0.88rem; }
+    footer a { color: var(--pomodoro); }
+
+    .barra { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: rgba(27, 18, 13, .94); backdrop-filter: blur(12px); }
+    .barra a { text-align: center; padding: 13px 8px; font-size: 0.95rem; }
+    .barra .pulsante.vuoto { color: #fff6ea; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .35); }
+    @media (min-width: 760px) { .barra { display: none; } }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .js .rivela { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+      .js .rivela.visibile { opacity: 1; transform: none; }
     }
-    .barra a { text-align: center; padding: 13px 8px; }
-    @media (min-width: 760px) { .barra { display: none; } body { padding-bottom: 0; } }
+    @media (prefers-reduced-motion: reduce) { .apertura img { animation: none; } }
   </style>
 </head>
 
 <body>
-  <div class="avviso">Sito dimostrativo: attività, menu, prezzi e recapiti sono di fantasia.</div>
+  <div class="avviso-demo">Sito dimostrativo di <a href="/">Vetrina Viva</a>: attività, menu, prezzi e recapiti sono di fantasia.</div>
 
-  <div class="contenitore">
-    <header>
-      <div class="insegna">Da <em>Nives</em></div>
+  <div class="testata">
+    <div class="contenitore">
+      <a class="insegna" href="#">Da <span>Nives</span></a>
       <nav>
         <a href="#menu">Menu</a>
-        <a href="#prenota">Prenota</a>
+        <a href="#forno">Il forno</a>
         <a href="#orari">Orari</a>
+        <a class="pulsante" href="#prenota">Prenota</a>
       </nav>
-    </header>
+    </div>
   </div>
 
   <main>
-    <div class="contenitore apertura">
-      <p class="etichetta">Forno a legna · Impasto a lunga lievitazione</p>
-      <h1>La pizza del giovedì, tutte le sere.</h1>
-      <p>Quaranta coperti, un forno solo, impasto che riposa due giorni. Il tavolo conviene prenotarlo: bastano trenta secondi.</p>
-      <div class="pulsanti">
-        <a class="pulsante" href="#prenota">Prenota un tavolo</a>
-        <a class="pulsante vuoto" href="#menu">Guarda il menu</a>
+    <div class="apertura">
+      <img src="/img/ristorante.webp" alt="" width="960" height="720">
+      <div class="contenitore">
+        <p class="stato" id="stato">Controllo orari…</p>
+        <h1>La pizza del giovedì,<br><em>tutte le sere</em>.</h1>
+        <p class="sotto">Quaranta coperti, un forno solo, impasto che riposa due giorni. Il tavolo conviene prenotarlo: bastano trenta secondi.</p>
+        <div class="pulsanti">
+          <a class="pulsante" href="#prenota">Prenota un tavolo</a>
+          <a class="pulsante vuoto" href="#menu">Guarda il menu</a>
+        </div>
+        <ul class="numeri">
+          <li><b>48 h</b><span>di lievitazione</span></li>
+          <li><b>40</b><span>coperti</span></li>
+          <li><b>1</b><span>forno a legna</span></li>
+        </ul>
       </div>
     </div>
 
     <section id="menu">
       <div class="contenitore">
-        <h2>Menu</h2>
-        <h3>Le classiche</h3>
-        <ul class="menu">
-          <li><span class="nome">Margherita<span class="nota">Pomodoro, fiordilatte, basilico</span></span><span class="riempi"></span><span class="prezzo">7,00 €</span></li>
-          <li><span class="nome">Marinara<span class="nota">Pomodoro, aglio, origano</span></span><span class="riempi"></span><span class="prezzo">6,00 €</span></li>
-          <li><span class="nome">Diavola<span class="nota">Pomodoro, fiordilatte, salame piccante</span></span><span class="riempi"></span><span class="prezzo">8,50 €</span></li>
-          <li><span class="nome">Capricciosa<span class="nota">Prosciutto cotto, funghi, carciofi, olive</span></span><span class="riempi"></span><span class="prezzo">9,50 €</span></li>
-        </ul>
-        <h3>Le nostre</h3>
-        <ul class="menu">
-          <li><span class="nome">Nives<span class="nota">Fiordilatte, zucca, speck, noci</span></span><span class="riempi"></span><span class="prezzo">11,00 €</span></li>
-          <li><span class="nome">Orto<span class="nota">Verdure di stagione grigliate, ricotta affumicata</span></span><span class="riempi"></span><span class="prezzo">10,00 €</span></li>
-        </ul>
-        <h3>Da bere</h3>
-        <ul class="menu">
-          <li><span class="nome">Birra alla spina<span class="nota">Media, 0,4 l</span></span><span class="riempi"></span><span class="prezzo">5,00 €</span></li>
-          <li><span class="nome">Acqua<span class="nota">Bottiglia 0,75 l</span></span><span class="riempi"></span><span class="prezzo">2,50 €</span></li>
-        </ul>
+        <p class="occhiello rivela">Il menu</p>
+        <h2 class="rivela">Poche pizze, <em>tutte buone</em>.</h2>
+        <p class="intro rivela">Farine macinate a pietra, pomodoro pelato a mano, fiordilatte del giorno.</p>
+        <div class="schede rivela" role="tablist" aria-label="Sezioni del menu" id="schede"></div>
+        <ul class="piatti rivela" id="piatti" role="tabpanel"></ul>
       </div>
     </section>
 
-    <section id="prenota">
+    <section id="prenota" class="sabbia">
       <div class="contenitore">
-        <h2>Prenota un tavolo</h2>
-        <form class="prenota" id="modulo-prenota">
-          <label for="p-giorno">Giorno</label>
-          <input id="p-giorno" type="date" required>
+        <p class="occhiello rivela">Prenotazione</p>
+        <h2 class="rivela">Il tuo tavolo, in <em>trenta secondi</em>.</h2>
+        <p class="intro rivela">Scegli giorno, persone e orario. Ti confermiamo per telefono.</p>
 
-          <div class="due">
-            <div>
-              <label for="p-ora">Orario</label>
-              <select id="p-ora" required></select>
+        <form class="prenota rivela" id="modulo" novalidate>
+          <div>
+            <div class="passo">
+              <p><b>1</b>Giorno</p>
+              <div class="scelte giorni" id="giorni"></div>
             </div>
-            <div>
-              <label for="p-persone">Persone</label>
-              <select id="p-persone">
-                <option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option>
-              </select>
+            <div class="passo">
+              <p><b>2</b>Quanti siete</p>
+              <div class="persone">
+                <button type="button" id="meno" aria-label="Una persona in meno">−</button>
+                <output id="persone" aria-live="polite">2 persone</output>
+                <button type="button" id="piu" aria-label="Una persona in più">+</button>
+              </div>
+            </div>
+            <div class="passo">
+              <p><b>3</b>Orario</p>
+              <div class="scelte ore" id="ore"></div>
             </div>
           </div>
 
-          <label for="p-nome">Nome</label>
-          <input id="p-nome" type="text" autocomplete="given-name" required>
-
-          <label for="p-tel">Telefono</label>
-          <input id="p-tel" type="tel" autocomplete="tel" required>
-
-          <button class="pulsante" type="submit">Richiedi il tavolo</button>
-          <div class="esito" id="esito" hidden></div>
+          <div class="riepilogo">
+            <h3>Il tuo tavolo</h3>
+            <dl>
+              <dt>Giorno</dt><dd id="r-giorno">—</dd>
+              <dt>Persone</dt><dd id="r-persone">2</dd>
+              <dt>Orario</dt><dd id="r-ora">—</dd>
+            </dl>
+            <label for="nome">Nome</label>
+            <input id="nome" type="text" autocomplete="given-name">
+            <label for="tel">Telefono</label>
+            <input id="tel" type="tel" autocomplete="tel">
+            <button class="pulsante" type="submit">Richiedi il tavolo</button>
+            <div class="esito" id="esito" hidden role="status"></div>
+          </div>
         </form>
+      </div>
+    </section>
+
+    <section id="forno" class="forno">
+      <div class="contenitore colonne">
+        <figure class="rivela"><img src="/img/ristorante.webp" alt="La sala con i tavoli apparecchiati" width="960" height="720" loading="lazy"></figure>
+        <div class="rivela">
+          <p class="occhiello">Il forno</p>
+          <h2>Un forno solo, <em>fatto lavorare bene</em>.</h2>
+          <p>L'impasto riposa due giorni, poi entra in un forno a legna che sta acceso dal pomeriggio. Novanta secondi di cottura, e la pizza arriva al tavolo.</p>
+          <p>La sala è piccola apposta: quaranta coperti, così ogni pizza esce come deve.</p>
+          <ul class="fatti">
+            <li><b>450°</b><span>nel forno</span></li>
+            <li><b>90″</b><span>di cottura</span></li>
+            <li><b>48 h</b><span>di riposo</span></li>
+          </ul>
+        </div>
       </div>
     </section>
 
     <section id="orari">
       <div class="contenitore">
-        <h2>Orari e indirizzo</h2>
-        <div class="griglia">
-          <div class="riquadro">
-            <h4>Quando siamo aperti</h4>
-            <table class="orari">
-              <tr class="chiuso"><td>Lunedì</td><td>Chiuso</td></tr>
-              <tr><td>Martedì – Giovedì</td><td>18:30 – 22:30</td></tr>
-              <tr><td>Venerdì – Domenica</td><td>18:30 – 23:30</td></tr>
+        <p class="occhiello rivela">Dove e quando</p>
+        <h2 class="rivela">Ti <em>aspettiamo</em>.</h2>
+        <div class="griglia" style="margin-top:34px">
+          <div class="riquadro rivela">
+            <h3>Orari</h3>
+            <table class="orari" id="tabella-orari">
+              <tr data-g="1"><td>Lunedì</td><td>Chiuso</td></tr>
+              <tr data-g="2"><td>Martedì</td><td>18:30 – 22:30</td></tr>
+              <tr data-g="3"><td>Mercoledì</td><td>18:30 – 22:30</td></tr>
+              <tr data-g="4"><td>Giovedì</td><td>18:30 – 22:30</td></tr>
+              <tr data-g="5"><td>Venerdì</td><td>18:30 – 23:30</td></tr>
+              <tr data-g="6"><td>Sabato</td><td>18:30 – 23:30</td></tr>
+              <tr data-g="0"><td>Domenica</td><td>18:30 – 23:30</td></tr>
             </table>
           </div>
-          <div class="riquadro">
-            <h4>Dove siamo</h4>
+          <div class="riquadro rivela">
+            <h3>Contatti</h3>
             <p>Piazza dell'Esempio 3<br>00000 Città di Prova</p>
             <p>Telefono: <a href="tel:+390000000000">000 000 0000</a></p>
             <p>Anche da asporto, su ordinazione telefonica.</p>
@@ -216,7 +324,7 @@
   </main>
 
   <footer>
-    <div class="contenitore">Pizzeria Da Nives è un'attività di fantasia. Questa pagina mostra come può essere il sito di un'attività locale.</div>
+    <div class="contenitore">Pizzeria Da Nives è un'attività di fantasia: questa pagina mostra come può essere il sito di un'attività locale. Fotografia illustrativa generata al computer. Realizzato da <a href="/">Vetrina Viva</a>.</div>
   </footer>
 
   <div class="barra">
@@ -225,45 +333,127 @@
   </div>
 
   <script>
-    // Ultimo orario prenotabile per giorno della settimana (0 = domenica). null = chiuso.
-    const ULTIMO = { 0: '22:00', 1: null, 2: '21:00', 3: '21:00', 4: '21:00', 5: '22:00', 6: '22:00' };
-    const PRIMO = '18:30';
+    document.documentElement.classList.add('js');
 
-    const giorno = document.getElementById('p-giorno');
-    const ora = document.getElementById('p-ora');
-    const esito = document.getElementById('esito');
-
+    // Orario di apertura e di chiusura per giorno della settimana (0 = domenica). null = chiuso.
+    const ORARI = { 0: ['18:30', '23:30'], 1: null, 2: ['18:30', '22:30'], 3: ['18:30', '22:30'], 4: ['18:30', '22:30'], 5: ['18:30', '23:30'], 6: ['18:30', '23:30'] };
+    const MENU = {
+      'Le classiche': [
+        ['Margherita', 'Pomodoro, fiordilatte, basilico', '7,00 €', 'veg'],
+        ['Marinara', 'Pomodoro, aglio, origano', '6,00 €', 'veg'],
+        ['Diavola', 'Pomodoro, fiordilatte, salame piccante', '8,50 €'],
+        ['Capricciosa', 'Prosciutto cotto, funghi, carciofi, olive', '9,50 €'],
+        ['Napoli', 'Pomodoro, fiordilatte, acciughe, capperi', '8,50 €'],
+        ['Quattro formaggi', 'Fiordilatte, gorgonzola, grana, fontina', '9,50 €', 'veg']
+      ],
+      'Le nostre': [
+        ['Nives', 'Fiordilatte, zucca, speck, noci', '11,00 €'],
+        ['Orto', 'Verdure di stagione grigliate, ricotta affumicata', '10,00 €', 'veg'],
+        ['Bosco', 'Fiordilatte, funghi misti, salsiccia, timo', '11,00 €'],
+        ['Bianca al rosmarino', 'Patate, rosmarino, lardo, pepe', '10,00 €']
+      ],
+      'Da bere': [
+        ['Birra alla spina', 'Media, 0,4 l', '5,00 €'],
+        ['Vino della casa', 'Rosso o bianco, mezzo litro', '7,00 €'],
+        ['Bibite', 'In bottiglia, 33 cl', '3,00 €'],
+        ['Acqua', 'Naturale o frizzante, 0,75 l', '2,50 €']
+      ]
+    };
+    const GIORNI = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'];
+    const MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
     const minuti = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
-    const testo = (min) => `${Math.floor(min / 60)}:${String(min % 60).padStart(2, '0')}`;
-    const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const testo = (n) => `${Math.floor(n / 60)}:${String(n % 60).padStart(2, '0')}`;
+    const el = (id) => document.getElementById(id);
+    const scelta = { giorno: null, ora: null, persone: 2 };
 
-    // Riempie il menu degli orari in base al giorno scelto.
-    function mostraOrari() {
-      ora.innerHTML = '';
-      if (!giorno.value) { ora.add(new Option('Scegli un giorno', '')); return; }
-      const [a, m, g] = giorno.value.split('-').map(Number);
-      const ultimo = ULTIMO[new Date(a, m - 1, g).getDay()];
-      if (!ultimo) { ora.add(new Option('Chiuso', '')); return; }
-      for (let t = minuti(PRIMO); t <= minuti(ultimo); t += 30) ora.add(new Option(testo(t), testo(t)));
+    // Stato "aperto ora" e riga di oggi evidenziata.
+    (() => {
+      const ora = new Date(), adesso = ora.getHours() * 60 + ora.getMinutes(), oggi = ORARI[ora.getDay()];
+      const stato = el('stato');
+      if (oggi && adesso >= minuti(oggi[0]) && adesso < minuti(oggi[1])) { stato.textContent = `Aperto ora · fino alle ${oggi[1]}`; stato.classList.add('aperto'); }
+      else stato.textContent = oggi && adesso < minuti(oggi[0]) ? `Apriamo alle ${oggi[0]}` : 'Chiuso ora · prenota online';
+      document.querySelector(`#tabella-orari tr[data-g="${ora.getDay()}"]`).classList.add('oggi');
+    })();
+
+    // Menu a schede.
+    function mostraMenu(nome) {
+      document.querySelectorAll('#schede button').forEach((b) => b.setAttribute('aria-selected', String(b.textContent === nome)));
+      el('piatti').innerHTML = '';
+      for (const [piatto, ingredienti, prezzo, marca] of MENU[nome]) {
+        const li = document.createElement('li');
+        li.innerHTML = `<div><span class="nome">${piatto}${marca ? '<span class="marca">vegetariana</span>' : ''}</span><span class="ingredienti">${ingredienti}</span></div><span class="prezzo">${prezzo}</span>`;
+        el('piatti').appendChild(li);
+      }
+    }
+    Object.keys(MENU).forEach((nome) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('role', 'tab'); b.textContent = nome;
+      b.addEventListener('click', () => mostraMenu(nome));
+      el('schede').appendChild(b);
+    });
+    mostraMenu('Le classiche');
+
+    function premi(contenitore, tasto) {
+      contenitore.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === tasto)));
+    }
+    function aggiorna() {
+      el('r-giorno').textContent = scelta.giorno ? `${GIORNI[scelta.giorno.getDay()]} ${scelta.giorno.getDate()} ${MESI[scelta.giorno.getMonth()]}` : '—';
+      el('r-ora').textContent = scelta.ora || '—';
+      el('r-persone').textContent = scelta.persone;
+      el('persone').textContent = `${scelta.persone} persone`;
     }
 
-    giorno.min = iso(new Date());
-    giorno.addEventListener('change', mostraOrari);
-    mostraOrari();
+    // Orari del giorno scelto: ultimo tavolo 90 minuti prima della chiusura. Alcune fasce risultano già piene.
+    function mostraOre() {
+      const ore = el('ore');
+      ore.innerHTML = ''; scelta.ora = null;
+      if (!scelta.giorno) { ore.innerHTML = '<p class="vuoto-ore">Scegli prima un giorno.</p>'; return; }
+      const [da, fino] = ORARI[scelta.giorno.getDay()];
+      const seme = scelta.giorno.getDate() * 3 + scelta.giorno.getMonth();
+      for (let t = minuti(da), n = 0; t <= minuti(fino) - 90; t += 30, n++) {
+        const b = document.createElement('button');
+        b.type = 'button'; b.textContent = testo(t); b.setAttribute('aria-pressed', 'false');
+        if ((n * 3 + seme) % 4 === 0) b.disabled = true;
+        else b.addEventListener('click', () => { scelta.ora = b.textContent; premi(ore, b); aggiorna(); });
+        ore.appendChild(b);
+      }
+    }
 
-    document.getElementById('modulo-prenota').addEventListener('submit', (e) => {
+    // Prossimi dieci giorni; il giorno di chiusura non si può scegliere.
+    for (let i = 0; i < 10; i++) {
+      const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + i + 1);
+      const b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+      b.innerHTML = `<small>${GIORNI[d.getDay()]}</small><b>${d.getDate()}</b>`;
+      b.setAttribute('aria-label', `${GIORNI[d.getDay()]} ${d.getDate()} ${MESI[d.getMonth()]}`);
+      if (!ORARI[d.getDay()]) b.disabled = true;
+      else b.addEventListener('click', () => { scelta.giorno = d; premi(el('giorni'), b); mostraOre(); aggiorna(); });
+      el('giorni').appendChild(b);
+    }
+    mostraOre();
+
+    el('meno').addEventListener('click', () => { scelta.persone = Math.max(1, scelta.persone - 1); aggiorna(); });
+    el('piu').addEventListener('click', () => { scelta.persone = Math.min(12, scelta.persone + 1); aggiorna(); });
+
+    el('modulo').addEventListener('submit', (e) => {
       e.preventDefault();
-      esito.hidden = false;
-      if (!ora.value) { esito.textContent = 'Quel giorno siamo chiusi: scegline un altro.'; return; }
-      const [a, m, g] = giorno.value.split('-');
-      const nome = document.getElementById('p-nome').value.trim();
-      const persone = document.getElementById('p-persone').value;
-      esito.innerHTML = '';
-      esito.append(`Grazie ${nome}: tavolo per ${persone} il ${g}/${m}/${a} alle ${ora.value}. Ti confermiamo per telefono.`);
+      const esito = el('esito'), nome = el('nome').value.trim(), tel = el('tel').value.trim();
+      esito.hidden = false; esito.classList.remove('ok');
+      const manca = !scelta.giorno ? 'un giorno' : !scelta.ora ? 'un orario' : !nome ? 'il tuo nome' : !tel ? 'un telefono' : null;
+      if (manca) { esito.textContent = `Manca ancora ${manca}.`; return; }
+      esito.classList.add('ok');
+      esito.textContent = `Grazie ${nome}: tavolo per ${scelta.persone}, ${el('r-giorno').textContent} alle ${scelta.ora}. Ti confermiamo per telefono.`;
       const nota = document.createElement('small');
       nota.textContent = 'Dimostrazione: nessun dato è stato inviato o salvato.';
-      esito.append(nota);
+      esito.appendChild(nota);
     });
+
+    // Comparsa allo scorrimento.
+    const elementi = document.querySelectorAll('.rivela');
+    if ('IntersectionObserver' in window) {
+      const oss = new IntersectionObserver((voci) => voci.forEach((v) => { if (v.isIntersecting) { v.target.classList.add('visibile'); oss.unobserve(v.target); } }), { rootMargin: '0px 0px -8% 0px' });
+      elementi.forEach((e) => oss.observe(e));
+    } else elementi.forEach((e) => e.classList.add('visibile'));
   </script>
 </body>
 </html>
