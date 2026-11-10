@@ -9,275 +9,322 @@
   <meta property="og:description" content="Prezzi, orari e prenotazioni in una pagina che i clienti aprono dal telefono. La costruiamo noi e la teniamo aggiornata.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="it_IT">
-  <meta name="theme-color" content="#0e2a22">
+  <meta name="theme-color" content="#0c1226">
   <link rel="icon" href="/logo.svg" type="image/svg+xml">
 
   <style>
     :root {
-      --sfondo: #f6f2e9;
-      --carta: #fffdf8;
-      --testo: #0e2a22;
-      --tenue: #55675f;
-      --verde: #0e2a22;
-      --su-verde: #f6f2e9;
-      --su-verde-tenue: #a9bcb3;
-      --accento: #c9541f;
-      --accento-forte: #a94414;
-      --su-accento: #fff8f2;
-      --velo: #ebe5d7;
-      --bordo: #ddd5c3;
-      --ombra: 0 1px 2px rgba(14, 42, 34, .06), 0 12px 32px -12px rgba(14, 42, 34, .18);
+      --sfondo: #f7f8fc;
+      --carta: #ffffff;
+      --testo: #0c1226;
+      --tenue: #586079;
+      --notte: #0c1226;
+      --su-notte: #f3f5fb;
+      --su-notte-tenue: #a3acc4;
+      --corallo: #ff5a36;
+      --ambra: #ffb02e;
+      --blu: #2f5be6;
+      --corallo-testo: #cf3a12;
+      --su-fuoco: #1c0c04;
+      --velo: #eef1f9;
+      --bordo: #dfe3ef;
+      --ok: #12a26b;
+      --fuoco: linear-gradient(135deg, #ff5a36 0%, #ff8a2b 55%, #ffb02e 100%);
+      --ombra: 0 1px 2px rgba(12, 18, 38, .06), 0 18px 40px -18px rgba(12, 18, 38, .28);
       --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --sfondo: #0b1512;
-        --carta: #13201c;
-        --testo: #ece7da;
-        --tenue: #9fb0a8;
-        --verde: #07100d;
-        --su-verde: #ece7da;
-        --su-verde-tenue: #8fa39a;
-        --accento: #f0834d;
-        --accento-forte: #f59a6c;
-        --su-accento: #1f0d04;
-        --velo: #182822;
-        --bordo: #26372f;
-        --ombra: 0 1px 2px rgba(0, 0, 0, .3), 0 14px 34px -12px rgba(0, 0, 0, .6);
+        --sfondo: #090d1b;
+        --carta: #121831;
+        --testo: #eef1fa;
+        --tenue: #9aa3bd;
+        --notte: #060914;
+        --velo: #0e1328;
+        --bordo: #242c49;
+        --blu: #7d9bff;
+        --corallo-testo: #ff8463;
+        --ok: #3fd39a;
+        --ombra: 0 1px 2px rgba(0, 0, 0, .4), 0 18px 44px -18px rgba(0, 0, 0, .8);
       }
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
     body {
       margin: 0; background: var(--sfondo); color: var(--testo);
       font-family: var(--sans); line-height: 1.6; -webkit-text-size-adjust: 100%;
+      padding-bottom: 76px;
     }
-    .contenitore { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
-    .stretto { max-width: 760px; }
-    a { color: var(--accento); }
-    h1, h2 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
-    h3 { font-size: 1.06rem; margin: 0 0 6px; letter-spacing: -0.01em; }
+    @media (min-width: 760px) { body { padding-bottom: 0; } }
+    img { display: block; max-width: 100%; }
+    .contenitore { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+    .stretto { max-width: 780px; }
+    a { color: var(--blu); }
+    h1, h2 { font-weight: 800; letter-spacing: -0.035em; text-wrap: balance; }
+    h3 { font-size: 1.08rem; margin: 0 0 6px; letter-spacing: -0.01em; }
+    .corsivo { font-family: var(--serif); font-style: italic; font-weight: 600; letter-spacing: -0.02em; }
+    .fuoco { color: var(--corallo-testo); }
+    .apertura .fuoco, .fascia .fuoco, .calcolo .fuoco { background: var(--fuoco); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    /* Barra dell'offerta */
+    .offerta-barra { background: var(--fuoco); color: var(--su-fuoco); text-align: center; font-size: 0.92rem; font-weight: 600; padding: 9px 16px; }
+    .offerta-barra a { color: inherit; font-weight: 800; margin-left: 6px; white-space: nowrap; }
 
     /* Testata */
-    .testata { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--sfondo) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--bordo); }
-    .testata .contenitore { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 68px; }
-    .marchio { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--testo); font-family: var(--serif); font-size: 1.28rem; font-weight: 600; letter-spacing: -0.02em; }
-    .marchio svg { width: 34px; height: 34px; flex: none; }
-    .marchio i { font-style: italic; color: var(--accento); }
-    nav { display: flex; align-items: center; gap: 22px; }
-    nav a { color: var(--tenue); text-decoration: none; font-size: 0.93rem; }
-    nav a:hover { color: var(--testo); }
-    nav .pulsante { padding: 9px 16px; font-size: 0.92rem; color: var(--su-accento); }
-    @media (max-width: 820px) { nav a:not(.pulsante) { display: none; } }
+    .testata { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--notte) 92%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, .08); }
+    .testata .contenitore { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 70px; }
+    .marchio { display: flex; align-items: center; gap: 11px; text-decoration: none; color: var(--su-notte); font-weight: 800; font-size: 1.22rem; letter-spacing: -0.03em; }
+    .marchio img { width: 38px; height: 38px; }
+    .marchio i { font-family: var(--serif); font-weight: 600; color: var(--ambra); }
+    nav { display: flex; align-items: center; gap: 24px; }
+    nav a:not(.pulsante) { color: var(--su-notte-tenue); text-decoration: none; font-size: 0.94rem; }
+    nav a:not(.pulsante):hover { color: var(--su-notte); }
+    nav .pulsante { padding: 10px 18px; font-size: 0.92rem; }
+    @media (max-width: 860px) { nav a:not(.pulsante) { display: none; } }
 
     .pulsante {
-      display: inline-block; padding: 14px 24px; border-radius: 999px;
-      font-weight: 700; font-size: 1rem; text-decoration: none; font-family: inherit;
-      background: var(--accento); color: var(--su-accento); border: 2px solid var(--accento);
-      cursor: pointer; transition: background .15s, border-color .15s, transform .15s;
+      display: inline-block; padding: 15px 26px; border-radius: 14px; border: 0;
+      font-weight: 800; font-size: 1rem; text-decoration: none; font-family: inherit;
+      background: var(--fuoco); color: var(--su-fuoco); cursor: pointer;
+      box-shadow: 0 10px 26px -10px rgba(255, 90, 54, .75);
+      transition: transform .15s, box-shadow .15s, filter .15s;
     }
-    .pulsante:hover { background: var(--accento-forte); border-color: var(--accento-forte); transform: translateY(-1px); }
-    .pulsante.vuoto { background: transparent; color: var(--testo); border-color: var(--bordo); }
-    .pulsante.vuoto:hover { border-color: var(--testo); background: transparent; }
+    .pulsante:hover { transform: translateY(-2px); filter: brightness(1.05); box-shadow: 0 16px 32px -10px rgba(255, 90, 54, .85); }
+    .pulsante.vuoto { background: transparent; color: var(--testo); box-shadow: inset 0 0 0 2px var(--bordo); }
+    .pulsante.vuoto:hover { box-shadow: inset 0 0 0 2px var(--testo); filter: none; }
 
     /* Apertura */
-    .apertura { padding: 56px 0 72px; overflow: hidden; }
-    .apertura .contenitore { display: grid; gap: 48px; align-items: center; }
-    @media (min-width: 900px) { .apertura .contenitore { grid-template-columns: 1.15fr 0.85fr; } }
-    .occhiello { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accento); margin: 0 0 18px; }
-    h1 { font-size: clamp(2.5rem, 8.4vw, 4.4rem); line-height: 1.02; margin: 0 0 22px; }
-    h1 em { font-style: italic; color: var(--accento); }
-    .apertura .testo > p { font-size: 1.16rem; color: var(--tenue); max-width: 31em; margin: 0 0 30px; }
-    .pulsanti { display: flex; flex-wrap: wrap; gap: 12px; }
-    .garanzie { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 30px 0 0; padding: 0; color: var(--tenue); font-size: 0.93rem; }
-    .garanzie li::before { content: "✓"; color: var(--accento); font-weight: 800; margin-right: 8px; }
-
-    /* Telefono disegnato */
-    .scena { position: relative; justify-self: center; padding: 10px 26px 26px; }
-    .telefono { width: 268px; background: var(--carta); border: 9px solid var(--verde); border-radius: 40px; box-shadow: var(--ombra); padding: 20px 16px 18px; font-size: 0.8rem; color: var(--testo); }
-    @media (prefers-color-scheme: dark) { .telefono { border-color: #2c4138; } }
-    .telefono .tacca { width: 74px; height: 6px; border-radius: 6px; background: var(--bordo); margin: 0 auto 16px; }
-    .telefono .nome { font-family: var(--serif); font-size: 1.12rem; font-weight: 600; margin: 0; }
-    .telefono .sub { color: var(--tenue); margin: 0 0 14px; font-size: 0.74rem; }
-    .telefono .campo { border: 1px solid var(--bordo); border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; display: flex; justify-content: space-between; background: var(--sfondo); }
-    .telefono .campo b { font-weight: 600; }
-    .telefono .campo span { color: var(--tenue); }
-    .telefono .etichetta { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tenue); margin: 12px 0 6px; }
-    .telefono .ore { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-    .telefono .ore span { text-align: center; padding: 7px 0; border: 1px solid var(--bordo); border-radius: 8px; font-variant-numeric: tabular-nums; background: var(--sfondo); }
-    .telefono .ore .scelta { background: var(--accento); border-color: var(--accento); color: var(--su-accento); font-weight: 700; }
-    .telefono .ore .pieno { color: var(--bordo); text-decoration: line-through; }
-    .telefono .invia { margin-top: 14px; text-align: center; padding: 10px; border-radius: 999px; background: var(--verde); color: var(--su-verde); font-weight: 700; }
-    @media (prefers-color-scheme: dark) { .telefono .invia { background: var(--testo); color: var(--sfondo); } }
-    .avviso-flottante { position: absolute; right: -6px; bottom: 0; width: 214px; background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; box-shadow: var(--ombra); padding: 12px 14px; font-size: 0.8rem; }
-    .avviso-flottante b { display: block; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accento); margin-bottom: 2px; }
-    .avviso-flottante span { color: var(--tenue); }
-
-    /* Sezioni */
-    section { padding: 76px 0; }
-    section.velata { background: var(--velo); }
-    .titolo { max-width: 660px; margin: 0 0 40px; }
-    .titolo .occhiello { margin-bottom: 12px; }
-    h2 { font-size: clamp(1.9rem, 5vw, 2.7rem); line-height: 1.1; margin: 0 0 14px; }
-    .titolo p:last-child { color: var(--tenue); font-size: 1.06rem; margin: 0; }
-
-    .griglia { display: grid; gap: 16px; }
-    @media (min-width: 680px) { .griglia.due { grid-template-columns: 1fr 1fr; } .griglia.tre { grid-template-columns: repeat(3, 1fr); } }
-    .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 20px; padding: 24px; }
-    .riquadro p { margin: 0; color: var(--tenue); }
-
-    .domanda .q { font-family: var(--serif); font-size: 1.5rem; font-style: italic; line-height: 1.15; margin: 0 0 10px; color: var(--testo); }
-
-    .settore { padding: 22px; }
-    .settore .cosa { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accento); margin: 0 0 10px; }
-    .settore ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
-    .settore li { font-size: 0.86rem; color: var(--tenue); background: var(--sfondo); border: 1px solid var(--bordo); border-radius: 999px; padding: 3px 11px; }
-
-    /* Esempi */
-    .demo { display: block; text-decoration: none; color: inherit; padding: 0; overflow: hidden; transition: transform .2s, box-shadow .2s; }
-    .demo:hover { transform: translateY(-3px); box-shadow: var(--ombra); }
-    .anteprima { height: 190px; padding: 22px 24px; display: flex; flex-direction: column; justify-content: flex-end; }
-    .anteprima.barbiere { background: #1d1a16; color: #f5f1e8; }
-    .anteprima.pizzeria { background: #b4231a; color: #fff5f0; }
-    .anteprima small { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.75; }
-    .anteprima strong { font-family: var(--serif); font-size: 1.7rem; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; margin-top: 6px; }
-    .demo .corpo { padding: 22px 24px 24px; }
-    .demo .vai { display: inline-block; color: var(--accento); font-weight: 700; margin-top: 12px; }
-
-    /* Passi */
-    .passi { list-style: none; margin: 0; padding: 0; display: grid; gap: 32px; counter-reset: passo; }
-    @media (min-width: 680px) { .passi { grid-template-columns: repeat(3, 1fr); } }
-    .passi li { counter-increment: passo; border-top: 2px solid var(--testo); padding-top: 18px; }
-    .passi li::before { content: "0" counter(passo); display: block; font-family: var(--serif); font-style: italic; font-size: 2.4rem; line-height: 1; color: var(--accento); margin-bottom: 12px; }
-    .passi p { margin: 0; color: var(--tenue); }
-
-    /* Prezzi */
-    .pacchetto { display: flex; flex-direction: column; }
-    .pacchetto.consigliato { background: var(--verde); color: var(--su-verde); border-color: var(--verde); box-shadow: var(--ombra); }
-    .pacchetto.consigliato ul, .riquadro.pacchetto.consigliato .canone { color: var(--su-verde-tenue); }
-    .pacchetto .bollino { align-self: flex-start; background: var(--accento); color: var(--su-accento); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; margin-bottom: 12px; }
-    .riquadro .prezzo { font-family: var(--serif); font-size: 2.6rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; margin: 10px 0 0; color: var(--testo); }
-    .pacchetto.consigliato .prezzo { color: var(--su-verde); }
-    .riquadro .canone { font-size: 0.92rem; color: var(--tenue); margin: 2px 0 18px; }
-    .pacchetto ul { list-style: none; margin: 0 0 24px; padding: 0; color: var(--tenue); flex: 1; }
-    .pacchetto li { padding: 7px 0 7px 24px; position: relative; border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
-    .pacchetto li::before { content: "✓"; position: absolute; left: 0; color: var(--accento); font-weight: 800; }
-    .pacchetto .pulsante { text-align: center; }
-    .pacchetto.consigliato .pulsante.vuoto { color: var(--su-verde); }
-    .nota { color: var(--tenue); font-size: 0.93rem; margin: 22px 0 0; max-width: 46em; }
-
-    /* Fascia scura */
-    .fascia { background: var(--verde); color: var(--su-verde); }
-    .fascia h2 { color: var(--su-verde); }
-    .fascia .colonne { display: grid; gap: 28px; }
-    @media (min-width: 760px) { .fascia .colonne { grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; } }
-    .fascia p { color: var(--su-verde-tenue); margin: 0 0 14px; font-size: 1.05rem; }
-    .fascia p strong { color: var(--su-verde); }
-
-    /* Modulo */
-    form { background: var(--carta); border: 1px solid var(--bordo); border-radius: 22px; padding: 26px; box-shadow: var(--ombra); }
-    label { display: block; font-weight: 600; font-size: 0.9rem; margin: 18px 0 6px; }
-    form > label:first-of-type { margin-top: 0; }
-    input[type="text"], select, textarea {
-      width: 100%; padding: 13px; font: inherit; font-size: 1rem;
-      color: var(--testo); background: var(--sfondo);
-      border: 1px solid var(--bordo); border-radius: 12px;
-    }
-    textarea { min-height: 110px; resize: vertical; }
-    input:focus, select:focus, textarea:focus { outline: 2px solid var(--accento); outline-offset: 1px; }
-    .coppia { display: grid; gap: 0 14px; }
-    @media (min-width: 560px) { .coppia { grid-template-columns: 1fr 1fr; } }
-    .consenso { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; font-size: 0.9rem; color: var(--tenue); margin-top: 20px; }
-    .consenso input { margin-top: 4px; flex: none; width: 18px; height: 18px; accent-color: var(--accento); }
-    form .pulsante { width: 100%; margin-top: 20px; }
-    .nascosto { position: absolute; left: -9999px; }
-
-    details { border-bottom: 1px solid var(--bordo); padding: 18px 0; }
-    details:first-of-type { border-top: 1px solid var(--bordo); }
-    summary { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
-    summary::-webkit-details-marker { display: none; }
-    summary::after { content: "+"; color: var(--accento); font-family: var(--sans); font-weight: 400; font-size: 1.4rem; line-height: 1; }
-    details[open] summary::after { content: "–"; }
-    details p { color: var(--tenue); margin: 12px 0 0; max-width: 44em; }
-
-    footer { background: var(--verde); color: var(--su-verde-tenue); padding: 44px 0 48px; font-size: 0.9rem; }
-    footer .marchio { color: var(--su-verde); margin-bottom: 16px; }
-    footer p { margin: 0 0 10px; max-width: 52em; }
-    footer strong { color: var(--su-verde); }
-
-    /* ===== Versione scenica: testata e apertura scure, telefono animato ===== */
-    .testata { background: color-mix(in srgb, var(--verde) 90%, transparent); border-bottom-color: color-mix(in srgb, var(--su-verde) 12%, transparent); }
-    .testata .marchio { color: var(--su-verde); }
-    .testata nav a:not(.pulsante) { color: var(--su-verde-tenue); }
-    .testata nav a:not(.pulsante):hover { color: var(--su-verde); }
-
-    .apertura { position: relative; background: var(--verde); color: var(--su-verde); padding: 72px 0 96px; isolation: isolate; }
-    .apertura::before, .apertura::after { content: ""; position: absolute; z-index: -1; border-radius: 50%; filter: blur(70px); pointer-events: none; }
-    .apertura::before { width: 520px; height: 520px; right: -120px; top: -160px; background: color-mix(in srgb, var(--accento) 46%, transparent); }
-    .apertura::after { width: 460px; height: 460px; left: -180px; bottom: -220px; background: color-mix(in srgb, #2f8f6f 40%, transparent); }
-    .apertura .occhiello { color: var(--su-verde-tenue); }
-    .apertura h1 { font-size: clamp(2.7rem, 9vw, 5rem); line-height: 1; color: var(--su-verde); }
-    .apertura h1 em { color: var(--accento); }
-    .apertura .testo > p { color: var(--su-verde-tenue); }
-    .apertura .pulsante.vuoto { color: var(--su-verde); border-color: color-mix(in srgb, var(--su-verde) 30%, transparent); }
-    .apertura .pulsante.vuoto:hover { border-color: var(--su-verde); }
-    .apertura .garanzie { color: var(--su-verde-tenue); }
-    @media (prefers-color-scheme: light) { .apertura h1 em, .apertura .garanzie li::before { color: #f08a55; } }
-
-    .parola { display: inline-block; font-style: italic; color: #f08a55; transition: opacity .22s ease, transform .22s ease; }
+    .apertura { position: relative; background: var(--notte); color: var(--su-notte); padding: 68px 0 100px; overflow: hidden; isolation: isolate; }
+    .apertura::before, .apertura::after { content: ""; position: absolute; z-index: -1; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+    .apertura::before { width: 560px; height: 560px; right: -140px; top: -200px; background: rgba(255, 90, 54, .5); }
+    .apertura::after { width: 520px; height: 520px; left: -220px; bottom: -260px; background: rgba(59, 108, 255, .45); }
+    .apertura .contenitore { display: grid; gap: 52px; align-items: center; }
+    @media (min-width: 940px) { .apertura .contenitore { grid-template-columns: 1.15fr 0.85fr; } }
+    .pillola { display: inline-flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; padding: 7px 14px; border-radius: 999px; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .14); color: var(--su-notte); margin: 0 0 22px; }
+    .pillola::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #3fd39a; box-shadow: 0 0 0 4px rgba(63, 211, 154, .25); }
+    h1 { font-size: clamp(2.7rem, 8.6vw, 4.9rem); line-height: 1; margin: 0 0 24px; color: var(--su-notte); }
+    .parola { display: inline-block; transition: opacity .22s ease, transform .22s ease; padding-right: 0.06em; margin-right: -0.05em; }
     .parola.esce { opacity: 0; transform: translateY(0.25em); }
-
-    .scena { padding: 0; display: grid; justify-items: center; gap: 22px; }
-    .mestieri { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 360px; }
-    .mestieri button {
-      font: inherit; font-size: 0.86rem; font-weight: 600; padding: 7px 14px; border-radius: 999px; cursor: pointer;
-      color: var(--su-verde-tenue); background: transparent;
-      border: 1px solid color-mix(in srgb, var(--su-verde) 24%, transparent);
-      transition: background .2s, color .2s, border-color .2s;
+    .apertura .testo > p { font-size: 1.17rem; color: var(--su-notte-tenue); max-width: 31em; margin: 0 0 32px; }
+    .pulsanti { display: flex; flex-wrap: wrap; gap: 12px; }
+    .apertura .pulsante.vuoto { color: var(--su-notte); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .22); }
+    .apertura .pulsante.vuoto:hover { box-shadow: inset 0 0 0 2px var(--su-notte); }
+    @media (max-width: 700px) {
+      .apertura { padding: 44px 0 80px; }
+      .apertura::before { width: 300px; height: 300px; right: -150px; top: -150px; background: rgba(255, 90, 54, .38); }
+      .apertura::after { width: 300px; height: 300px; left: -170px; bottom: -170px; }
+      .pillola { font-size: 0.74rem; padding: 6px 12px; white-space: nowrap; }
     }
-    .mestieri button:hover { color: var(--su-verde); border-color: var(--su-verde); }
-    .mestieri button[aria-pressed="true"] { background: var(--su-verde); color: var(--verde); border-color: var(--su-verde); }
+    .garanzie { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 32px 0 0; padding: 0; color: var(--su-notte-tenue); font-size: 0.93rem; }
+    .garanzie li::before { content: "✓"; color: var(--ambra); font-weight: 800; margin-right: 8px; }
+
+    /* Telefono animato */
+    .scena { display: grid; justify-items: center; gap: 22px; }
+    .mestieri { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 370px; }
+    .mestieri button { font: inherit; font-size: 0.86rem; font-weight: 700; padding: 7px 14px; border-radius: 999px; cursor: pointer; color: var(--su-notte-tenue); background: transparent; border: 1px solid rgba(255, 255, 255, .2); transition: background .2s, color .2s, border-color .2s; }
+    .mestieri button:hover { color: var(--su-notte); border-color: var(--su-notte); }
+    .mestieri button[aria-pressed="true"] { background: var(--su-notte); color: var(--notte); border-color: var(--su-notte); }
     .palco { position: relative; padding: 0 30px 72px; }
-    .telefono { transform: rotate(-2.5deg); border-color: #06140f; box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .65), 0 0 0 1px rgba(255, 255, 255, .08); }
+    .telefono { width: 272px; background: #ffffff; color: #0c1226; border: 9px solid #05070f; border-radius: 42px; padding: 20px 16px 18px; font-size: 0.8rem; transform: rotate(-2.5deg); box-shadow: 0 34px 80px -22px rgba(0, 0, 0, .75), 0 0 0 1px rgba(255, 255, 255, .1); }
+    .telefono .tacca { width: 74px; height: 6px; border-radius: 6px; background: #dfe3ef; margin: 0 auto 16px; }
     .schermo { transition: opacity .25s ease, transform .25s ease; }
     .schermo.cambio { opacity: 0; transform: translateY(8px); }
-    .telefono .ore span { transition: background .25s, color .25s, border-color .25s, transform .25s; }
-    .telefono .ore .scelta { transform: scale(1.06); }
-    .telefono .invia { transition: background .25s, transform .15s; }
-    .telefono .invia.premuto { background: var(--accento); color: var(--su-accento); transform: scale(.97); }
-    .avviso-flottante { right: 0; bottom: 0; transform: rotate(2deg); transition: opacity .45s ease, transform .45s cubic-bezier(.2, 1.3, .4, 1); color: var(--testo); }
-    .avviso-flottante span { color: var(--testo); }
+    .telefono .nome { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; }
+    .telefono .sub { color: #586079; margin: 0 0 14px; font-size: 0.74rem; }
+    .telefono .campo { border: 1px solid #dfe3ef; border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; display: flex; justify-content: space-between; background: #f7f8fc; }
+    .telefono .campo b { font-weight: 700; }
+    .telefono .campo span { color: #586079; }
+    .telefono .etichetta { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #586079; margin: 12px 0 6px; }
+    .telefono .ore { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .telefono .ore span { text-align: center; padding: 7px 0; border: 1px solid #dfe3ef; border-radius: 8px; font-variant-numeric: tabular-nums; background: #f7f8fc; transition: background .25s, color .25s, border-color .25s, transform .25s; }
+    .telefono .ore .scelta { background: var(--corallo); border-color: var(--corallo); color: #fff; font-weight: 800; transform: scale(1.06); }
+    .telefono .ore .pieno { color: #c5cbdb; text-decoration: line-through; }
+    .telefono .invia { margin-top: 14px; text-align: center; padding: 10px; border-radius: 12px; background: #0c1226; color: #fff; font-weight: 800; transition: background .25s, transform .15s; }
+    .telefono .invia.premuto { background: #12a26b; transform: scale(.97); }
+    .avviso-flottante { position: absolute; right: 0; bottom: 0; width: 222px; background: #ffffff; color: #0c1226; border-radius: 16px; padding: 12px 14px; font-size: 0.8rem; transform: rotate(2deg); box-shadow: 0 20px 44px -14px rgba(0, 0, 0, .6); transition: opacity .45s ease, transform .45s cubic-bezier(.2, 1.3, .4, 1); }
+    .avviso-flottante b { display: block; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: #cf3a12; margin-bottom: 2px; }
     .js .avviso-flottante:not(.su) { opacity: 0; transform: translateY(18px) scale(.94) rotate(2deg); }
 
-    .nastro { background: var(--accento); color: var(--su-accento); overflow: hidden; padding: 13px 0; font-family: var(--serif); font-style: italic; font-size: 1.15rem; white-space: nowrap; }
+    /* Nastro */
+    .nastro { background: var(--fuoco); color: var(--su-fuoco); overflow: hidden; padding: 13px 0; font-weight: 800; font-size: 1.02rem; letter-spacing: -0.01em; white-space: nowrap; }
     .nastro-riga { display: inline-flex; animation: scorri 46s linear infinite; }
     .nastro span { padding: 0 18px; }
-    .nastro span::after { content: "✳"; font-style: normal; font-size: 0.8em; margin-left: 36px; opacity: .7; }
+    .nastro span::after { content: "✦"; font-size: 0.8em; margin-left: 36px; opacity: .6; }
     @keyframes scorri { to { transform: translateX(-50%); } }
     @media (prefers-reduced-motion: reduce) { .nastro-riga { animation: none; } }
 
-    .riquadro { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
-    .settore:hover, .domanda:hover { transform: translateY(-3px); box-shadow: var(--ombra); border-color: color-mix(in srgb, var(--accento) 45%, var(--bordo)); }
-    .griglia > .rivela:nth-child(3n+2) { transition-delay: .08s; }
-    .griglia > .rivela:nth-child(3n+3) { transition-delay: .16s; }
-    .passi > .rivela:nth-child(2) { transition-delay: .1s; }
-    .passi > .rivela:nth-child(3) { transition-delay: .2s; }
+    /* Sezioni */
+    section { padding: 84px 0; }
+    section.velata { background: var(--velo); }
+    .titolo { max-width: 700px; margin: 0 0 44px; }
+    .occhiello { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--corallo-testo); margin: 0 0 12px; }
+    h2 { font-size: clamp(2rem, 5.4vw, 3rem); line-height: 1.06; margin: 0 0 16px; }
+    .titolo p:last-child { color: var(--tenue); font-size: 1.08rem; margin: 0; }
 
-    /* Comparsa allo scorrimento (solo se JavaScript è attivo e l'utente non ha chiesto meno animazioni) */
+    .griglia { display: grid; gap: 18px; }
+    @media (min-width: 700px) { .griglia.due { grid-template-columns: 1fr 1fr; } .griglia.tre { grid-template-columns: repeat(3, 1fr); } }
+    .riquadro { background: var(--carta); border: 1px solid var(--bordo); border-radius: 22px; padding: 26px; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+    .riquadro > p { margin: 0; color: var(--tenue); }
+    .alza:hover { transform: translateY(-4px); box-shadow: var(--ombra); border-color: color-mix(in srgb, var(--corallo) 45%, var(--bordo)); }
+
+    /* Galleria dei settori */
+    .galleria { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+    @media (min-width: 860px) { .foto { aspect-ratio: 16 / 10; } }
+    .foto { position: relative; margin: 0; border-radius: 22px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--notte); box-shadow: var(--ombra); }
+    .foto img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+    .foto:hover img { transform: scale(1.06); }
+    .foto figcaption { position: absolute; inset: auto 0 0 0; padding: 44px 18px 16px; background: linear-gradient(to top, rgba(6, 9, 20, .92), rgba(6, 9, 20, 0)); color: #fff; }
+    .foto figcaption b { display: block; font-size: 1.12rem; font-weight: 800; letter-spacing: -0.02em; }
+    .foto figcaption span { font-size: 0.84rem; color: #ffd9a8; font-weight: 600; }
+    @media (max-width: 480px) { .foto figcaption { padding: 30px 12px 12px; } .foto figcaption b { font-size: 0.98rem; } .foto figcaption span { font-size: 0.76rem; } }
+    .nuvola { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 0; padding: 0; }
+    .nuvola li { font-size: 0.9rem; font-weight: 600; color: var(--tenue); background: var(--carta); border: 1px solid var(--bordo); border-radius: 999px; padding: 6px 14px; }
+
+    /* Tre domande */
+    .icona { width: 50px; height: 50px; border-radius: 15px; display: grid; place-items: center; background: var(--fuoco); margin-bottom: 18px; }
+    .icona svg { width: 26px; height: 26px; stroke: var(--su-fuoco); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .domanda .q { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 1.55rem; line-height: 1.15; margin: 0 0 10px; color: var(--testo); }
+
+    /* Calcolatore */
+    .calcolo { background: var(--notte); color: var(--su-notte); border-radius: 28px; padding: 34px 26px; display: grid; gap: 34px; box-shadow: var(--ombra); position: relative; overflow: hidden; isolation: isolate; }
+    .calcolo::before { content: ""; position: absolute; z-index: -1; width: 420px; height: 420px; right: -160px; bottom: -220px; border-radius: 50%; background: rgba(255, 90, 54, .4); filter: blur(70px); }
+    @media (min-width: 820px) { .calcolo { grid-template-columns: 1fr 1fr; padding: 46px; align-items: center; } }
+    .calcolo label { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-weight: 600; font-size: 0.98rem; margin: 0 0 10px; color: var(--su-notte); }
+    .calcolo output { font-weight: 800; font-size: 1.25rem; color: var(--ambra); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .calcolo input[type="range"] { width: 100%; accent-color: var(--corallo); margin: 0 0 26px; height: 28px; }
+    .calcolo .nota-calcolo { font-size: 0.85rem; color: var(--su-notte-tenue); margin: 0; }
+    .esito-calcolo { text-align: center; }
+    .esito-calcolo p { margin: 0; color: var(--su-notte-tenue); }
+    .esito-calcolo .cifra { font-size: clamp(3rem, 11vw, 5rem); font-weight: 800; letter-spacing: -0.05em; line-height: 1; margin: 6px 0; font-variant-numeric: tabular-nums; }
+    .esito-calcolo .confronto { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, .14); }
+    .esito-calcolo .confronto b { color: var(--su-notte); }
+
+    /* Confronto */
+    .tabella-scorri { overflow-x: auto; border-radius: 22px; border: 1px solid var(--bordo); background: var(--carta); box-shadow: var(--ombra); }
+    table.confronto { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 0.96rem; }
+    .confronto th, .confronto td { padding: 16px 18px; text-align: left; border-bottom: 1px solid var(--bordo); vertical-align: top; }
+    .confronto tr:last-child th, .confronto tr:last-child td { border-bottom: 0; }
+    .confronto thead th { font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tenue); }
+    .confronto tbody th { font-weight: 700; width: 28%; }
+    .confronto td { color: var(--tenue); }
+    .confronto .noi { background: color-mix(in srgb, var(--corallo) 9%, var(--carta)); color: var(--testo); font-weight: 600; }
+    .confronto thead .noi { color: var(--corallo-testo); }
+    .si::before { content: "✓ "; color: var(--ok); font-weight: 800; }
+    .no::before { content: "✕ "; color: var(--corallo-testo); font-weight: 800; }
+
+    /* Esempi */
+    .demo { display: block; text-decoration: none; color: inherit; padding: 0; overflow: hidden; }
+    .demo .anteprima { position: relative; height: 230px; }
+    .demo .anteprima img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+    .demo:hover .anteprima img { transform: scale(1.05); }
+    .demo .anteprima::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(6, 9, 20, .88), rgba(6, 9, 20, .1)); }
+    .demo .anteprima div { position: absolute; z-index: 1; left: 24px; right: 24px; bottom: 20px; color: #fff; }
+    .demo .anteprima small { font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: #ffd9a8; }
+    .demo .anteprima strong { display: block; font-size: 1.6rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; margin-top: 4px; }
+    .demo .corpo { padding: 22px 24px 26px; }
+    .demo .corpo p { margin: 0; color: var(--tenue); }
+    .demo .vai { display: inline-block; color: var(--corallo-testo); font-weight: 800; margin-top: 14px; }
+
+    /* Passi */
+    .passi { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; counter-reset: passo; }
+    @media (min-width: 700px) { .passi { grid-template-columns: repeat(3, 1fr); } }
+    .passi li { counter-increment: passo; background: var(--carta); border: 1px solid var(--bordo); border-radius: 22px; padding: 26px; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+    .passi li::before { content: counter(passo); display: grid; place-items: center; width: 46px; height: 46px; border-radius: 14px; background: var(--fuoco); color: var(--su-fuoco); font-weight: 800; font-size: 1.3rem; margin-bottom: 16px; }
+    .passi p { margin: 0; color: var(--tenue); }
+
+    /* Prezzi */
+    .lancio { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; background: var(--carta); border: 2px dashed var(--corallo); border-radius: 18px; padding: 16px 20px; margin: 0 0 30px; }
+    .lancio b { font-size: 1.05rem; }
+    .lancio span:not(.sconto) { color: var(--tenue); }
+    .sconto { display: inline-block; background: var(--fuoco); color: var(--su-fuoco); font-weight: 800; font-size: 0.8rem; padding: 4px 11px; border-radius: 999px; letter-spacing: 0.02em; }
+    .pacchetto { display: flex; flex-direction: column; position: relative; }
+    .pacchetto.consigliato { background: var(--notte); color: var(--su-notte); border-color: transparent; box-shadow: 0 0 0 2px var(--corallo), var(--ombra); }
+    .pacchetto.consigliato ul, .riquadro.pacchetto.consigliato .canone, .riquadro.pacchetto.consigliato .prima { color: var(--su-notte-tenue); }
+    .pacchetto .bollino { position: absolute; top: -13px; left: 26px; background: var(--fuoco); color: var(--su-fuoco); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+    .riquadro .prima { color: var(--tenue); text-decoration: line-through; font-weight: 600; margin: 12px 0 0; font-size: 1rem; }
+    .riquadro .prezzo { font-size: 3rem; font-weight: 800; letter-spacing: -0.05em; line-height: 1.05; margin: 0; color: var(--testo); font-variant-numeric: tabular-nums; }
+    .riquadro.pacchetto.consigliato .prezzo { color: #fff; }
+    .riquadro .canone { font-size: 0.93rem; color: var(--tenue); margin: 4px 0 20px; }
+    .pacchetto ul { list-style: none; margin: 0 0 26px; padding: 0; color: var(--tenue); flex: 1; }
+    .pacchetto li { padding: 8px 0 8px 26px; position: relative; border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent); }
+    .pacchetto li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); font-weight: 800; }
+    .pacchetto .pulsante { text-align: center; }
+    .pacchetto.consigliato .pulsante.vuoto { color: var(--su-notte); }
+    .extra { margin-top: 18px; }
+    .extra .riquadro { padding: 20px 22px; display: flex; gap: 16px; align-items: flex-start; }
+    .extra .cifra-extra { flex: none; min-width: 74px; text-align: center; background: var(--velo); border-radius: 14px; padding: 10px 8px; font-weight: 800; font-size: 1.05rem; letter-spacing: -0.03em; color: var(--corallo-testo); line-height: 1.15; }
+    .extra p { margin: 0; color: var(--tenue); font-size: 0.94rem; }
+    .nota { color: var(--tenue); font-size: 0.93rem; margin: 22px 0 0; max-width: 48em; }
+
+    /* Garanzia */
+    .garanzia { background: var(--fuoco); color: var(--su-fuoco); border-radius: 28px; padding: 38px 28px; display: grid; gap: 20px; align-items: center; box-shadow: 0 24px 50px -22px rgba(255, 90, 54, .7); }
+    @media (min-width: 760px) { .garanzia { grid-template-columns: auto 1fr auto; padding: 44px 48px; gap: 32px; } }
+    .garanzia svg { width: 70px; height: 70px; stroke: var(--su-fuoco); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .garanzia h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 6px; }
+    .garanzia p { margin: 0; font-weight: 500; max-width: 34em; }
+    .garanzia .pulsante { background: #0c1226; color: #fff; box-shadow: none; text-align: center; }
+
+    /* Fascia scura */
+    .fascia { background: var(--notte); color: var(--su-notte); }
+    .fascia h2 { color: var(--su-notte); }
+    .fascia .colonne { display: grid; gap: 28px; }
+    @media (min-width: 760px) { .fascia .colonne { grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; } }
+    .fascia .occhiello, .apertura .occhiello { color: var(--ambra); }
+    .fascia p:not(.occhiello) { color: var(--su-notte-tenue); margin: 0 0 14px; font-size: 1.06rem; }
+    .fascia p strong { color: var(--su-notte); }
+
+    /* Modulo */
+    form { background: var(--carta); border: 1px solid var(--bordo); border-radius: 26px; padding: 28px; box-shadow: var(--ombra); }
+    label { display: block; font-weight: 700; font-size: 0.9rem; margin: 18px 0 6px; }
+    input[type="text"], select, textarea { width: 100%; padding: 14px; font: inherit; font-size: 1rem; color: var(--testo); background: var(--sfondo); border: 1px solid var(--bordo); border-radius: 13px; }
+    textarea { min-height: 110px; resize: vertical; }
+    input[type="text"]:focus, select:focus, textarea:focus { outline: 2px solid var(--corallo); outline-offset: 1px; }
+    .coppia { display: grid; gap: 0 14px; }
+    @media (min-width: 560px) { .coppia { grid-template-columns: 1fr 1fr; } }
+    .consenso { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; font-size: 0.9rem; color: var(--tenue); margin-top: 20px; }
+    .consenso input { margin-top: 4px; flex: none; width: 18px; height: 18px; accent-color: var(--corallo); }
+    form .pulsante { width: 100%; margin-top: 20px; }
+    .promemoria { display: flex; align-items: center; gap: 10px; background: color-mix(in srgb, var(--corallo) 10%, var(--carta)); border-radius: 13px; padding: 12px 14px; font-size: 0.92rem; font-weight: 600; margin: 0 0 6px; }
+    .nascosto { position: absolute; left: -9999px; }
+
+    details { border-bottom: 1px solid var(--bordo); padding: 20px 0; }
+    details:first-of-type { border-top: 1px solid var(--bordo); }
+    summary { font-size: 1.12rem; font-weight: 700; letter-spacing: -0.01em; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--corallo-testo); font-weight: 400; font-size: 1.5rem; line-height: 1; }
+    details[open] summary::after { content: "–"; }
+    details p { color: var(--tenue); margin: 12px 0 0; max-width: 46em; }
+
+    footer { background: var(--notte); color: var(--su-notte-tenue); padding: 48px 0 52px; font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, .08); }
+    footer .marchio { margin-bottom: 16px; }
+    footer p { margin: 0 0 10px; max-width: 54em; }
+    footer strong { color: var(--su-notte); }
+
+    /* Barra fissa su telefono */
+    .barra-fissa { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: color-mix(in srgb, var(--notte) 94%, transparent); backdrop-filter: blur(12px); color: var(--su-notte); font-size: 0.86rem; font-weight: 600; }
+    .barra-fissa b { color: var(--ambra); }
+    .barra-fissa .pulsante { padding: 11px 18px; font-size: 0.92rem; white-space: nowrap; }
+    @media (min-width: 760px) { .barra-fissa { display: none; } }
+
+    /* Comparsa allo scorrimento */
     @media (prefers-reduced-motion: no-preference) {
-      .js .rivela { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+      .js .rivela { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
       .js .rivela.visibile { opacity: 1; transform: none; }
+      .js .griglia > .rivela:nth-child(3n+2), .js .galleria > .rivela:nth-child(2n), .js .passi > .rivela:nth-child(2) { transition-delay: .08s; }
+      .js .griglia > .rivela:nth-child(3n+3), .js .passi > .rivela:nth-child(3) { transition-delay: .16s; }
     }
   </style>
 </head>
 
 <body>
+  <div class="offerta-barra">Offerta di lancio: −40% sulla creazione per le prime 20 attività <a href="#prezzi">Vedi i prezzi →</a></div>
+
   <div class="testata">
     <div class="contenitore">
       <a class="marchio" href="#" aria-label="Vetrina Viva, torna all'inizio">
-        <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#f6f2e9"/><path d="M17 49V30a15 15 0 0 1 30 0v19z" fill="#0e2a22"/><path d="M32 17v32M17 35h30" stroke="#f6f2e9" stroke-width="3"/><circle cx="48" cy="16" r="7" fill="#e2703a" stroke="#f6f2e9" stroke-width="3"/></svg>
-        <span>Vetrina <i>Viva</i></span>
+        <img src="/logo.svg" alt="" width="38" height="38">
+        <span>Vetrina <i class="corsivo">Viva</i></span>
       </a>
       <nav>
         <a href="#per-chi">Per chi</a>
@@ -293,8 +340,8 @@
     <div class="apertura">
       <div class="contenitore">
         <div class="testo">
-          <p class="occhiello">Siti per attività locali · In tutta Italia</p>
-          <h1 aria-label="La tua attività, aperta anche quando è chiusa.">La tua <span class="parola" id="parola">barbieria</span>,<br>aperta anche<br>quando è <em>chiusa</em>.</h1>
+          <p class="pillola">Siti per attività locali · In tutta Italia</p>
+          <h1 aria-label="La tua attività, aperta anche quando è chiusa.">La tua <span class="parola corsivo fuoco" id="parola">barbieria</span>,<br>aperta anche<br>quando è <span class="corsivo fuoco">chiusa</span>.</h1>
           <p>Prezzi, orari e prenotazioni in una pagina che i clienti aprono dal telefono. La costruiamo noi in pochi giorni e la teniamo aggiornata: tu pensi al lavoro.</p>
           <div class="pulsanti">
             <a class="pulsante" href="#richiesta">Richiedi il tuo sito</a>
@@ -302,7 +349,7 @@
           </div>
           <ul class="garanzie">
             <li>Online in pochi giorni</li>
-            <li>Modifiche incluse</li>
+            <li>Paghi solo se ti piace</li>
             <li>Nessun vincolo</li>
           </ul>
         </div>
@@ -346,6 +393,25 @@
       </div>
     </div>
 
+    <section id="per-chi">
+      <div class="contenitore">
+        <div class="titolo rivela">
+          <p class="occhiello">Per chi lo facciamo</p>
+          <h2>Ogni mestiere ha la <span class="corsivo fuoco">sua</span> richiesta.</h2>
+          <p>Un tavolo, un appuntamento, un preventivo. Il sito parte da quella, non da un modello uguale per tutti.</p>
+        </div>
+        <div class="galleria">
+          <figure class="foto rivela"><img src="/img/ristorante.webp" alt="Sala di una trattoria con tavoli apparecchiati" width="960" height="720" loading="lazy"><figcaption><b>Ristorazione</b><span>Tavoli e ordini da asporto</span></figcaption></figure>
+          <figure class="foto rivela"><img src="/img/barbiere.webp" alt="Interno di una barbieria con poltrona e specchi" width="960" height="720" loading="lazy"><figcaption><b>Cura della persona</b><span>Appuntamenti</span></figcaption></figure>
+          <figure class="foto rivela"><img src="/img/palestra.webp" alt="Studio luminoso con tappetini da pilates" width="960" height="720" loading="lazy"><figcaption><b>Sport e benessere</b><span>Lezioni e campi</span></figcaption></figure>
+          <figure class="foto rivela"><img src="/img/casa.webp" alt="Rubinetto cromato in un bagno moderno" width="960" height="720" loading="lazy"><figcaption><b>Casa e artigiani</b><span>Preventivi e sopralluoghi</span></figcaption></figure>
+        </div>
+        <ul class="nuvola rivela">
+          <li>Pizzerie</li><li>Agriturismi</li><li>Bar</li><li>Pasticcerie</li><li>Gelaterie</li><li>Parrucchieri</li><li>Centri estetici</li><li>Tatuatori</li><li>Officine</li><li>Gommisti</li><li>Carrozzerie</li><li>Personal trainer</li><li>Scuole di danza</li><li>Campi da padel</li><li>Idraulici</li><li>Elettricisti</li><li>Giardinieri</li><li>Imbianchini</li><li>Fioristi</li><li>Panifici</li><li>Lavanderie</li><li>Bed and breakfast</li><li>Toelettature</li><li>Fotografi</li><li>Autoscuole</li><li>…e la tua</li>
+        </ul>
+      </div>
+    </section>
+
     <section class="velata">
       <div class="contenitore">
         <div class="titolo rivela">
@@ -354,15 +420,18 @@
           <p>Un sito non serve a "esserci su internet". Serve a rispondere, subito e da solo, a quello che ognuno si chiede prima di venire da te.</p>
         </div>
         <div class="griglia tre">
-          <div class="riquadro domanda rivela">
+          <div class="riquadro domanda alza rivela">
+            <div class="icona"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12l-8 8-9-9V4h7z"/><circle cx="7.5" cy="8.5" r="1.3"/></svg></div>
             <p class="q">«Quanto costa?»</p>
             <p>Listino o menu sempre aggiornato, senza foto storte di un foglio appeso al muro.</p>
           </div>
-          <div class="riquadro domanda rivela">
+          <div class="riquadro domanda alza rivela">
+            <div class="icona"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
             <p class="q">«Siete aperti?»</p>
             <p>Orari, indirizzo e pulsante per chiamare. Giusti anche a Ferragosto.</p>
           </div>
-          <div class="riquadro domanda rivela">
+          <div class="riquadro domanda alza rivela">
+            <div class="icona"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/></svg></div>
             <p class="q">«C'è posto?»</p>
             <p>Il cliente chiede l'appuntamento o il tavolo da solo, anche a mezzanotte. Tu confermi quando hai un minuto.</p>
           </div>
@@ -370,65 +439,56 @@
       </div>
     </section>
 
-    <section id="per-chi">
+    <section>
       <div class="contenitore">
         <div class="titolo rivela">
-          <p class="occhiello">Per chi lo facciamo</p>
-          <h2>Ogni mestiere ha la sua richiesta.</h2>
-          <p>Un tavolo, un appuntamento, un preventivo. Il sito parte da quella, non da un modello uguale per tutti.</p>
+          <p class="occhiello">Fai due conti</p>
+          <h2>Quanto ti costa <span class="corsivo fuoco">non</span> averlo?</h2>
+          <p>Ogni telefonata a cui non rispondi mentre lavori è un cliente che prova da un altro. Sposta i cursori con i tuoi numeri.</p>
         </div>
-        <div class="griglia tre">
-          <div class="riquadro settore rivela">
-            <h3>Ristorazione</h3>
-            <span class="cosa">Tavoli e ordini da asporto</span>
-            <ul><li>Ristoranti</li><li>Trattorie</li><li>Pizzerie</li><li>Agriturismi</li><li>Bar</li><li>Pasticcerie</li><li>Gelaterie</li><li>Gastronomie</li></ul>
+        <div class="calcolo rivela">
+          <div>
+            <label for="c-perse">Richieste perse a settimana <output id="o-perse">5</output></label>
+            <input id="c-perse" type="range" min="1" max="20" value="5">
+            <label for="c-valore">Quanto spende in media un cliente <output id="o-valore">25 €</output></label>
+            <input id="c-valore" type="range" min="5" max="200" step="5" value="25">
+            <p class="nota-calcolo">È una stima fatta con i numeri che scegli tu: quattro settimane al mese, nessun'altra ipotesi.</p>
           </div>
-          <div class="riquadro settore rivela">
-            <h3>Cura della persona</h3>
-            <span class="cosa">Appuntamenti</span>
-            <ul><li>Barbieri</li><li>Parrucchieri</li><li>Centri estetici</li><li>Onicotecniche</li><li>Tatuatori</li><li>Centri massaggi</li></ul>
-          </div>
-          <div class="riquadro settore rivela">
-            <h3>Sport e tempo libero</h3>
-            <span class="cosa">Lezioni e campi</span>
-            <ul><li>Palestre</li><li>Personal trainer</li><li>Yoga e pilates</li><li>Scuole di danza</li><li>Padel</li><li>Tennis</li><li>Calcetto</li></ul>
-          </div>
-          <div class="riquadro settore rivela">
-            <h3>Auto e moto</h3>
-            <span class="cosa">Appuntamenti in officina</span>
-            <ul><li>Officine</li><li>Gommisti</li><li>Carrozzerie</li><li>Autolavaggi</li><li>Centri revisione</li></ul>
-          </div>
-          <div class="riquadro settore rivela">
-            <h3>Casa e artigiani</h3>
-            <span class="cosa">Preventivi e sopralluoghi</span>
-            <ul><li>Idraulici</li><li>Elettricisti</li><li>Imbianchini</li><li>Giardinieri</li><li>Fabbri</li><li>Falegnami</li><li>Imprese di pulizie</li></ul>
-          </div>
-          <div class="riquadro settore rivela">
-            <h3>Negozi e botteghe</h3>
-            <span class="cosa">Ordini e ritiri</span>
-            <ul><li>Fioristi</li><li>Panifici</li><li>Macellerie</li><li>Sartorie</li><li>Lavanderie</li><li>Ottici</li></ul>
-          </div>
-          <div class="riquadro settore rivela">
-            <h3>Ospitalità</h3>
-            <span class="cosa">Richieste di disponibilità</span>
-            <ul><li>Bed and breakfast</li><li>Affittacamere</li><li>Case vacanza</li></ul>
-          </div>
-          <div class="riquadro settore rivela">
-            <h3>Animali</h3>
-            <span class="cosa">Appuntamenti</span>
-            <ul><li>Toelettature</li><li>Pensioni per animali</li><li>Educatori cinofili</li></ul>
-          </div>
-          <div class="riquadro settore rivela">
-            <h3>Corsi e servizi</h3>
-            <span class="cosa">Lezioni e consulenze</span>
-            <ul><li>Fotografi</li><li>Autoscuole</li><li>Ripetizioni</li><li>Scuole di musica</li></ul>
+          <div class="esito-calcolo" aria-live="polite">
+            <p>Incasso che oggi ti sfugge</p>
+            <p class="cifra fuoco" id="o-totale">500 €</p>
+            <p>al mese</p>
+            <p class="confronto">Il sito con le prenotazioni costa <b>25 € al mese</b>.<br>Ti basta recuperare <b id="o-pareggio">1 cliente al mese</b> per ripagarlo.</p>
           </div>
         </div>
-        <p class="nota">La tua attività non è in elenco? Scrivici lo stesso: quasi sempre si può fare.</p>
       </div>
     </section>
 
-    <section id="esempi" class="velata">
+    <section class="velata">
+      <div class="contenitore">
+        <div class="titolo rivela">
+          <p class="occhiello">Il confronto</p>
+          <h2>Le alternative, messe in fila.</h2>
+          <p>I social restano utili e un'agenzia fa cose più grandi. Per un'attività locale che vuole solo farsi trovare e prenotare, il punto è un altro.</p>
+        </div>
+        <div class="tabella-scorri rivela">
+          <table class="confronto">
+            <thead>
+              <tr><th></th><th>Solo social</th><th>Agenzia tradizionale</th><th class="noi">Vetrina Viva</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>Prenotazioni online</th><td class="no">Messaggi sparsi</td><td class="si">Sì, di solito a parte</td><td class="noi si">Incluse nel pacchetto</td></tr>
+              <tr><th>Listino sempre aggiornato</th><td class="no">Si perde tra i post</td><td>Spesso a pagamento</td><td class="noi si">Ce lo scrivi, lo cambiamo noi</td></tr>
+              <tr><th>Tempi</th><td>Subito</td><td>Spesso settimane</td><td class="noi si">Pochi giorni</td></tr>
+              <tr><th>Costo iniziale</th><td>Zero</td><td>Di solito alto</td><td class="noi si">Da 174 € con l'offerta</td></tr>
+              <tr><th>È tuo</th><td class="no">No, è della piattaforma</td><td class="si">Sì</td><td class="noi si">Sì, con il tuo nome</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="esempi">
       <div class="contenitore">
         <div class="titolo rivela">
           <p class="occhiello">Esempi</p>
@@ -436,28 +496,25 @@
           <p>Due siti dimostrativi, con attività di fantasia. Prova a prenotare: funziona tutto, ma non viene inviato nessun dato.</p>
         </div>
         <div class="griglia due">
-          <a class="riquadro demo rivela" href="/demo/barbiere/">
-            <div class="anteprima barbiere"><small>Taglio · Barba · Rasatura</small><strong>Entri di fretta, esci in ordine.</strong></div>
+          <a class="riquadro demo alza rivela" href="/demo/barbiere/">
+            <div class="anteprima"><img src="/img/barbiere.webp" alt="" width="960" height="720" loading="lazy"><div><small>Taglio · Barba · Rasatura</small><strong>Barbieria Aurelio</strong></div></div>
             <div class="corpo">
-              <h3>Barbieria Aurelio</h3>
               <p>Listino, orari e appuntamento con scelta del servizio, del giorno e della fascia oraria libera.</p>
               <span class="vai">Apri l'esempio →</span>
             </div>
           </a>
-          <a class="riquadro demo rivela" href="/demo/pizzeria/">
-            <div class="anteprima pizzeria"><small>Forno a legna</small><strong>La pizza del giovedì, tutte le sere.</strong></div>
+          <a class="riquadro demo alza rivela" href="/demo/pizzeria/">
+            <div class="anteprima"><img src="/img/ristorante.webp" alt="" width="960" height="720" loading="lazy"><div><small>Forno a legna</small><strong>Pizzeria Da Nives</strong></div></div>
             <div class="corpo">
-              <h3>Pizzeria Da Nives</h3>
               <p>Menu con prezzi, orari e prenotazione del tavolo per giorno, ora e numero di persone.</p>
               <span class="vai">Apri l'esempio →</span>
             </div>
           </a>
         </div>
-        <p class="nota">Fai un altro mestiere? La struttura è la stessa: cambiano le parole e il tipo di richiesta, per esempio un preventivo al posto di un tavolo.</p>
       </div>
     </section>
 
-    <section>
+    <section class="velata">
       <div class="contenitore">
         <div class="titolo rivela">
           <p class="occhiello">Come funziona</p>
@@ -465,15 +522,15 @@
           <p>Tutto da remoto, ovunque tu sia: ci sentiamo per telefono o in videochiamata.</p>
         </div>
         <ol class="passi">
-          <li class="rivela">
+          <li class="alza rivela">
             <h3>Ci dai i dati</h3>
             <p>Nome, servizi, prezzi, orari, indirizzo. Dal modulo qui sotto o a voce, come preferisci.</p>
           </li>
-          <li class="rivela">
+          <li class="alza rivela">
             <h3>Costruiamo il sito</h3>
             <p>Ti mandiamo il link di prova. Chiedi le modifiche che vuoi prima che vada online.</p>
           </li>
-          <li class="rivela">
+          <li class="alza rivela">
             <h3>Lo teniamo vivo</h3>
             <p>Cambi un prezzo o chiudi per ferie? Ce lo scrivi e lo aggiorniamo noi.</p>
           </li>
@@ -481,18 +538,24 @@
       </div>
     </section>
 
-    <section id="prezzi" class="velata">
+    <section id="prezzi">
       <div class="contenitore">
         <div class="titolo rivela">
           <p class="occhiello">Prezzi</p>
           <h2>Chiari, dal primo giorno.</h2>
           <p>Una quota per la creazione e un canone mensile che copre pubblicazione, modifiche e assistenza.</p>
         </div>
+        <div class="lancio rivela">
+          <span class="sconto">−40%</span>
+          <b>Offerta di lancio</b>
+          <span>Sconto sulla creazione per le prime 20 attività che richiedono il sito.</span>
+        </div>
         <div class="griglia tre">
           <div class="riquadro pacchetto rivela">
             <h3>Vetrina</h3>
-            <p class="prezzo">290 €</p>
-            <p class="canone">poi 15 € al mese</p>
+            <p class="prima">290 €</p>
+            <p class="prezzo">174 €</p>
+            <p class="canone">una tantum, poi 15 € al mese</p>
             <ul>
               <li>Sito a pagina unica</li>
               <li>Servizi o menu con prezzi</li>
@@ -502,10 +565,11 @@
             <a class="pulsante vuoto" href="#richiesta">Scelgo Vetrina</a>
           </div>
           <div class="riquadro pacchetto consigliato rivela">
-            <span class="bollino">Il più richiesto</span>
+            <span class="bollino">Consigliato</span>
             <h3>Prenotazioni</h3>
-            <p class="prezzo">490 €</p>
-            <p class="canone">poi 25 € al mese</p>
+            <p class="prima">490 €</p>
+            <p class="prezzo">294 €</p>
+            <p class="canone">una tantum, poi 25 € al mese</p>
             <ul>
               <li>Tutto quello che c'è in Vetrina</li>
               <li>Richieste di appuntamento, tavolo o preventivo</li>
@@ -516,7 +580,8 @@
           </div>
           <div class="riquadro pacchetto rivela">
             <h3>Su misura</h3>
-            <p class="prezzo">Preventivo</p>
+            <p class="prima" style="visibility:hidden">—</p>
+            <p class="prezzo" style="font-size:2.2rem;line-height:1.45">Preventivo</p>
             <p class="canone">in base a cosa ti serve</p>
             <ul>
               <li>Più sedi o più pagine</li>
@@ -526,7 +591,30 @@
             <a class="pulsante vuoto" href="#richiesta">Parliamone</a>
           </div>
         </div>
+        <div class="griglia due extra">
+          <div class="riquadro rivela">
+            <div class="cifra-extra">2 mesi<br>gratis</div>
+            <div><h3>Canone annuale</h3><p>Paghi dieci mesi invece di dodici se scegli il canone in un'unica soluzione.</p></div>
+          </div>
+          <div class="riquadro rivela">
+            <div class="cifra-extra">1 mese<br>gratis</div>
+            <div><h3>Porta un collega</h3><p>Se un'attività che ci presenti fa il sito con noi, un mese di canone in omaggio a tutti e due.</p></div>
+          </div>
+        </div>
         <p class="nota">Il dominio personalizzato (ad esempio iltuonome.it) si paga a parte, al costo annuo del registro. Nessun vincolo di durata: puoi disdire quando vuoi.</p>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="contenitore">
+        <div class="garanzia rivela">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.300-7-4.500-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          <div>
+            <h2>Paghi solo se ti piace.</h2>
+            <p>Prima vedi il sito finito, dal tuo telefono. Se non ti convince non ci devi nulla.</p>
+          </div>
+          <a class="pulsante" href="#richiesta">Inizia senza rischi</a>
+        </div>
       </div>
     </section>
 
@@ -535,10 +623,10 @@
         <div class="colonne">
           <div class="rivela">
             <p class="occhiello">Chi c'è dietro</p>
-            <h2>Una persona, non un centralino.</h2>
+            <h2>Una persona, non un <span class="corsivo fuoco">centralino</span>.</h2>
           </div>
           <div class="rivela">
-            <p><strong>Lavoriamo con attività di tutta Italia, una alla volta.</strong> Un sito fatto bene nasce da una chiacchierata, non da un modulo compilato di fretta: per questo prima ti ascoltiamo, poi costruiamo.</p>
+            <p><strong>Lavoriamo da remoto, quindi possiamo seguirti ovunque in Italia. Un'attività alla volta.</strong> Un sito fatto bene nasce da una chiacchierata, non da un modulo compilato di fretta: per questo prima ti ascoltiamo, poi costruiamo.</p>
             <p>Chi ti segue all'inizio è la stessa persona che ti risponde dopo, quando c'è da cambiare un prezzo o aggiungere un servizio.</p>
           </div>
         </div>
@@ -554,7 +642,9 @@
         </div>
         <form class="rivela" name="richiesta-sito" method="POST" action="/grazie.html" data-netlify="true" netlify-honeypot="campo-bot">
           <input type="hidden" name="form-name" value="richiesta-sito">
+          <input type="hidden" name="offerta" value="lancio -40%">
           <p class="nascosto"><label>Non compilare: <input name="campo-bot"></label></p>
+          <p class="promemoria"><span class="sconto">−40%</span> L'offerta di lancio viene applicata a questa richiesta.</p>
 
           <label for="r-attivita">Nome dell'attività</label>
           <input id="r-attivita" name="attivita" type="text" autocomplete="organization" required>
@@ -626,6 +716,10 @@
           <p>Sì, in tutta Italia. Il lavoro si fa da remoto: ci sentiamo per telefono o in videochiamata e il sito lo vedi dal tuo telefono prima che vada online.</p>
         </details>
         <details>
+          <summary>Come funziona "paghi solo se ti piace"?</summary>
+          <p>Costruiamo il sito e te lo mostriamo finito. La quota di creazione si paga solo quando lo approvi; se non ti convince, non ci devi nulla.</p>
+        </details>
+        <details>
           <summary>Ho già Instagram e la scheda su Google. Mi serve un sito?</summary>
           <p>Quelle restano utili. Il sito è l'unico posto che è tuo: ci metti il listino completo e le prenotazioni, e da Instagram e Google mandi lì le persone.</p>
         </details>
@@ -648,13 +742,19 @@
   <footer id="privacy">
     <div class="contenitore">
       <div class="marchio">
-        <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#f6f2e9"/><path d="M17 49V30a15 15 0 0 1 30 0v19z" fill="#0e2a22"/><path d="M32 17v32M17 35h30" stroke="#f6f2e9" stroke-width="3"/><circle cx="48" cy="16" r="7" fill="#e2703a" stroke="#f6f2e9" stroke-width="3"/></svg>
-        <span>Vetrina <i>Viva</i></span>
+        <img src="/logo.svg" alt="" width="38" height="38">
+        <span>Vetrina <i class="corsivo">Viva</i></span>
       </div>
       <p>Siti con prenotazioni per attività locali, in tutta Italia.</p>
       <p><strong>Nota sui dati.</strong> I dati che invii dal modulo vengono usati solo per ricontattarti riguardo alla tua richiesta. Non vengono ceduti a terzi né usati per pubblicità. Il modulo è gestito tramite Netlify, che ospita il sito. Puoi chiedere in qualsiasi momento la cancellazione dei tuoi dati rispondendo al messaggio con cui ti ricontattiamo.</p>
+      <p>Le fotografie sono immagini illustrative generate al computer; le attività degli esempi sono di fantasia.</p>
     </div>
   </footer>
+
+  <div class="barra-fissa">
+    <span><b>−40%</b> offerta di lancio</span>
+    <a class="pulsante" href="#richiesta">Richiedi il sito</a>
+  </div>
 
   <script>
     // Telefono animato dell'apertura: mostra la stessa idea per mestieri diversi.
@@ -723,9 +823,26 @@
       document.addEventListener('visibilitychange', () => { if (document.hidden) ferma(); else if (automatico) mostra(attuale); });
       mostra(0);
     })();
-  </script>
 
-  <script>
+    // Calcolatore: stima l'incasso mensile perso a partire dai due cursori.
+    (() => {
+      const perse = document.getElementById('c-perse');
+      const valore = document.getElementById('c-valore');
+      const CANONE = 25;
+      const euro = (n) => n.toLocaleString('it-IT') + ' €';
+      function calcola() {
+        const p = Number(perse.value), v = Number(valore.value);
+        document.getElementById('o-perse').textContent = p;
+        document.getElementById('o-valore').textContent = euro(v);
+        document.getElementById('o-totale').textContent = euro(p * v * 4);
+        const pareggio = Math.max(1, Math.ceil(CANONE / v));
+        document.getElementById('o-pareggio').textContent = pareggio === 1 ? '1 cliente al mese' : `${pareggio} clienti al mese`;
+      }
+      perse.addEventListener('input', calcola);
+      valore.addEventListener('input', calcola);
+      calcola();
+    })();
+
     // Fa comparire le sezioni man mano che entrano nello schermo.
     document.documentElement.classList.add('js');
     const elementi = document.querySelectorAll('.rivela');
