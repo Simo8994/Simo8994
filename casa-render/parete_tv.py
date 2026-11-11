@@ -90,10 +90,11 @@ def walnut(w, h, seed, vertical=True, base=(92, 60, 38)):
 
 # ---------- 3. white skirting on the plain wall ----------
 draw = ImageDraw.Draw(canvas)
-PX0, PX1 = 0, int(290 + 85 * S)   # slat panel 170 cm wide, centred under the TV
+PXC = int(290 + 85 * S)            # console right edge (170 cm unit)
+PX0, PX1 = 0, WALL_R - 4           # slats run all the way to the door frame, behind the thermostat and switches
 sk_top = int(y_cm(7))
 for x0, x1 in ((0, PX0), (PX1, WALL_R)):
-    if x1 > x0:
+    if x1 - x0 > 10:
         draw.rectangle([x0, sk_top, x1, FLOOR], fill=(236, 234, 229)); draw.line([x0, sk_top, x1, sk_top], fill=(205, 202, 196), width=1)
 
 # ---------- 4. slat panel: 4 cm walnut slats, 1.6 cm gaps on black acoustic felt ----------
@@ -137,7 +138,7 @@ d = ImageDraw.Draw(canvas)
 d.rectangle([(fx0 + fx1) / 2 - 10, fy1 - 2, (fx0 + fx1) / 2 + 10, fy1], fill=(60, 60, 64))  # logo strip
 
 # ---------- 6. floating console 170 x 30 x 35 cm, bottom at 30 cm ----------
-c0, c1 = PX0, PX1
+c0, c1 = PX0, PXC
 cb, ct = y_cm(30), y_cm(60)
 back = [(c0, ct), (c1, ct), (c1, cb), (c0, cb)]
 fr = [tuple(proj(x, y, 35)) for x, y in back]
@@ -168,6 +169,7 @@ d.line([fr[0], fr[1]], fill=(190, 170, 144) if BEIGE else (70, 66, 62), width=1)
 LN_W = (247, 246, 243); LN_B = (34, 33, 33); LN_S = (166, 148, 124)  # Living Now 'sabbia' / dark beige
 def living_now(cx, cy, kind, color):
     """BTicino Living Now: full-cover flat keys, no visible frame. 5 pieces (end, 3 modules, end), 12 x 8.4 cm."""
+    global canvas
     Q = 8; wcm, hcm = 12.0, 8.4
     tw, th = int(wcm * S * Q), int(hcm * S * Q)
     t = Image.new('RGBA', (tw, th), (0, 0, 0, 0)); dd = ImageDraw.Draw(t)
@@ -200,8 +202,12 @@ def living_now(cx, cy, kind, color):
         dd.line([px, th - 3 * Q - g // 2, px, th - 3 * Q + g // 2], fill=(220, 220, 220, 255), width=Q // 2)
     small = t.resize((max(1, tw // Q), max(1, th // Q)), Image.LANCZOS)
     x0, y0 = int(cx - small.width / 2), int(cy - small.height / 2)
+    # flat lacquered pad set into the slats (same colour), so the plate sits on a plane surface
+    pw2, ph2 = 15 * S, 11.5 * S
+    pad = [(cx - pw2 / 2, cy - ph2 / 2), (cx + pw2 / 2, cy - ph2 / 2), (cx + pw2 / 2, cy + ph2 / 2), (cx - pw2 / 2, cy + ph2 / 2)]
+    soft_shadow(pad, 3, 0.4, (2, 3))
+    ImageDraw.Draw(canvas).rectangle([pad[0], pad[2]], fill=(146, 125, 100) if BEIGE else (88, 58, 37))
     soft_shadow([(x0, y0), (x0 + small.width, y0), (x0 + small.width, y0 + small.height), (x0, y0 + small.height)], 2.5, 0.45, (2, 3))
-    global canvas
     c = canvas.convert('RGBA'); c.alpha_composite(small, (x0, y0)); canvas = c.convert('RGB')
 LN_COL = os.environ.get('LN_COLOR', 'sabbia')
 living_now(631, 333, 'thermo', LN_COL)      # Living Now thermostat where the old one was, ~137 cm
