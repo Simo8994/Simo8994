@@ -103,7 +103,7 @@ PX0, PX1 = 0, WALL_R - 4           # slats run all the way to the door frame, be
 SLATS = os.environ.get('PARETE_LISTELLI', '1') == '1'
 WALL_TINT = os.environ.get('PARETE_COLORE')        # e.g. 'tortora': paint the whole wall, no slats
 if WALL_TINT:
-    tint = {'tortora': (150, 138, 124)}[WALL_TINT]
+    tint = {'tortora': (150, 138, 124), 'bianco': (238, 236, 231)}[WALL_TINT]
     arr = np.asarray(canvas).astype(np.float32)
     w = arr[:FLOOR, :WALL_R]; lum = w.mean(axis=2)
     lum[:45, :45] = np.median(lum[45:120, 45:120])                              # drop the window glare spot
@@ -220,7 +220,7 @@ def living_now(cx, cy, kind, color):
     elif kind == 'thermo':                                     # 2-module display in the middle (modules 1-2)
         x0, x1 = int(1 * pw + Q), int(3 * pw - Q)
         dd.rectangle([x0, Q, x1, th - Q], fill=(10, 10, 11, 255))
-        f = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', int(th * .20))
+        f = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', int(th * .16))
         bb = dd.textbbox((0, 0), '20.5', font=f)
         dd.text(((x0 + x1 - (bb[2] - bb[0])) // 2, int(th * .32)), '20.5', fill=(236, 236, 236, 255), font=f)
         g = int(th * .10); dd.line([x0 + 3 * Q, th - 3 * Q, x0 + 3 * Q + g, th - 3 * Q], fill=(220, 220, 220, 255), width=Q // 2)
