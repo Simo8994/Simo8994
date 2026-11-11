@@ -205,7 +205,7 @@ def living_now(cx, cy, kind, color):
     c = canvas.convert('RGBA'); c.alpha_composite(small, (x0, y0)); canvas = c.convert('RGB')
 LN_COL = os.environ.get('LN_COLOR', 'white')
 living_now(631, 333, 'thermo', 'black')     # Living Now thermostat (black, as chosen) where the old one was, ~137 cm
-living_now(631, 495, 'switch', LN_COL)      # 3 Living Now switches where the 3-module plate was, ~88 cm
+living_now(631, 495, 'sockets', LN_COL)     # 3 Living Now sockets where the 3-module plate was, ~88 cm
 living_now(631, 678, 'sockets', LN_COL)     # 3 sockets at ~35 cm instead of the open box
 canvas = canvas.filter(ImageFilter.UnsharpMask(radius=1, percent=40, threshold=2))
 canvas.save(OUT, quality=93)
