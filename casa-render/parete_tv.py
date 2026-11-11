@@ -90,7 +90,7 @@ def walnut(w, h, seed, vertical=True, base=(92, 60, 38)):
 
 # ---------- 3. white skirting on the plain wall ----------
 draw = ImageDraw.Draw(canvas)
-PXC = int(290 + 85 * S)            # console right edge (170 cm unit)
+PXC = WALL_R - 4                   # console runs up to the door frame
 PX0, PX1 = 0, WALL_R - 4           # slats run all the way to the door frame, behind the thermostat and switches
 sk_top = int(y_cm(7))
 for x0, x1 in ((0, PX0), (PX1, WALL_R)):
