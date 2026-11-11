@@ -103,11 +103,13 @@ PX0, PX1 = 0, WALL_R - 4           # slats run all the way to the door frame, be
 SLATS = os.environ.get('PARETE_LISTELLI', '1') == '1'
 WALL_TINT = os.environ.get('PARETE_COLORE')        # e.g. 'tortora': paint the whole wall, no slats
 if WALL_TINT:
-    tint = {'tortora': (150, 138, 124), 'bianco': (238, 236, 231)}[WALL_TINT]
+    tint = {'tortora': (150, 138, 124), 'bianco': (247, 246, 243)}[WALL_TINT]
     arr = np.asarray(canvas).astype(np.float32)
     w = arr[:FLOOR, :WALL_R]; lum = w.mean(axis=2)
     lum[:45, :45] = np.median(lum[45:120, 45:120])                              # drop the window glare spot
     lum = cv2.GaussianBlur(lum, (0, 0), 70)[..., None] / 228.0                   # smooth light falloff, no seams
+    if WALL_TINT == 'bianco':                                                   # daylight white: lift and flatten the falloff
+        lum = 0.80 + 0.20 * lum / np.percentile(lum, 98)
     lum = lum + rng.normal(0, 0.006, lum.shape).astype(np.float32)               # paint micro-texture
     arr[:FLOOR, :WALL_R] = np.clip(lum * np.array(tint, np.float32), 0, 255)
     canvas = Image.fromarray(arr.astype(np.uint8)); draw = ImageDraw.Draw(canvas)
