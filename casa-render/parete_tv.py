@@ -100,18 +100,31 @@ def walnut(w, h, seed, vertical=True, base=(92, 60, 38)):
 draw = ImageDraw.Draw(canvas)
 PXC = WALL_R - 4                   # console runs up to the door frame
 PX0, PX1 = 0, WALL_R - 4           # slats run all the way to the door frame, behind the thermostat and switches
-sk_top = int(y_cm(7))
-for x0, x1 in ((0, PX0), (PX1, WALL_R)):
+SLATS = os.environ.get('PARETE_LISTELLI', '1') == '1'
+WALL_TINT = os.environ.get('PARETE_COLORE')        # e.g. 'tortora': paint the whole wall, no slats
+if WALL_TINT:
+    tint = {'tortora': (150, 138, 124)}[WALL_TINT]
+    arr = np.asarray(canvas).astype(np.float32)
+    w = arr[:FLOOR, :WALL_R]; lum = w.mean(axis=2)
+    lum[:45, :45] = np.median(lum[45:120, 45:120])                              # drop the window glare spot
+    lum = cv2.GaussianBlur(lum, (0, 0), 70)[..., None] / 228.0                   # smooth light falloff, no seams
+    lum = lum + rng.normal(0, 0.006, lum.shape).astype(np.float32)               # paint micro-texture
+    arr[:FLOOR, :WALL_R] = np.clip(lum * np.array(tint, np.float32), 0, 255)
+    canvas = Image.fromarray(arr.astype(np.uint8)); draw = ImageDraw.Draw(canvas)
+SK_H = float(os.environ.get('BATTISCOPA_CM', '7'))
+sk_top = int(y_cm(SK_H))
+for x0, x1 in (((0, WALL_R),) if not SLATS else ((0, PX0), (PX1, WALL_R))):
     if x1 - x0 > 10:
-        draw.rectangle([x0, sk_top, x1, FLOOR], fill=(236, 234, 229)); draw.line([x0, sk_top, x1, sk_top], fill=(205, 202, 196), width=1)
+        draw.rectangle([x0, sk_top, x1, FLOOR], fill=(240, 238, 234)); draw.line([x0, sk_top, x1, sk_top], fill=(206, 203, 197), width=1)
+        draw.line([x0, sk_top + 1, x1, sk_top + 1], fill=(250, 249, 246), width=1)
 
 # ---------- 4. slat panel: 4 cm walnut slats, 1.6 cm gaps on black acoustic felt ----------
 arr = np.asarray(canvas).astype(np.float32)
-top = 0; bot = FLOOR
+top = 0; bot = FLOOR if SLATS else 0
 arr[top:bot, PX0:PX1] = np.array(PAL['felt'], np.float32)        # black felt
 sw, gap = 4.0 * S, 1.6 * S
 x = PX0 + 1; i = 0
-while x + sw <= PX1:
+while SLATS and x + sw <= PX1:
     xa, xb = int(round(x)), int(round(x + sw))
     tex = walnut(xb - xa, bot - top, 100 + i, base=PAL['slat'])
     shade = np.linspace(1.12, 0.86, xb - xa)[None, :, None]           # rounded light from the window (left)
@@ -122,7 +135,7 @@ while x + sw <= PX1:
 fall = np.linspace(1.05, 0.9, bot - top)[:, None, None]
 arr[top:bot, PX0:PX1] *= fall
 canvas = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8))
-soft_shadow([(PX1, 0), (PX1 + 6, 0), (PX1 + 6, FLOOR), (PX1, FLOOR)], 4, 0.35)   # panel edge shadow on plaster
+if SLATS: soft_shadow([(PX1, 0), (PX1 + 6, 0), (PX1 + 6, FLOOR), (PX1, FLOOR)], 4, 0.35)   # panel edge shadow on plaster
 
 # ---------- 5. 55" TV (123 x 71 x 2.5 cm), centre at 118 cm ----------
 tw, th = 123 * S, 71 * S
@@ -218,8 +231,9 @@ def living_now(cx, cy, kind, color):
     # flat lacquered pad set into the slats (same colour), so the plate sits on a plane surface
     pw2, ph2 = 15 * S, 11.5 * S
     pad = [(cx - pw2 / 2, cy - ph2 / 2), (cx + pw2 / 2, cy - ph2 / 2), (cx + pw2 / 2, cy + ph2 / 2), (cx - pw2 / 2, cy + ph2 / 2)]
-    soft_shadow(pad, 3, 0.4, (2, 3))
-    ImageDraw.Draw(canvas).rectangle([pad[0], pad[2]], fill=PAL['pad'])
+    if SLATS:
+        soft_shadow(pad, 3, 0.4, (2, 3))
+        ImageDraw.Draw(canvas).rectangle([pad[0], pad[2]], fill=PAL['pad'])
     soft_shadow([(x0, y0), (x0 + small.width, y0), (x0 + small.width, y0 + small.height), (x0, y0 + small.height)], 2.5, 0.45, (2, 3))
     c = canvas.convert('RGBA'); c.alpha_composite(small, (x0, y0)); canvas = c.convert('RGB')
 LN_COL = os.environ.get('LN_COLOR', 'sabbia')
