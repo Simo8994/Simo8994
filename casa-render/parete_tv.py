@@ -165,27 +165,48 @@ d = ImageDraw.Draw(canvas)
 d.line([fr[0], fr[1]], fill=(190, 170, 144) if BEIGE else (70, 66, 62), width=1)   # top edge highlight
 
 # ---------- 7. BTicino Living Now plates (white) ----------
-def plate(cx, cy, modules, kind):
-    w, h = (4.0 + 2.25 * modules) * S if modules > 2 else 7.8 * S, 8.4 * S
-    x0, y0, x1, y1 = cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2
-    soft_shadow([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], 2, 0.35, (1, 2))
-    dd = ImageDraw.Draw(canvas)
-    dd.rounded_rectangle([x0, y0, x1, y1], radius=2, fill=(246, 245, 242), outline=(214, 212, 207))
-    if kind == 'sockets':
-        for k in range(modules):
-            mx = x0 + 2 * S + (k + .5) * (w - 4 * S) / modules
-            dd.ellipse([mx - 2.6, cy - 5, mx + 2.6, cy - 1], fill=(120, 118, 114))
-            dd.ellipse([mx - 2.6, cy + 2, mx + 2.6, cy + 6], fill=(120, 118, 114))
-            dd.line([mx - 4, cy - 8, mx + 4, cy - 8], fill=(225, 223, 219))
-    else:  # Living Now thermostat (Smarther-style): dark display with temperature
-        dd.rounded_rectangle([x0 + 4, y0 + 5, x1 - 4, y1 - 5], radius=2, fill=(28, 30, 32))
-        try: f = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 9)
+LN_W = (247, 246, 243); LN_B = (34, 33, 33)
+def living_now(cx, cy, kind, color):
+    """BTicino Living Now: full-cover flat keys, no visible frame. 5 pieces (end, 3 modules, end), 12 x 8.4 cm."""
+    Q = 8; wcm, hcm = 12.0, 8.4
+    tw, th = int(wcm * S * Q), int(hcm * S * Q)
+    t = Image.new('RGBA', (tw, th), (0, 0, 0, 0)); dd = ImageDraw.Draw(t)
+    base = LN_W if color == 'white' else LN_B
+    seam = (196, 194, 189) if color == 'white' else (12, 12, 12)
+    n = 5; pw = tw / n
+    for k in range(n):
+        x0, x1 = int(k * pw), int((k + 1) * pw)
+        sh = 1.0 - 0.025 * k                                   # soft light from the left
+        col = tuple(int(c * sh) for c in base)
+        dd.rectangle([x0, 0, x1, th], fill=col + (255,))
+        dd.line([x1 - 1, 0, x1 - 1, th], fill=seam + (255,), width=max(2, Q // 3))
+    if kind == 'switch':
+        for k in (1, 2, 3):
+            mx = int((k + .5) * pw)
+            dd.line([mx, int(th * .32), mx, int(th * .68)], fill=(178, 190, 214, 255), width=Q // 2)   # thin locator light
+    elif kind == 'sockets':
+        for k in (1, 2, 3):
+            mx = int((k + .5) * pw); r = int(Q * 1.1)
+            for yy in (.36, .5, .64):                          # bipasso / schuko-compatible holes
+                cy0 = int(th * yy); dd.ellipse([mx - r, cy0 - r, mx + r, cy0 + r], fill=(120, 118, 114, 255))
+    elif kind == 'thermo':                                     # 2-module display in the middle (modules 1-2)
+        x0, x1 = int(1 * pw + Q), int(3 * pw - Q)
+        dd.rectangle([x0, Q, x1, th - Q], fill=(10, 10, 11, 255))
+        try: f = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', int(th * .30))
         except Exception: f = None
-        dd.text((cx - 11, cy - 6), '21.0°', fill=(235, 235, 235), font=f)
-plate(631, 333, 3, 'thermo')           # thermostat where the old one was (~140 cm)
-plate(631, 495, 3, 'sockets')          # 3 sockets where the 3-module plate was (~90 cm)
-plate(631, 678, 3, 'sockets')          # second point (~35 cm), tidy instead of the open box
-
+        dd.text(((x0 + x1) // 2 - int(th * .27), int(th * .30)), '20.5', fill=(236, 236, 236, 255), font=f)
+        g = int(th * .10); dd.line([x0 + 3 * Q, th - 3 * Q, x0 + 3 * Q + g, th - 3 * Q], fill=(220, 220, 220, 255), width=Q // 2)
+        px = x1 - 3 * Q - g // 2; dd.line([px - g // 2, th - 3 * Q, px + g // 2, th - 3 * Q], fill=(220, 220, 220, 255), width=Q // 2)
+        dd.line([px, th - 3 * Q - g // 2, px, th - 3 * Q + g // 2], fill=(220, 220, 220, 255), width=Q // 2)
+    small = t.resize((max(1, tw // Q), max(1, th // Q)), Image.LANCZOS)
+    x0, y0 = int(cx - small.width / 2), int(cy - small.height / 2)
+    soft_shadow([(x0, y0), (x0 + small.width, y0), (x0 + small.width, y0 + small.height), (x0, y0 + small.height)], 2.5, 0.45, (2, 3))
+    global canvas
+    c = canvas.convert('RGBA'); c.alpha_composite(small, (x0, y0)); canvas = c.convert('RGB')
+LN_COL = os.environ.get('LN_COLOR', 'white')
+living_now(631, 333, 'thermo', 'black')     # Living Now thermostat (black, as chosen) where the old one was, ~137 cm
+living_now(631, 495, 'switch', LN_COL)      # 3 Living Now switches where the 3-module plate was, ~88 cm
+living_now(631, 678, 'sockets', LN_COL)     # 3 sockets at ~35 cm instead of the open box
 canvas = canvas.filter(ImageFilter.UnsharpMask(radius=1, percent=40, threshold=2))
 canvas.save(OUT, quality=93)
 print('saved', OUT)
