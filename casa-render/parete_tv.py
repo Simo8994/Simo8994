@@ -3,7 +3,15 @@ The wall is almost fronto-parallel: scale ~3.35 px/cm on the wall plane, floor l
 Elements: cleaned plaster, white skirting, walnut slat panel on black felt, 55" TV, floating console
 (walnut fronts, matt black body) with LED, BTicino Living Now plates (sockets + thermostat), repaired parquet."""
 import numpy as np, cv2, sys, os
-BEIGE = os.environ.get('PARETE_BEIGE') == '1'  # dark beige matt lacquer for slats and console instead of walnut
+SCHEMA = os.environ.get('PARETE_SCHEMA', 'beige' if os.environ.get('PARETE_BEIGE') == '1' else 'noce')
+BEIGE = SCHEMA != 'noce'   # matt lacquered slats (flat texture) instead of walnut
+PAL = {  # felt, slat, console top/side/front, console fronts, seams, top highlight, plate pad
+    'noce':    dict(felt=(22, 20, 19), slat=(92, 60, 38), top=(40, 38, 37), side=(26, 25, 25), front=(30, 29, 29), doors=(104, 68, 42), seam=(18, 16, 15), hi=(70, 66, 62), pad=(88, 58, 37)),
+    'beige':   dict(felt=(58, 50, 43), slat=(150, 128, 102), top=(168, 147, 120), side=(112, 97, 79), front=(128, 111, 90), doors=(146, 126, 101), seam=(70, 60, 50), hi=(190, 170, 144), pad=(146, 125, 100)),
+    # tortora (taupe) lacquered slats, natural oak console with fluted ('cannettato') fronts
+    'tortora': dict(felt=(62, 57, 52), slat=(132, 122, 111), top=(184, 142, 94), side=(130, 98, 62), front=(158, 120, 78), doors=(176, 132, 84), seam=(96, 76, 52), hi=(214, 184, 140), pad=(128, 118, 107)),
+}[SCHEMA]
+FLUTED = SCHEMA == 'tortora'
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 SRC = 'casa-render/riferimenti/parete_tv_foto.jpg'
@@ -100,12 +108,12 @@ for x0, x1 in ((0, PX0), (PX1, WALL_R)):
 # ---------- 4. slat panel: 4 cm walnut slats, 1.6 cm gaps on black acoustic felt ----------
 arr = np.asarray(canvas).astype(np.float32)
 top = 0; bot = FLOOR
-arr[top:bot, PX0:PX1] = np.array([58, 50, 43] if BEIGE else [22, 20, 19], np.float32)        # black felt
+arr[top:bot, PX0:PX1] = np.array(PAL['felt'], np.float32)        # black felt
 sw, gap = 4.0 * S, 1.6 * S
 x = PX0 + 1; i = 0
 while x + sw <= PX1:
     xa, xb = int(round(x)), int(round(x + sw))
-    tex = walnut(xb - xa, bot - top, 100 + i, base=(150, 128, 102) if BEIGE else (92, 60, 38))
+    tex = walnut(xb - xa, bot - top, 100 + i, base=PAL['slat'])
     shade = np.linspace(1.12, 0.86, xb - xa)[None, :, None]           # rounded light from the window (left)
     arr[top:bot, xa:xb] = tex * shade
     arr[top:bot, xb:min(xb + 2, PX1)] *= 0.55                           # cast shadow into the gap
@@ -148,22 +156,27 @@ glow([(fr[3][0], fr[3][1] + 6), (fr[2][0], fr[2][1] + 6), (c1, FLOOR + 30), (c0,
 soft_shadow([(fr[3][0], FLOOR + 4), (fr[2][0], FLOOR + 4), (fr[2][0] + 10, FLOOR + 40), (fr[3][0] + 10, FLOOR + 40)], 16, 0.25)
 d = ImageDraw.Draw(canvas)
 # top face (seen from slightly above), side face, front
-d.polygon([back[0], back[1], fr[1], fr[0]], fill=(168, 147, 120) if BEIGE else (40, 38, 37))
-d.polygon([back[1], back[2], fr[2], fr[1]], fill=(112, 97, 79) if BEIGE else (26, 25, 25))
-d.polygon(fr, fill=(128, 111, 90) if BEIGE else (30, 29, 29))
+d.polygon([back[0], back[1], fr[1], fr[0]], fill=PAL['top'])
+d.polygon([back[1], back[2], fr[2], fr[1]], fill=PAL['side'])
+d.polygon(fr, fill=PAL['front'])
 # walnut fronts: 3 push-to-open doors with 3 mm shadow gaps, 1.5 cm black frame
 fx0, fy0 = fr[0]; fx1, fy1 = fr[2]
 pad = 1.5 * S * D / (D - 35)
 ix0, iy0, ix1, iy1 = max(0, int(fx0 + pad)), int(fy0 + pad), int(fx1 - pad), int(fy1 - pad)
 arr = np.asarray(canvas).astype(np.float32)
-wtex = walnut(ix1 - ix0, iy1 - iy0, 7, vertical=False, base=(146, 126, 101) if BEIGE else (104, 68, 42))
+if FLUTED:  # natural oak with real grain + vertical flutes every 1.5 cm
+    BEIGE = False; wtex = walnut(ix1 - ix0, iy1 - iy0, 7, vertical=True, base=PAL['doors']); BEIGE = True
+    fx = np.arange(ix1 - ix0, dtype=np.float32); per = 1.5 * S * D / (D - 35)
+    wtex *= (0.86 + 0.18 * (0.5 + 0.5 * np.cos(2 * np.pi * fx / per)))[None, :, None]
+else:
+    wtex = walnut(ix1 - ix0, iy1 - iy0, 7, vertical=False, base=PAL['doors'])
 wtex *= np.linspace(1.08, 0.92, ix1 - ix0)[None, :, None]
 arr[iy0:iy1, ix0:ix1] = wtex
 for k in (1, 2):
-    xs = int(ix0 + (ix1 - ix0) * k / 3); arr[iy0:iy1, xs - 1:xs + 1] = (70, 60, 50) if BEIGE else (18, 16, 15)
+    xs = int(ix0 + (ix1 - ix0) * k / 3); arr[iy0:iy1, xs - 1:xs + 1] = PAL['seam']
 canvas = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8))
 d = ImageDraw.Draw(canvas)
-d.line([fr[0], fr[1]], fill=(190, 170, 144) if BEIGE else (70, 66, 62), width=1)   # top edge highlight
+d.line([fr[0], fr[1]], fill=PAL['hi'], width=1)   # top edge highlight
 
 # ---------- 7. BTicino Living Now plates (white) ----------
 LN_W = (247, 246, 243); LN_B = (34, 33, 33); LN_S = (166, 148, 124)  # Living Now 'sabbia' / dark beige
@@ -206,7 +219,7 @@ def living_now(cx, cy, kind, color):
     pw2, ph2 = 15 * S, 11.5 * S
     pad = [(cx - pw2 / 2, cy - ph2 / 2), (cx + pw2 / 2, cy - ph2 / 2), (cx + pw2 / 2, cy + ph2 / 2), (cx - pw2 / 2, cy + ph2 / 2)]
     soft_shadow(pad, 3, 0.4, (2, 3))
-    ImageDraw.Draw(canvas).rectangle([pad[0], pad[2]], fill=(146, 125, 100) if BEIGE else (88, 58, 37))
+    ImageDraw.Draw(canvas).rectangle([pad[0], pad[2]], fill=PAL['pad'])
     soft_shadow([(x0, y0), (x0 + small.width, y0), (x0 + small.width, y0 + small.height), (x0, y0 + small.height)], 2.5, 0.45, (2, 3))
     c = canvas.convert('RGBA'); c.alpha_composite(small, (x0, y0)); canvas = c.convert('RGB')
 LN_COL = os.environ.get('LN_COLOR', 'sabbia')
