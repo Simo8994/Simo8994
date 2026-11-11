@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Idoneo — Quiz esame RUI</title>
+  <meta name="description" content="Allenati per la prova di idoneità RUI (sezioni A e B) con i 2.292 quesiti del database pubblicato da IVASS. Gratuito, funziona anche senza rete.">
+  <meta name="theme-color" content="#0e3b30">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icona.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icona-180.png">
+  <style>
+    :root {
+      --sfondo: #f4f2ec; --carta: #ffffff; --testo: #14211d; --tenue: #56645f;
+      --bordo: #dcd8cc; --verde: #0f7a5c; --verde-scuro: #0e3b30; --su-verde: #ffffff;
+      --verde-chiaro: #e2f1eb; --rosso: #b8321b; --rosso-chiaro: #fae7e2; --ambra: #8a5a00;
+      --ambra-chiaro: #fbf0d4; --raggio: 14px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --sfondo: #0c1513; --carta: #15211e; --testo: #eaf1ee; --tenue: #9db0a9;
+        --bordo: #2a3a35; --verde: #3fc79b; --verde-scuro: #0a231d; --su-verde: #06231a;
+        --verde-chiaro: #143a2f; --rosso: #ff8f78; --rosso-chiaro: #43201a; --ambra: #f2c25a;
+        --ambra-chiaro: #3a2f12;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--sfondo); color: var(--testo);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5; font-size: 16px;
+    }
+    button, input, select { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--verde); outline-offset: 2px; }
+    .barra {
+      position: sticky; top: 0; z-index: 5; background: var(--verde-scuro); color: #fff;
+      padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+    }
+    .barra .dentro { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 10px; min-height: 40px; }
+    .barra img { width: 32px; height: 32px; border-radius: 8px; }
+    .barra h1 { font-size: 1.05rem; margin: 0; font-weight: 750; letter-spacing: -0.01em; flex: 1; min-width: 0; }
+    .barra h1 small { display: block; font-weight: 500; font-size: 0.78rem; color: #b9d6cc; }
+    .barra button {
+      background: rgba(255,255,255,0.12); border: 0; color: #fff; border-radius: 10px;
+      padding: 8px 12px; font-weight: 650; min-height: 40px;
+    }
+    main { max-width: 720px; margin: 0 auto; padding: 16px 16px calc(40px + env(safe-area-inset-bottom)); }
+    h2 { font-size: 1.25rem; letter-spacing: -0.02em; margin: 26px 0 10px; }
+    p { margin: 0 0 12px; }
+    .tenue { color: var(--tenue); }
+    .piccolo { font-size: 0.86rem; }
+    .scheda { background: var(--carta); border: 1px solid var(--bordo); border-radius: var(--raggio); padding: 16px; }
+    .riepilogo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+    .riepilogo b { display: block; font-size: 1.5rem; letter-spacing: -0.03em; }
+    .riepilogo span { font-size: 0.8rem; color: var(--tenue); }
+    .striscia { height: 10px; border-radius: 99px; background: var(--bordo); overflow: hidden; display: flex; margin-top: 12px; }
+    .striscia i { display: block; height: 100%; }
+    .striscia .ok { background: var(--verde); }
+    .striscia .no { background: var(--rosso); }
+    .azioni { display: grid; gap: 10px; margin-top: 14px; }
+    .tasto {
+      display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+      min-height: 52px; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--bordo);
+      background: var(--carta); font-weight: 700; text-align: center;
+    }
+    .tasto.primo { background: var(--verde); border-color: var(--verde); color: var(--su-verde); }
+    .tasto[disabled] { opacity: 0.5; cursor: not-allowed; }
+    .tasto .conta { font-weight: 600; color: var(--tenue); font-size: 0.86rem; }
+    .due { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .materie { display: grid; gap: 8px; }
+    .materia {
+      display: block; width: 100%; text-align: left; background: var(--carta);
+      border: 1px solid var(--bordo); border-radius: 12px; padding: 12px 14px;
+    }
+    .materia .riga { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+    .materia b { font-weight: 700; }
+    .materia .riga > span:last-child { white-space: nowrap; }
+    .materia .striscia { height: 6px; margin-top: 8px; }
+    .etichetta { display: inline-block; font-size: 0.74rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; background: var(--ambra-chiaro); color: var(--ambra); margin-left: 6px; vertical-align: 2px; }
+    .avanzamento { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 0.9rem; color: var(--tenue); margin-bottom: 10px; }
+    .avanzamento b { color: var(--testo); font-variant-numeric: tabular-nums; }
+    .tempo { font-variant-numeric: tabular-nums; font-weight: 750; color: var(--testo); }
+    .tempo.poco { color: var(--rosso); }
+    .domanda { font-size: 1.12rem; font-weight: 650; line-height: 1.4; margin: 6px 0 16px; }
+    .scelte { display: grid; gap: 10px; }
+    .scelta {
+      display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left;
+      background: var(--carta); border: 2px solid var(--bordo); border-radius: 12px; padding: 14px;
+      min-height: 56px;
+    }
+    .scelta .lettera {
+      flex: none; width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--bordo);
+      display: grid; place-items: center; font-weight: 750; font-size: 0.85rem;
+    }
+    .scelta.scelta-attiva { border-color: var(--verde); }
+    .scelta.scelta-attiva .lettera { background: var(--verde); border-color: var(--verde); color: var(--su-verde); }
+    .scelta.giusta { border-color: var(--verde); background: var(--verde-chiaro); }
+    .scelta.giusta .lettera { background: var(--verde); border-color: var(--verde); color: var(--su-verde); }
+    .scelta.sbagliata { border-color: var(--rosso); background: var(--rosso-chiaro); }
+    .scelta.sbagliata .lettera { border-color: var(--rosso); color: var(--rosso); }
+    .scelta[disabled] { cursor: default; color: inherit; opacity: 1; }
+    .esito-riga { margin: 14px 0 0; font-weight: 700; }
+    .esito-riga.ok { color: var(--verde); }
+    .esito-riga.no { color: var(--rosso); }
+    .piede { display: flex; gap: 10px; margin-top: 18px; }
+    .piede .tasto { flex: 1; }
+    .voto { text-align: center; padding: 22px 16px; }
+    .voto .numero { font-size: 3.4rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+    .voto .giudizio { display: inline-block; margin-top: 10px; padding: 6px 14px; border-radius: 99px; font-weight: 750; }
+    .voto .giudizio.ok { background: var(--verde-chiaro); color: var(--verde); }
+    .voto .giudizio.no { background: var(--rosso-chiaro); color: var(--rosso); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--bordo); }
+    td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .revisione { display: grid; gap: 10px; }
+    .revisione .scheda p { margin: 0 0 6px; }
+    .revisione .giusta-t { color: var(--verde); font-weight: 650; }
+    .revisione .sbagliata-t { color: var(--rosso); }
+    .campo { display: grid; gap: 6px; margin-bottom: 14px; }
+    .campo label { font-weight: 650; }
+    .campo input, .campo select {
+      width: 100%; min-height: 48px; padding: 10px 12px; border-radius: 10px;
+      border: 1px solid var(--bordo); background: var(--carta);
+    }
+    .nota { background: var(--ambra-chiaro); color: var(--testo); border-radius: 12px; padding: 12px 14px; font-size: 0.9rem; }
+    footer { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--bordo); font-size: 0.84rem; color: var(--tenue); }
+    footer a, .nota a, p a { color: var(--verde); font-weight: 650; }
+    .solo-lettori { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    @media (max-width: 380px) { .due { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: no-preference) { .striscia i { transition: width 0.4s ease; } }
+  </style>
+</head>
+<body>
+  <header class="barra">
+    <div class="dentro">
+      <img src="icona.svg" alt="">
+      <h1 id="titolo">Idoneo<small>Quiz esame RUI · sezioni A e B</small></h1>
+      <button id="indietro" hidden>Chiudi</button>
+    </div>
+  </header>
+  <main id="vista" tabindex="-1"><p class="tenue">Carico le domande…</p></main>
+
+  <script>
+  (function () {
+    'use strict';
+    var CHIAVE = 'idoneo-rui-v1';
+    var SOGLIA = 60;
+    var LETTERE = ['A', 'B', 'C'];
+    var dati = null;          // { fonte, materie, q }
+    var memoria = carica();   // { r: { indice: [giuste, sbagliate, ultimaGiusta] }, sim: [ {d, p, n} ] }
+    var sessione = null;
+    var orologio = null;
+    var vista = document.getElementById('vista');
+    var tastoChiudi = document.getElementById('indietro');
+
+    function carica() {
+      try {
+        var m = JSON.parse(localStorage.getItem(CHIAVE));
+        if (m && m.r) { m.sim = m.sim || []; return m; }
+      } catch (e) {}
+      return { r: {}, sim: [] };
+    }
+    function salva() {
+      try { localStorage.setItem(CHIAVE, JSON.stringify(memoria)); } catch (e) {}
+    }
+    function h(testo) {
+      return String(testo).replace(/[&<>"]/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+      });
+    }
+    function mescola(lista) {
+      var a = lista.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+    function stato(i) {
+      var r = memoria.r[i];
+      if (!r) return 'nuova';
+      return r[2] ? 'giusta' : 'sbagliata';
+    }
+    function conteggi(indici) {
+      var c = { tot: indici.length, giusta: 0, sbagliata: 0, nuova: 0 };
+      indici.forEach(function (i) { c[stato(i)]++; });
+      return c;
+    }
+    function indiciMateria(m) {
+      var out = [];
+      dati.q.forEach(function (q, i) { if (m === null || q[0] === m) out.push(i); });
+      return out;
+    }
+    function striscia(c) {
+      var ok = c.tot ? (c.giusta / c.tot * 100) : 0;
+      var no = c.tot ? (c.sbagliata / c.tot * 100) : 0;
+      return '<div class="striscia" role="img" aria-label="' + c.giusta + ' giuste, ' + c.sbagliata +
+        ' da ripassare, ' + c.nuova + ' mai viste"><i class="ok" style="width:' + ok +
+        '%"></i><i class="no" style="width:' + no + '%"></i></div>';
+    }
+    function opzioni(i) {
+      var q = dati.q[i];
+      var viste = {};
+      var lista = [];
+      [[q[2], true], [q[3], false], [q[4], false]].forEach(function (o) {
+        if (viste[o[0]]) return;      // nel database una domanda ha due risposte identiche
+        viste[o[0]] = true;
+        lista.push({ t: o[0], ok: o[1] });
+      });
+      return mescola(lista);
+    }
+    function mostra(html, chiudibile) {
+      vista.innerHTML = html;
+      tastoChiudi.hidden = !chiudibile;
+      window.scrollTo(0, 0);
+      vista.focus({ preventScroll: true });
+    }
+    function fermaOrologio() {
+      if (orologio) { clearInterval(orologio); orologio = null; }
+    }
+
+    /* ---------- Schermata iniziale ---------- */
+    function casa() {
+      fermaOrologio();
+      sessione = null;
+      var tutti = conteggi(indiciMateria(null));
+      var errori = tutti.sbagliata;
+      var html = '<section class="scheda">' +
+        '<div class="riepilogo">' +
+        '<div><b>' + tutti.giusta + '</b><span>giuste</span></div>' +
+        '<div><b>' + tutti.sbagliata + '</b><span>da ripassare</span></div>' +
+        '<div><b>' + tutti.nuova + '</b><span>mai viste</span></div>' +
+        '</div>' + striscia(tutti) +
+        '<div class="azioni">' +
+        '<button class="tasto primo" data-vai="simulazione">Simulazione d\'esame</button>' +
+        '<div class="due">' +
+        '<button class="tasto" data-vai="errori"' + (errori ? '' : ' disabled') + '>Ripassa gli errori <span class="conta">' + errori + '</span></button>' +
+        '<button class="tasto" data-vai="cerca">Cerca una domanda</button>' +
+        '</div></div></section>';
+
+      html += '<h2>Allenati per materia</h2><div class="materie">';
+      dati.materie.forEach(function (m, k) {
+        var c = conteggi(indiciMateria(k));
+        html += '<button class="materia" data-materia="' + k + '">' +
+          '<span class="riga"><b>' + h(m.breve) + (m.riass ? '<span class="etichetta">riassicurativo</span>' : '') + '</b>' +
+          '<span class="tenue piccolo">' + c.giusta + ' / ' + c.tot + '</span></span>' + striscia(c) + '</button>';
+      });
+      html += '</div>';
+
+      if (memoria.sim.length) {
+        html += '<h2>Ultime simulazioni</h2><div class="scheda"><table><thead><tr><th>Data</th><th class="n">Domande</th><th class="n">Punteggio</th></tr></thead><tbody>';
+        memoria.sim.slice(-5).reverse().forEach(function (s) {
+          html += '<tr><td>' + h(new Date(s.d).toLocaleDateString('it-IT')) + '</td><td class="n">' + s.n +
+            '</td><td class="n"><b>' + s.p + '/100</b></td></tr>';
+        });
+        html += '</tbody></table></div>';
+      }
+
+      html += '<footer><p><b>Fonte dei quesiti:</b> ' + h(dati.fonte) + ', predisposto in collaborazione con l\'Università di Firenze. ' +
+        '<a href="https://www.ivass.it/operatori/intermediari/prova-idoneita/database-quesiti/index.html" rel="noopener">Pagina ufficiale</a>.</p>' +
+        '<p>Strumento di studio gratuito, senza pubblicità e senza scopo commerciale. Non è collegato a IVASS né approvato da IVASS. ' +
+        'Verifica sempre programma, numero di domande e durata della prova sul bando ufficiale.</p>' +
+        '<p>I tuoi progressi restano solo su questo dispositivo. <button id="azzera" style="background:none;border:0;padding:0;color:var(--rosso);font-weight:650;text-decoration:underline">Azzera i progressi</button></p></footer>';
+      mostra(html, false);
+    }
+
+    /* ---------- Allenamento ---------- */
+    function allenamento(indici, titolo) {
+      // prima le mai viste, poi le sbagliate, poi le altre
+      var ordine = { nuova: 0, sbagliata: 1, giusta: 2 };
+      var scelti = mescola(indici).sort(function (a, b) { return ordine[stato(a)] - ordine[stato(b)]; }).slice(0, 20);
+      sessione = { tipo: 'allenamento', titolo: titolo, domande: scelti.map(function (i) { return { i: i, o: opzioni(i), r: null }; }), pos: 0, giuste: 0 };
+      disegnaAllenamento();
+    }
+    function disegnaAllenamento() {
+      var s = sessione, d = s.domande[s.pos], q = dati.q[d.i];
+      var risposto = d.r !== null;
+      var html = '<div class="avanzamento"><span>' + h(s.titolo) + '</span><span><b>' + (s.pos + 1) + '</b> di ' + s.domande.length + '</span></div>' +
+        '<p class="piccolo tenue">Quesito n. ' + (d.i + 1) + ' · ' + h(dati.materie[q[0]].breve) + '</p>' +
+        '<p class="domanda">' + h(q[1]) + '</p><div class="scelte">';
+      d.o.forEach(function (o, k) {
+        var classe = 'scelta';
+        if (risposto) {
+          if (o.ok) classe += ' giusta';
+          else if (k === d.r) classe += ' sbagliata';
+        }
+        html += '<button class="' + classe + '" data-scelta="' + k + '"' + (risposto ? ' disabled' : '') + '>' +
+          '<span class="lettera">' + LETTERE[k] + '</span><span>' + h(o.t) +
+          (risposto && o.ok ? '<span class="solo-lettori"> (risposta esatta)</span>' : '') + '</span></button>';
+      });
+      html += '</div>';
+      if (risposto) {
+        var giusta = d.o[d.r].ok;
+        html += '<p class="esito-riga ' + (giusta ? 'ok' : 'no') + '" role="status">' + (giusta ? 'Risposta esatta.' : 'Risposta sbagliata: quella esatta è evidenziata in verde.') + '</p>' +
+          '<div class="piede"><button class="tasto primo" data-vai="avanti">' + (s.pos + 1 < s.domande.length ? 'Avanti' : 'Vedi il riepilogo') + '</button></div>';
+      }
+      mostra(html, true);
+    }
+    function registra(i, giusta) {
+      var r = memoria.r[i] || [0, 0, 0];
+      r[giusta ? 0 : 1]++;
+      r[2] = giusta ? 1 : 0;
+      memoria.r[i] = r;
+    }
+    function fineAllenamento() {
+      var s = sessione;
+      var sbagliate = s.domande.filter(function (d) { return !d.o[d.r].ok; });
+      var html = '<section class="scheda voto"><div class="numero">' + s.giuste + ' <span style="font-size:1.4rem;font-weight:650" class="tenue">su ' + s.domande.length + '</span></div>' +
+        '<p class="tenue" style="margin-top:8px">' + h(s.titolo) + '</p></section>';
+      html += revisione(sbagliate);
+      html += '<div class="piede"><button class="tasto primo" data-vai="casa">Torna all\'inizio</button></div>';
+      sessione = null;
+      mostra(html, false);
+    }
+    function revisione(lista) {
+      if (!lista.length) return '<p style="margin-top:16px" class="tenue">Nessun errore in questa serie.</p>';
+      var html = '<h2>Da rivedere (' + lista.length + ')</h2><div class="revisione">';
+      lista.forEach(function (d) {
+        var q = dati.q[d.i];
+        html += '<div class="scheda"><p class="piccolo tenue">Quesito n. ' + (d.i + 1) + ' · ' + h(dati.materie[q[0]].breve) + '</p><p><b>' + h(q[1]) + '</b></p>' +
+          (d.r === null ? '<p class="sbagliata-t">Non hai risposto.</p>' : '<p class="sbagliata-t">La tua risposta: ' + h(d.o[d.r].t) + '</p>') +
+          '<p class="giusta-t">Risposta esatta: ' + h(q[2]) + '</p></div>';
+      });
+      return html + '</div>';
+    }
+
+    /* ---------- Simulazione ---------- */
+    function impostaSimulazione() {
+      var html = '<h2 style="margin-top:6px">Simulazione d\'esame</h2>' +
+        '<div class="campo"><label for="s-modulo">Modulo</label><select id="s-modulo">' +
+        '<option value="tutti">Assicurativo e riassicurativo (tutte le materie)</option>' +
+        '<option value="ass">Solo assicurativo (senza le materie riassicurative)</option></select></div>' +
+        '<div class="campo"><label for="s-numero">Numero di domande</label><select id="s-numero">' +
+        '<option>30</option><option>50</option><option selected>70</option><option>100</option></select></div>' +
+        '<div class="campo"><label for="s-tempo">Tempo a disposizione</label><select id="s-tempo">' +
+        '<option value="0">Senza limite</option><option value="60">60 minuti</option><option value="90" selected>90 minuti</option><option value="120">120 minuti</option></select></div>' +
+        '<p class="nota">Le domande sono estratte dal database in proporzione al peso di ogni materia. Sei idoneo con almeno ' + SOGLIA + '/100, la soglia indicata da IVASS. ' +
+        'Numero di domande e durata cambiano da una sessione all\'altra: impostali come indicato nel bando della tua sessione.</p>' +
+        '<div class="piede"><button class="tasto primo" data-vai="inizia-simulazione">Inizia</button></div>';
+      mostra(html, true);
+    }
+    function avviaSimulazione() {
+      var modulo = document.getElementById('s-modulo').value;
+      var numero = parseInt(document.getElementById('s-numero').value, 10);
+      var minuti = parseInt(document.getElementById('s-tempo').value, 10);
+      var gruppi = [];
+      dati.materie.forEach(function (m, k) {
+        if (modulo === 'ass' && m.riass) return;
+        gruppi.push(mescola(indiciMateria(k)));
+      });
+      var totale = gruppi.reduce(function (s, g) { return s + g.length; }, 0);
+      var scelti = [];
+      gruppi.forEach(function (g) {
+        var quota = Math.max(1, Math.round(g.length / totale * numero));
+        scelti = scelti.concat(g.slice(0, quota));
+      });
+      scelti = mescola(scelti);
+      // l'arrotondamento può dare qualche domanda in più o in meno
+      if (scelti.length > numero) scelti = scelti.slice(0, numero);
+      if (scelti.length < numero) {
+        var presenti = {};
+        scelti.forEach(function (i) { presenti[i] = true; });
+        var resto = mescola([].concat.apply([], gruppi)).filter(function (i) { return !presenti[i]; });
+        scelti = scelti.concat(resto.slice(0, numero - scelti.length));
+      }
+      sessione = {
+        tipo: 'simulazione', pos: 0,
+        domande: scelti.map(function (i) { return { i: i, o: opzioni(i), r: null }; }),
+        fine: minuti ? Date.now() + minuti * 60000 : 0
+      };
+      fermaOrologio();
+      if (sessione.fine) orologio = setInterval(aggiornaTempo, 1000);
+      disegnaSimulazione();
+    }
+    function testoTempo() {
+      var resto = Math.max(0, Math.round((sessione.fine - Date.now()) / 1000));
+      var m = Math.floor(resto / 60), s = resto % 60;
+      return { testo: m + ':' + (s < 10 ? '0' : '') + s, resto: resto };
+    }
+    function aggiornaTempo() {
+      if (!sessione || sessione.tipo !== 'simulazione') { fermaOrologio(); return; }
+      var t = testoTempo();
+      var nodo = document.getElementById('tempo');
+      if (nodo) { nodo.textContent = t.testo; nodo.classList.toggle('poco', t.resto < 300); }
+      if (t.resto <= 0) consegna();
+    }
+    function disegnaSimulazione() {
+      var s = sessione, d = s.domande[s.pos], q = dati.q[d.i];
+      var date = s.domande.filter(function (x) { return x.r !== null; }).length;
+      var html = '<div class="avanzamento"><span>Domanda <b>' + (s.pos + 1) + '</b> di ' + s.domande.length + ' · ' + date + ' risposte date</span>' +
+        (s.fine ? '<span class="tempo" id="tempo" aria-label="Tempo rimasto">' + testoTempo().testo + '</span>' : '') + '</div>' +
+        '<p class="domanda">' + h(q[1]) + '</p><div class="scelte">';
+      d.o.forEach(function (o, k) {
+        html += '<button class="scelta' + (d.r === k ? ' scelta-attiva' : '') + '" data-scelta="' + k + '" aria-pressed="' + (d.r === k) + '">' +
+          '<span class="lettera">' + LETTERE[k] + '</span><span>' + h(o.t) + '</span></button>';
+      });
+      html += '</div><div class="piede">' +
+        '<button class="tasto" data-vai="prima"' + (s.pos === 0 ? ' disabled' : '') + '>Indietro</button>' +
+        (s.pos + 1 < s.domande.length
+          ? '<button class="tasto primo" data-vai="dopo">Avanti</button>'
+          : '<button class="tasto primo" data-vai="consegna">Consegna</button>') +
+        '</div>' +
+        (s.pos + 1 < s.domande.length ? '<div class="piede" style="margin-top:10px"><button class="tasto" data-vai="consegna">Consegna adesso</button></div>' : '');
+      mostra(html, true);
+    }
+    function consegna() {
+      fermaOrologio();
+      var s = sessione;
+      var perMateria = {};
+      var giuste = 0;
+      s.domande.forEach(function (d) {
+        var q = dati.q[d.i];
+        var ok = d.r !== null && d.o[d.r].ok;
+        var m = perMateria[q[0]] = perMateria[q[0]] || { tot: 0, ok: 0 };
+        m.tot++;
+        if (ok) { m.ok++; giuste++; }
+        if (d.r !== null) registra(d.i, ok);
+      });
+      var punti = Math.round(giuste / s.domande.length * 100);
+      memoria.sim.push({ d: Date.now(), p: punti, n: s.domande.length });
+      memoria.sim = memoria.sim.slice(-20);
+      salva();
+      var idoneo = punti >= SOGLIA;
+      var html = '<section class="scheda voto"><div class="numero">' + punti + '<span style="font-size:1.4rem;font-weight:650" class="tenue">/100</span></div>' +
+        '<span class="giudizio ' + (idoneo ? 'ok' : 'no') + '">' + (idoneo ? 'Idoneo' : 'Non idoneo') + '</span>' +
+        '<p class="tenue" style="margin:10px 0 0">' + giuste + ' risposte esatte su ' + s.domande.length + ' · soglia ' + SOGLIA + '/100</p></section>' +
+        '<h2>Per materia</h2><div class="scheda"><table><thead><tr><th>Materia</th><th class="n">Esatte</th></tr></thead><tbody>';
+      Object.keys(perMateria).sort(function (a, b) { return a - b; }).forEach(function (k) {
+        var m = perMateria[k];
+        html += '<tr><td>' + h(dati.materie[k].breve) + '</td><td class="n">' + m.ok + ' / ' + m.tot + '</td></tr>';
+      });
+      html += '</tbody></table></div>';
+      html += revisione(s.domande.filter(function (d) { return d.r === null || !d.o[d.r].ok; }));
+      html += '<div class="piede"><button class="tasto primo" data-vai="casa">Torna all\'inizio</button></div>';
+      sessione = null;
+      mostra(html, false);
+    }
+
+    /* ---------- Ricerca ---------- */
+    function cerca() {
+      mostra('<h2 style="margin-top:6px">Cerca una domanda</h2>' +
+        '<div class="campo"><label for="c-testo">Parola o numero del quesito</label>' +
+        '<input id="c-testo" type="search" autocomplete="off" placeholder="es. provvigioni, art. 1892, 1540"></div>' +
+        '<div id="c-esito" class="revisione" aria-live="polite"></div>', true);
+      var campo = document.getElementById('c-testo');
+      campo.addEventListener('input', function () {
+        var t = campo.value.trim().toLowerCase();
+        var esito = document.getElementById('c-esito');
+        if (t.length < 3 && !/^\d+$/.test(t)) { esito.innerHTML = ''; return; }
+        var trovati = [];
+        if (/^\d+$/.test(t)) {
+          var n = parseInt(t, 10) - 1;
+          if (dati.q[n]) trovati.push(n);
+        } else {
+          for (var i = 0; i < dati.q.length && trovati.length < 30; i++) {
+            var q = dati.q[i];
+            if ((q[1] + ' ' + q[2]).toLowerCase().indexOf(t) !== -1) trovati.push(i);
+          }
+        }
+        if (!trovati.length) { esito.innerHTML = '<p class="tenue">Nessun quesito trovato.</p>'; return; }
+        esito.innerHTML = trovati.map(function (i) {
+          var q = dati.q[i];
+          return '<div class="scheda"><p class="piccolo tenue">Quesito n. ' + (i + 1) + ' · ' + h(dati.materie[q[0]].breve) + '</p><p><b>' + h(q[1]) +
+            '</b></p><p class="giusta-t">Risposta esatta: ' + h(q[2]) + '</p></div>';
+        }).join('') + (trovati.length === 30 ? '<p class="tenue piccolo">Mostro i primi 30 risultati: aggiungi una parola per restringere.</p>' : '');
+      });
+      campo.focus();
+    }
+
+    /* ---------- Eventi ---------- */
+    vista.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b || b.disabled) return;
+      if (b.id === 'azzera') {
+        if (confirm('Cancello tutti i progressi salvati su questo dispositivo?')) { memoria = { r: {}, sim: [] }; salva(); casa(); }
+        return;
+      }
+      if (b.dataset.materia !== undefined) {
+        var k = parseInt(b.dataset.materia, 10);
+        allenamento(indiciMateria(k), dati.materie[k].breve);
+        return;
+      }
+      if (b.dataset.scelta !== undefined && sessione) {
+        var d = sessione.domande[sessione.pos], scelta = parseInt(b.dataset.scelta, 10);
+        if (sessione.tipo === 'allenamento') {
+          if (d.r !== null) return;
+          d.r = scelta;
+          var giusta = d.o[scelta].ok;
+          if (giusta) sessione.giuste++;
+          registra(d.i, giusta);
+          salva();
+          disegnaAllenamento();
+          var avanti = vista.querySelector('[data-vai="avanti"]');
+          if (avanti) avanti.focus({ preventScroll: true });
+        } else {
+          d.r = d.r === scelta ? null : scelta;
+          disegnaSimulazione();
+        }
+        return;
+      }
+      switch (b.dataset.vai) {
+        case 'casa': casa(); break;
+        case 'simulazione': impostaSimulazione(); break;
+        case 'inizia-simulazione': avviaSimulazione(); break;
+        case 'cerca': cerca(); break;
+        case 'errori':
+          allenamento(indiciMateria(null).filter(function (i) { return stato(i) === 'sbagliata'; }), 'Ripasso degli errori');
+          break;
+        case 'avanti':
+          if (sessione.pos + 1 < sessione.domande.length) { sessione.pos++; disegnaAllenamento(); } else fineAllenamento();
+          break;
+        case 'prima': sessione.pos--; disegnaSimulazione(); break;
+        case 'dopo': sessione.pos++; disegnaSimulazione(); break;
+        case 'consegna':
+          var vuote = sessione.domande.filter(function (x) { return x.r === null; }).length;
+          if (!vuote || confirm('Hai ' + vuote + ' domande senza risposta. Consegno lo stesso?')) consegna();
+          break;
+      }
+    });
+    tastoChiudi.addEventListener('click', function () {
+      if (sessione && sessione.tipo === 'simulazione' && !confirm('Esco dalla simulazione? Le risposte date non vengono salvate.')) return;
+      casa();
+    });
+
+    fetch('quesiti.json').then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    }).then(function (d) { dati = d; casa(); }).catch(function () {
+      vista.innerHTML = '<p class="nota">Non riesco a caricare le domande. Controlla la connessione e ricarica la pagina.</p>';
+    });
+
+    if ('serviceWorker' in navigator && location.protocol === 'https:') {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    }
+  })();
+  </script>
+</body>
+</html>

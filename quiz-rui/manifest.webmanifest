@@ -1,0 +1,16 @@
+{
+  "name": "Idoneo — Quiz esame RUI",
+  "short_name": "Idoneo",
+  "description": "Quiz per la prova di idoneità RUI, sezioni A e B, con i quesiti del database pubblicato da IVASS.",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f2ec",
+  "theme_color": "#0e3b30",
+  "icons": [
+    { "src": "icona-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icona-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icona.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
