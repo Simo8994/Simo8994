@@ -165,14 +165,14 @@ d = ImageDraw.Draw(canvas)
 d.line([fr[0], fr[1]], fill=(190, 170, 144) if BEIGE else (70, 66, 62), width=1)   # top edge highlight
 
 # ---------- 7. BTicino Living Now plates (white) ----------
-LN_W = (247, 246, 243); LN_B = (34, 33, 33)
+LN_W = (247, 246, 243); LN_B = (34, 33, 33); LN_S = (166, 148, 124)  # Living Now 'sabbia' / dark beige
 def living_now(cx, cy, kind, color):
     """BTicino Living Now: full-cover flat keys, no visible frame. 5 pieces (end, 3 modules, end), 12 x 8.4 cm."""
     Q = 8; wcm, hcm = 12.0, 8.4
     tw, th = int(wcm * S * Q), int(hcm * S * Q)
     t = Image.new('RGBA', (tw, th), (0, 0, 0, 0)); dd = ImageDraw.Draw(t)
-    base = LN_W if color == 'white' else LN_B
-    seam = (196, 194, 189) if color == 'white' else (12, 12, 12)
+    base = {'white': LN_W, 'black': LN_B, 'sabbia': LN_S}[color]
+    seam = {'white': (196, 194, 189), 'black': (12, 12, 12), 'sabbia': (118, 104, 86)}[color]
     n = 5; pw = tw / n
     for k in range(n):
         x0, x1 = int(k * pw), int((k + 1) * pw)
@@ -192,9 +192,9 @@ def living_now(cx, cy, kind, color):
     elif kind == 'thermo':                                     # 2-module display in the middle (modules 1-2)
         x0, x1 = int(1 * pw + Q), int(3 * pw - Q)
         dd.rectangle([x0, Q, x1, th - Q], fill=(10, 10, 11, 255))
-        try: f = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', int(th * .30))
-        except Exception: f = None
-        dd.text(((x0 + x1) // 2 - int(th * .27), int(th * .30)), '20.5', fill=(236, 236, 236, 255), font=f)
+        f = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', int(th * .20))
+        bb = dd.textbbox((0, 0), '20.5', font=f)
+        dd.text(((x0 + x1 - (bb[2] - bb[0])) // 2, int(th * .32)), '20.5', fill=(236, 236, 236, 255), font=f)
         g = int(th * .10); dd.line([x0 + 3 * Q, th - 3 * Q, x0 + 3 * Q + g, th - 3 * Q], fill=(220, 220, 220, 255), width=Q // 2)
         px = x1 - 3 * Q - g // 2; dd.line([px - g // 2, th - 3 * Q, px + g // 2, th - 3 * Q], fill=(220, 220, 220, 255), width=Q // 2)
         dd.line([px, th - 3 * Q - g // 2, px, th - 3 * Q + g // 2], fill=(220, 220, 220, 255), width=Q // 2)
@@ -203,10 +203,10 @@ def living_now(cx, cy, kind, color):
     soft_shadow([(x0, y0), (x0 + small.width, y0), (x0 + small.width, y0 + small.height), (x0, y0 + small.height)], 2.5, 0.45, (2, 3))
     global canvas
     c = canvas.convert('RGBA'); c.alpha_composite(small, (x0, y0)); canvas = c.convert('RGB')
-LN_COL = os.environ.get('LN_COLOR', 'white')
-living_now(631, 333, 'thermo', 'black')     # Living Now thermostat (black, as chosen) where the old one was, ~137 cm
-living_now(631, 495, 'sockets', LN_COL)     # 3 Living Now sockets where the 3-module plate was, ~88 cm
-living_now(631, 678, 'sockets', LN_COL)     # 3 sockets at ~35 cm instead of the open box
+LN_COL = os.environ.get('LN_COLOR', 'sabbia')
+living_now(631, 333, 'thermo', LN_COL)      # Living Now thermostat where the old one was, ~137 cm
+living_now(631, 495, 'switch', LN_COL)      # light switches (Living Now) where the 3-module plate was, ~88 cm
+# the low box at ~35 cm is removed and plastered over
 canvas = canvas.filter(ImageFilter.UnsharpMask(radius=1, percent=40, threshold=2))
 canvas.save(OUT, quality=93)
 print('saved', OUT)
