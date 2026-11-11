@@ -2,7 +2,8 @@
 The wall is almost fronto-parallel: scale ~3.35 px/cm on the wall plane, floor line y~800.
 Elements: cleaned plaster, white skirting, walnut slat panel on black felt, 55" TV, floating console
 (walnut fronts, matt black body) with LED, BTicino Living Now plates (sockets + thermostat), repaired parquet."""
-import numpy as np, cv2, sys
+import numpy as np, cv2, sys, os
+BEIGE = os.environ.get('PARETE_BEIGE') == '1'  # dark beige matt lacquer for slats and console instead of walnut
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 SRC = 'casa-render/riferimenti/parete_tv_foto.jpg'
@@ -83,7 +84,7 @@ def walnut(w, h, seed, vertical=True, base=(92, 60, 38)):
     grain = cv2.GaussianBlur(grain, (0, 0), 0.7)
     sx, sy = (0.6, 6) if vertical else (6, 0.6)
     fib = cv2.GaussianBlur(r.normal(0, 1, (h, w)).astype(np.float32), (0, 0), sx, sigmaY=sy)
-    v = 0.82 + 0.16 * grain + 0.05 * fib
+    v = (0.95 + 0.03 * grain + 0.02 * fib) if BEIGE else (0.82 + 0.16 * grain + 0.05 * fib)
     tone = r.uniform(0.93, 1.07)
     return np.clip(np.array(base, np.float32)[None, None] * v[..., None] * tone, 0, 255)
 
@@ -98,12 +99,12 @@ for x0, x1 in ((0, PX0), (PX1, WALL_R)):
 # ---------- 4. slat panel: 4 cm walnut slats, 1.6 cm gaps on black acoustic felt ----------
 arr = np.asarray(canvas).astype(np.float32)
 top = 0; bot = FLOOR
-arr[top:bot, PX0:PX1] = np.array([22, 20, 19], np.float32)        # black felt
+arr[top:bot, PX0:PX1] = np.array([58, 50, 43] if BEIGE else [22, 20, 19], np.float32)        # black felt
 sw, gap = 4.0 * S, 1.6 * S
 x = PX0 + 1; i = 0
 while x + sw <= PX1:
     xa, xb = int(round(x)), int(round(x + sw))
-    tex = walnut(xb - xa, bot - top, 100 + i)
+    tex = walnut(xb - xa, bot - top, 100 + i, base=(150, 128, 102) if BEIGE else (92, 60, 38))
     shade = np.linspace(1.12, 0.86, xb - xa)[None, :, None]           # rounded light from the window (left)
     arr[top:bot, xa:xb] = tex * shade
     arr[top:bot, xb:min(xb + 2, PX1)] *= 0.55                           # cast shadow into the gap
@@ -146,22 +147,22 @@ glow([(fr[3][0], fr[3][1] + 6), (fr[2][0], fr[2][1] + 6), (c1, FLOOR + 30), (c0,
 soft_shadow([(fr[3][0], FLOOR + 4), (fr[2][0], FLOOR + 4), (fr[2][0] + 10, FLOOR + 40), (fr[3][0] + 10, FLOOR + 40)], 16, 0.25)
 d = ImageDraw.Draw(canvas)
 # top face (seen from slightly above), side face, front
-d.polygon([back[0], back[1], fr[1], fr[0]], fill=(40, 38, 37))
-d.polygon([back[1], back[2], fr[2], fr[1]], fill=(26, 25, 25))
-d.polygon(fr, fill=(30, 29, 29))
+d.polygon([back[0], back[1], fr[1], fr[0]], fill=(168, 147, 120) if BEIGE else (40, 38, 37))
+d.polygon([back[1], back[2], fr[2], fr[1]], fill=(112, 97, 79) if BEIGE else (26, 25, 25))
+d.polygon(fr, fill=(128, 111, 90) if BEIGE else (30, 29, 29))
 # walnut fronts: 3 push-to-open doors with 3 mm shadow gaps, 1.5 cm black frame
 fx0, fy0 = fr[0]; fx1, fy1 = fr[2]
 pad = 1.5 * S * D / (D - 35)
 ix0, iy0, ix1, iy1 = max(0, int(fx0 + pad)), int(fy0 + pad), int(fx1 - pad), int(fy1 - pad)
 arr = np.asarray(canvas).astype(np.float32)
-wtex = walnut(ix1 - ix0, iy1 - iy0, 7, vertical=False, base=(104, 68, 42))
+wtex = walnut(ix1 - ix0, iy1 - iy0, 7, vertical=False, base=(146, 126, 101) if BEIGE else (104, 68, 42))
 wtex *= np.linspace(1.08, 0.92, ix1 - ix0)[None, :, None]
 arr[iy0:iy1, ix0:ix1] = wtex
 for k in (1, 2):
-    xs = int(ix0 + (ix1 - ix0) * k / 3); arr[iy0:iy1, xs - 1:xs + 1] = (18, 16, 15)
+    xs = int(ix0 + (ix1 - ix0) * k / 3); arr[iy0:iy1, xs - 1:xs + 1] = (70, 60, 50) if BEIGE else (18, 16, 15)
 canvas = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8))
 d = ImageDraw.Draw(canvas)
-d.line([fr[0], fr[1]], fill=(70, 66, 62), width=1)   # top edge highlight
+d.line([fr[0], fr[1]], fill=(190, 170, 144) if BEIGE else (70, 66, 62), width=1)   # top edge highlight
 
 # ---------- 7. BTicino Living Now plates (white) ----------
 def plate(cx, cy, modules, kind):
