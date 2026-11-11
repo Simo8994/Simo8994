@@ -1,0 +1,10 @@
+{
+  "mode": "dry",
+  "symbols": ["BTCUSDT", "ETHUSDT"],
+  "capital": 400,
+  "adaptive": true,
+  "target_vol": 0.5,
+  "max_drawdown": 0.5,
+  "reselect_days": 30,
+  "lookback": 730
+}

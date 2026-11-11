@@ -1,0 +1,6 @@
+config.json
+state-*.json
+*.tmp
+bot.log
+data/
+__pycache__/
