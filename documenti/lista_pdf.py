@@ -182,9 +182,9 @@ LISTA = [
         ('Nastro per giunti in carta microforata (per eventuali crepe sul cartongesso)', '1 rotolo', 'C'),
     ]),
     ('Pittura', [
-        ('Pittura bianca traspirante per prima mano (o la lavabile diluita)', '1 L/10 m2', 'F'),
-        ('Pittura bianca lavabile traspirante per interni (finitura)', '1 L/10 m2 x 2 mani', 'F'),
-        ('Pittura antimuffa bianca per cucina e bagno', '2,5-5 L', 'A-F'),
+        ('Pittura bianca per prima mano (opzionale: oppure lavabile diluita)', '~22 L', 'F'),
+        ('Pittura bianca lavabile traspirante per interni (2 mani; 23 L se usi la prima mano)', '45 L', 'F'),
+        ('Pittura antimuffa bianca: 2 bagni (pareti+soffitti) + muro cucina', '10 L', 'A-F'),
         ('Rullo a pelo medio 22-25 cm + ricambio', '1 + 1', 'F'),
         ('Prolunga telescopica per rullo (soffitti)', '1', 'F'),
         ('Pennello piatto 5 cm (angoli e bordi) + pennellino 2-3 cm', '2', 'F'),
@@ -248,23 +248,30 @@ para('Tolti dalla lista perché non servono per questi lavori: candeggina, resin
 # 4. QUANTITY SHEET
 new_page('Calcolo quantità', 'Misura e scrivi i metri quadri: le formule sono accanto')
 para('Come misurare: parete = larghezza × altezza; togli porte (circa 2 m²) e finestre. Soffitto = lunghezza × larghezza della stanza.', size=8.5, color=MUTED)
-rows = [('Pareti totali da pitturare (m²)', 'Pittura finitura: m² × 2 mani ÷ 10 = litri'),
-        ('Soffitti totali da pitturare (m²)', 'Pittura: m² × 2 mani ÷ 10 = litri (somma alle pareti)'),
-        ('Superfici riparate o rasate (m²)', 'Fissativo: m² ÷ 12 = litri di prodotto da diluire'),
-        ('Muro da rasare (m²)', 'Rasante: m² × 1,3 kg × spessore totale in mm (circa 3–4 mm)'),
-        ('Parete cucina umida (m²)', 'Rasante traspirante: m² × 1,3 kg × 3 mm; pittura antimuffa: m² × 2 ÷ 10'),
-        ('Bagno + cucina, pareti (m²)', 'Pittura antimuffa: m² × 2 mani ÷ 10 = litri')]
+rows = [('Pareti totali da pitturare (m²)', 'Pittura finitura: m² × 2 mani ÷ 10 = litri', '178,5', '36 L (2 mani) - di cui antimuffa nei bagni'),
+        ('Soffitti totali da pitturare (m²)', 'Pittura: m² × 2 mani ÷ 10 = litri (somma alle pareti)', '70,5', '14 L (2 mani)'),
+        ('Superfici riparate o rasate (m²)', 'Fissativo: m² ÷ 12 = litri di prodotto da diluire', '', ''),
+        ('Muro da rasare (m²)', 'Rasante: m² × 1,3 kg × spessore totale in mm (circa 3–4 mm)', '', ''),
+        ('Parete cucina umida (m²)', 'Rasante traspirante: m² × 1,3 kg × 3 mm; pittura antimuffa: m² × 2 ÷ 10', '9,5', 'antimuffa 2 L (compresa nei 10 L)'),
+        ('Bagni + muro cucina (m²)', 'Pittura antimuffa: m² × 2 mani ÷ 10 = litri', '43,8', 'antimuffa 9 L + 10% = 10 L')]
 c.setFont('DV', 7.5); c.setFillColor(MUTED); c.drawString(M + 215, st['y'] - 4, 'm²'); c.drawString(M + 285, st['y'] - 4, 'risultato / quantità da comprare'); st['y'] -= 10
-for lab, form_ in rows:
+for lab, form_, v_mq, v_ris in rows:
     need(40); y = st['y']; st['fid'] += 1; k = st['fid']
     c.setFont('DVB', 9); c.setFillColor(INK); c.drawString(M, y - 10, lab)
-    field(f'mq{k}', M + 215, y - 15, 60, 17)
-    field(f'ris{k}', M + 285, y - 15, W - 2 * M - 285, 17)
+    field(f'mq{k}', M + 215, y - 15, 60, 17, value=v_mq)
+    field(f'ris{k}', M + 285, y - 15, W - 2 * M - 285, 17, value=v_ris)
     c.setFont('DV', 7.5); c.setFillColor(MUTED); c.drawString(M, y - 27, form_)
     st['y'] -= 38
 st['y'] -= 4
 box_line('Compra circa il 10% in più di pittura e rasante: i lotti diversi di pittura possono avere tonalità leggermente diverse.', 'tip')
-box_line('Esempio: 120 m² di pareti + 40 m² di soffitti = 160 m² × 2 mani ÷ 10 = 32 L, cioè 2 secchi da 14 L + 1 da 5 L.', 'tip')
+para('Totali litri (stima dal progetto: altezza 2,70 m, piastrelle bagni fino a 1,20 m, 2 mani, resa 10 m²/L, +10%)', font='DVB', size=9)
+for t in ['Superficie totale: 249 m² (pareti 178,5 + soffitti 70,5) → 2 mani = circa 50 L, con il 10% in più 55 L.',
+          'Pittura antimuffa: 43,8 m² (2 bagni pareti+soffitti + muro cucina) → 10 L (1 secchio da 10 L o 2 da 5 L).',
+          'Pittura lavabile bianca resto casa: circa 205 m² → 45 L (3 secchi da 14 L + 1 da 5 L).',
+          'Se usi una pittura specifica per la prima mano: circa 22 L di prima mano + 23 L di lavabile al posto dei 45 L.',
+          'Variante piastrelle bagni fino a 2,00 m: antimuffa 7 L. Bagni senza piastrelle: antimuffa 14 L (la lavabile resta circa 45 L).',
+          'Fissativo: dipende dalle superfici riparate (riga sopra); se lo passi su tutta la casa, circa 1 L di concentrato ogni 40–50 m² diluito 1:4 (verifica in scheda tecnica).']:
+    box_line(t, 'check')
 
 # =====================================================================================
 # 5. JOB CARDS
