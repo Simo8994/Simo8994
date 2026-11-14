@@ -161,13 +161,13 @@ LISTA = [
     ]),
     ('Fondi e aggrappanti', [
         ('Aggrappante per cemento/calcestruzzo liscio (primer al quarzo)', '1 conf.', 'B'),
-        ('Fissativo all\'acqua per interni (vale anche per cartongesso)', '1 L ogni 10-15 m2', 'A-F'),
+        ('Fissativo all\'acqua per interni (vale anche per cartongesso)', '5 L (tutta casa)', 'A-F'),
     ]),
     ('Intonaci, rasanti e stucchi', [
         ('Intonaco bianco premiscelato per interni (calce o gesso), sacco', '1 sacco', 'B-D'),
         ('Rasante-collante cementizio per muri in cemento, sacco', '1,2-1,5 kg/m2 x mm', 'B'),
         ('Rasante fine di finitura per interni (gesso o calce)', '1 sacco', 'B'),
-        ('Rasante deumidificante / traspirante a calce (parete cucina)', '1-2 sacchi', 'A'),
+        ('Rasante deumidificante / traspirante a calce (mezza parete cucina, circa 5 m2 x 3 mm)', '1 sacco 25 kg', 'A'),
         ('Rete in fibra di vetro per rasatura (maglia 4x4 mm circa)', '1 rotolo', 'A-B'),
         ('Stucco in pasta pronto per interni (buchi piccoli)', '1 kg', 'D'),
         ('Stucco in polvere per interni (buchi grandi e profondi)', '1-5 kg', 'D'),
@@ -182,15 +182,15 @@ LISTA = [
         ('Nastro per giunti in carta microforata (per eventuali crepe sul cartongesso)', '1 rotolo', 'C'),
     ]),
     ('Pittura', [
-        ('Pittura bianca per prima mano (opzionale: oppure lavabile diluita)', '~22 L', 'F'),
-        ('Pittura bianca lavabile traspirante per interni (2 mani; 23 L se usi la prima mano)', '45 L', 'F'),
-        ('Pittura antimuffa bianca: 2 bagni (pareti+soffitti) + muro cucina', '10 L', 'A-F'),
+        ('Pittura bianca per prima mano (opzionale: oppure lavabile diluita)', '22 L (opz.)', 'F'),
+        ('Pittura bianca lavabile traspirante per interni (2 mani; 23 L se usi la prima mano)', '45 L: 3x14 + 1x5', 'F'),
+        ('Pittura antimuffa bianca: 2 bagni (pareti+soffitti) + muro cucina', '10 L: 1x10 L', 'A-F'),
         ('Rullo a pelo medio 22-25 cm + ricambio', '1 + 1', 'F'),
         ('Prolunga telescopica per rullo (soffitti)', '1', 'F'),
         ('Pennello piatto 5 cm (angoli e bordi) + pennellino 2-3 cm', '2', 'F'),
         ('Vaschetta per rullo con griglia', '1', 'F'),
-        ('Nastro di carta per pittori 25-38 mm', '3-4 rotoli', 'F'),
-        ('Teli o carta per coprire i pavimenti', 'per tutte le stanze', 'F'),
+        ('Nastro di carta per pittori 25-38 mm', '5-6 rotoli', 'F'),
+        ('Teli o carta per coprire i pavimenti', 'circa 70 m2', 'F'),
     ]),
     ('Attrezzi', [
         ('Cazzuola americana sottile inox 28-32 cm (rasare)', '1', 'B'),
@@ -233,6 +233,8 @@ for cat, items in LISTA:
         c.setFont('DV', 7.5); c.setFillColor(MUTED); c.drawString(W - M - 128, y - 9, use)
         field(f'n{k}', W - M - 68, y - 14, 68)
         st['y'] -= max(18, len(lines) * 11 + 6)
+    if cat == 'Pittura':
+        box_line('TOTALE PITTURA: 55 L = 45 L lavabile (3x14 L + 1x5 L) + 10 L antimuffa. 249 m², 2 mani, +10%. Con prima mano separata: 22 L prima mano + 23 L lavabile.', 'check', bold=True)
     st['y'] -= 4
 band('Altro (righe libere)', size=10)
 for _ in range(3):
