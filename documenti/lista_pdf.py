@@ -13,7 +13,7 @@ OUT = sys.argv[1]
 W, H = A4
 M = 42
 ACC = HexColor('#7d6246'); INK = HexColor('#2b2622'); MUTED = HexColor('#7a716a'); LINE = HexColor('#d9d2c8')
-BAND = HexColor('#f3eee7'); WARN = HexColor('#a3402f'); TIP = HexColor('#3f6b4f')
+HL = HexColor('#fff3b0'); HLB = HexColor('#e0c35a'); BAND = HexColor('#f3eee7'); WARN = HexColor('#a3402f'); TIP = HexColor('#3f6b4f')
 TITLE = 'Piano lavori casa'
 def asc(s):  # AcroForm fields use Helvetica: keep values ASCII-safe
     return s.replace('–', '-').replace('²', '2').replace('×', 'x').replace('’', "'").replace('°', ' gradi')
@@ -111,10 +111,10 @@ para('Ordine dei lavori (da rispettare)', 'DVB', 11, ACC)
 para('Protezione della casa → trattamento muffa → demolizione parti rovinate → riparazioni (cartongesso, buchi, intonaco) → aggrappante → rasatura → levigatura → fissativo → pittura. Ogni fase deve essere asciutta prima di passare alla successiva.')
 para('Programma indicativo (una persona, lavori in parallelo dove possibile)', 'DVB', 11, ACC)
 PLAN = [('Giorno 1', 'Proteggi mobili e pavimenti. 1ª passata antimuffa in cucina. Togli tasselli e viti. Rimuovi intonaco che si sbriciola. Pulisci i bordi dei buchi del cartongesso. Apri a V le crepe.'),
-        ('Giorno 2', '2ª passata antimuffa se serve. Toppe autoadesive sui buchi del cartongesso + 1ª passata stucco giunti. Stucco nelle crepe. Intonaco su buchi profondi. Stucco sui buchi delle viti. Stucco epossidico sulle piastrelle.'),
-        ('Giorno 3', '2ª passata stucco giunti (cartongesso). 2ª passata stucco sui buchi profondi. Aggrappante sul muro in cemento.'),
+        ('Giorno 2', '2ª passata antimuffa se serve. Toppe autoadesive sui buchi del cartongesso + 1ª passata stucco in polvere. Stucco nelle crepe. Intonaco su buchi profondi. Stucco sui buchi delle viti. Stucco epossidico sulle piastrelle.'),
+        ('Giorno 3', '2ª passata stucco in polvere (cartongesso). 2ª passata stucco sui buchi profondi. Aggrappante sul muro in cemento.'),
         ('Giorno 4', '1ª mano di rasante sul muro da rasare e sulla parete della cucina (se asciutta).'),
-        ('Giorno 5–6', 'Levigatura creste. 2ª mano di rasante + frattazzino. Stucco di finitura sul cartongesso.'),
+        ('Giorno 5–6', 'Levigatura creste. 2ª mano di rasante + frattazzino. Rasante fine come finitura sul cartongesso.'),
         ('Giorno 7–12', 'Asciugatura rasature (3–7 giorni). Intanto: fissativo e pittura dei soffitti e delle stanze senza riparazioni.'),
         ('Giorno 12–14', 'Levigatura finale e spolveratura. Fissativo sulle parti riparate. Pittura: 1ª mano, dopo 4–6 h 2ª mano.')]
 for d, t in PLAN:
@@ -169,13 +169,10 @@ LISTA = [
         ('Rasante fine di finitura per interni (gesso o calce)', '1 sacco', 'B'),
         ('Rasante deumidificante / traspirante a calce (mezza parete cucina, circa 5 m2 x 3 mm)', '1 sacco 25 kg', 'A'),
         ('Rete in fibra di vetro per rasatura (maglia 4x4 mm circa)', '1 rotolo', 'A-B'),
-        ('Stucco in pasta pronto per interni (buchi piccoli)', '1 kg', 'D'),
-        ('Stucco in polvere per interni (buchi grandi e profondi)', '1-5 kg', 'D'),
-        ('Stucco per giunti cartongesso (passate sulla toppa)', '1-5 kg', 'C'),
-        ('Stucco di finitura per cartongesso (o unico giunti+finitura)', '1 conf.', 'C'),
-        ('Stucco rigido riempitivo (crepe ferme, che non si allargano)', '1 conf.', 'D'),
-        ('Stucco elastico / flessibile acrilico per crepe (crepe che si muovono)', '1 tubetto o barattolo', 'D'),
-        ('Stucco epossidico bicomponente bianco / kit ripara-ceramica con smalto', '1 kit', 'E'),
+        ('STUCCO 1 - Stucco in polvere per interni "per muri e cartongesso" / universale: buchi, toppe cartongesso, crepe ferme', '1 sacco 5 kg', 'C-D', 1),
+        ('STUCCO 2 - Stucco elastico acrilico sovraverniciabile: crepe che si muovono, angolo muro/cartongesso', '1 tubetto 310 ml', 'D', 1),
+        ('STUCCO 3 - Kit epossidico bicomponente bianco / ripara-ceramica: buchi nelle piastrelle', '1 kit', 'E', 1),
+        ('STUCCO 4 (facoltativo) - Stucco in pasta pronto: buchi piccoli delle viti, senza impastare', '1 kg (opz.)', 'D', 1),
     ]),
     ('Cartongesso', [
         ('Toppe autoadesive in rete metallica/fibra per cartongesso 10x10 cm (una per buco)', 'n. buchi', 'C'),
@@ -222,12 +219,15 @@ LISTA = [
 ]
 for cat, items in LISTA:
     band(cat, size=10)
-    for name, qty, use in items:
-        lines = wrap(name, 'DV', 8.5, W - 2 * M - 250)
+    for name, qty, use, *hl in items:
+        lines = wrap(name, 'DVB' if hl else 'DV', 8.5, W - 2 * M - 250)
         need(max(18, len(lines) * 11 + 6))
         y = st['y']; st['fid'] += 1; k = st['fid']
+        if hl:
+            c.setFillColor(HL); c.setStrokeColor(HLB); c.setLineWidth(0.8)
+            c.rect(M, y - max(18, len(lines) * 11 + 6) + 2, W - 2 * M, max(18, len(lines) * 11 + 6), fill=1, stroke=1)
         form.checkbox(name=f'p{k}', x=M + 4, y=y - 12, size=11, borderColor=ACC, fillColor=white, buttonStyle='check', borderWidth=1, forceBorder=True)
-        c.setFont('DV', 8.5); c.setFillColor(INK)
+        c.setFont('DVB' if hl else 'DV', 8.5); c.setFillColor(INK)
         for i, ln in enumerate(lines): c.drawString(M + 24, y - 9 - i * 11, ln)
         field(f'q{k}', W - M - 218, y - 14, 86, value=qty)
         c.setFont('DV', 7.5); c.setFillColor(MUTED); c.drawString(W - M - 128, y - 9, use)
@@ -317,40 +317,40 @@ card('B. Rasatura muro interno', 'Ottenere una parete liscia e pronta per la pit
      'Aggrappante 2–4 h. Intonaco 24 h per cm di spessore. Rasante: 24–48 h tra 1ª e 2ª mano, 3–7 giorni prima di fissativo e pittura.')
 
 card('C. Buchi da 3–4 cm nel cartongesso', 'Chiudere i fori con una toppa autoadesiva e stucco, senza segni sotto la pittura',
-     ['Toppa autoadesiva in rete per cartongesso 10x10 cm (una per buco)', 'Stucco per giunti cartongesso', 'Stucco di finitura per cartongesso (o unico giunti+finitura)', 'Fissativo'],
+     ['Toppa autoadesiva in rete per cartongesso 10x10 cm (una per buco)', 'STUCCO 1: stucco in polvere per muri e cartongesso', 'Rasante fine di finitura (già in lista)', 'Fissativo'],
      ['Taglierino', 'Spatole 10 e 20 cm', 'Carta vetrata 180 + tampone', 'Pennello', 'Mascherina'],
      ['Con il taglierino togli i bordi sfilacciati di carta e gesso intorno al buco, così la superficie è piana. Spolvera.',
       'Se c\'è un tassello o un pezzo di lastra sporgente, spingilo dentro o taglialo a filo.',
       'Applica la toppa autoadesiva centrata sul buco e premila bene: deve sporgere almeno 3 cm per lato oltre il foro.',
-      'Prima passata di stucco per giunti con la spatola da 10 cm, attraverso la rete, coprendo tutta la toppa; togli l\'eccesso.',
+      'Prima passata di stucco in polvere (STUCCO 1) con la spatola da 10 cm, attraverso la rete, coprendo tutta la toppa; togli l\'eccesso.',
       'Dopo 12–24 h: seconda passata con la spatola da 20 cm, allargando di 5–8 cm oltre la toppa per sfumare il rilievo.',
-      'Dopo 12–24 h: passata sottile di stucco di finitura ancora più larga.',
+      'Dopo 12–24 h: passata sottile di rasante fine ancora più larga.',
       'Quando è asciutto leviga con grana 180 a mano, con movimenti circolari leggeri, senza scoprire la rete. Spolvera.',
       'Fissativo su tutta la riparazione, poi pittura (scheda F).'],
      ['Riempire il buco solo con stucco, senza toppa: si ritira, si crepa e può cadere.', 'Stendere una passata stretta: la toppa resta in rilievo e si vede sotto la luce radente.', 'Levigare fino a scoprire la rete.', 'Pitturare senza fissativo: la riparazione resta visibile.'],
-     'Stucco per giunti: 12–24 h tra le passate (vedi confezione). Finitura: 12–24 h. Fissativo: 4–6 h prima della pittura.')
+     'Stucco in polvere: 4–24 h tra le passate (vedi confezione). Rasante fine: 12–24 h. Fissativo: 4–6 h prima della pittura.')
 
 card('D. Buchi di viti, tasselli e crepe nel muro', 'Chiudere fori e crepe in modo che non si vedano sotto la pittura',
-     ['Stucco in pasta pronto (fori piccoli)', 'Stucco in polvere (fori grandi o profondi)', 'Stucco rigido riempitivo (crepe ferme)', 'Stucco elastico acrilico (crepe che si muovono, angoli, giunzioni muro/cartongesso)', 'Intonaco premiscelato (fori oltre 2–3 cm di profondità)', 'Rete in fibra di vetro (crepe lunghe)', 'Fissativo'],
+     ['STUCCO 1: stucco in polvere (fori grandi e profondi, crepe ferme)', 'STUCCO 4 (opz.): stucco in pasta pronto (fori piccoli)', 'STUCCO 2: stucco elastico acrilico (crepe che si muovono, angoli, giunzioni muro/cartongesso)', 'Intonaco premiscelato (fori oltre 2–3 cm di profondità)', 'Rete in fibra di vetro (crepe lunghe)', 'Fissativo'],
      ['Pinza o cacciavite per estrarre i tasselli', 'Taglierino', 'Spatole 6 e 10 cm', 'Carta vetrata 180 + tampone', 'Pennellino'],
      ['Estrai viti e tasselli (con la pinza; se il tassello non esce, spingilo dentro di qualche millimetro).',
       'Allarga leggermente il bordo del foro con il taglierino a forma di cono, così lo stucco fa presa.',
       'Spolvera il foro e inumidiscilo con il pennellino bagnato.',
       'Fori profondi: prima riempi con stucco in polvere o intonaco, fino a 2–3 mm dalla superficie, e lascia indurire.',
-      'Stendi lo stucco in pasta con la spatola incrociando due passate, lasciandone un velo in più rispetto al muro (lo stucco si ritira).',
+      'Stendi lo stucco (in pasta o in polvere) con la spatola incrociando due passate, lasciandone un velo in più rispetto al muro (lo stucco si ritira).',
       'Dopo l\'asciugatura, se si è formato un avvallamento, ripeti una passata sottile.',
       'Leviga con grana 180 a filo del muro e spolvera.',
       'Fissativo a pennello sui ritocchi, poi pittura (scheda F).',
-      'CREPE — capisci il tipo: crepa sottile e ferma (non si riapre dopo i lavori precedenti) = stucco rigido. Crepa che si riapre, negli angoli o tra muro e cartongesso = stucco elastico.',
+      'CREPE — capisci il tipo: crepa sottile e ferma (non si riapre dopo i lavori precedenti) = stucco in polvere (STUCCO 1). Crepa che si riapre, negli angoli o tra muro e cartongesso = stucco elastico (STUCCO 2).',
       'Apri la crepa a "V" con il taglierino o la punta della spatola (2–3 mm di larghezza e profondità), spolvera e inumidisci.',
-      'Crepa ferma: riempi con lo stucco rigido premendo con la spatola; se è lunga, dopo la prima passata annega una striscia di rete e copri con una seconda passata.',
+      'Crepa ferma: riempi con lo stucco in polvere premendo con la spatola; se è lunga, dopo la prima passata annega una striscia di rete e copri con una seconda passata.',
       'Crepa che si muove: riempi con lo stucco elastico e liscia con la spatola o con il dito bagnato; non levigarlo (è gommoso): rendilo liscio mentre è fresco.',
-      'Asciutto: leviga lo stucco rigido con grana 180; fissativo e pittura. Lo stucco elastico si pittura direttamente (verifica in etichetta che sia sovraverniciabile).'],
-     ['Riempire un foro profondo in una sola passata di stucco in pasta: si ritira e si crepa.', 'Lasciare il tassello sporgente.', 'Usare stucco rigido su una crepa che si muove: si riapre in poche settimane.', 'Stuccare la crepa senza aprirla a V: lo stucco resta in superficie e si stacca.', 'Pitturare senza fissativo: i ritocchi si vedono opachi.'],
+      'Asciutto: leviga lo stucco in polvere con grana 180; fissativo e pittura. Lo stucco elastico si pittura direttamente (verifica in etichetta che sia sovraverniciabile).'],
+     ['Riempire un foro profondo in una sola passata di stucco in pasta: si ritira e si crepa.', 'Lasciare il tassello sporgente.', 'Usare stucco in polvere su una crepa che si muove: si riapre in poche settimane.', 'Stuccare la crepa senza aprirla a V: lo stucco resta in superficie e si stacca.', 'Pitturare senza fissativo: i ritocchi si vedono opachi.'],
      'Stucco in pasta: 2–24 h secondo lo spessore. Stucco in polvere: 30–60 min di lavorabilità, 4–24 h per levigare. Stucco elastico: 24 h prima di pitturare. Intonaco: 24 h.')
 
 card('E. Buchi di viti nelle piastrelle del bagno', 'Chiudere i fori in modo pulito e impermeabile',
-     ['Stucco epossidico bicomponente bianco o kit ripara-ceramica con smalto', 'Alcool denaturato', 'Nastro di carta', 'Stucco per fughe dello stesso colore (se i fori sono sulle fughe)'],
+     ['STUCCO 3: kit epossidico bicomponente bianco / ripara-ceramica', 'Alcool denaturato', 'Nastro di carta', 'Stucco per fughe dello stesso colore (se i fori sono sulle fughe)'],
      ['Pinza', 'Spatolina in plastica o metallo', 'Stracci', 'Guanti in nitrile'],
      ['Estrai i tasselli; se si rompono, spingili dentro di 3–4 mm.',
       'Pulisci e sgrassa il foro e la piastrella intorno con l\'alcool; lascia asciugare.',
@@ -384,7 +384,7 @@ card('F. Pittura bianca tutta casa', 'Due mani uniformi su soffitti e pareti',
 # 6. DRYING TABLE + NOTES
 new_page('Tempi di asciugatura', 'Valori indicativi a 20 °C con umidità normale — vale sempre la scheda tecnica del prodotto')
 TT = [('Antimuffa', '15–30 min di posa · ripetere dopo 24 h'), ('Aggrappante per cemento', '2–4 h'), ('Intonaco premiscelato', '24 h per cm di spessore'),
-      ('Rasante (tra le mani)', '24–48 h'), ('Rasante prima della pittura', '3–7 giorni'), ('Stucco per giunti cartongesso', '12–24 h tra le passate'), ('Stucco elastico per crepe', '24 h prima di pitturare'),
+      ('Rasante (tra le mani)', '24–48 h'), ('Rasante prima della pittura', '3–7 giorni'), ('Stucco in polvere sul cartongesso', '4–24 h tra le passate'), ('Stucco elastico per crepe', '24 h prima di pitturare'),
       ('Stucco in pasta', '2–24 h secondo lo spessore'), ('Stucco in polvere', '4–24 h'), ('Stucco epossidico (piastrelle)', '24 h'),
       ('Fissativo', '4–6 h'), ('Pittura (tra 1ª e 2ª mano)', '4–6 h'), ('Pittura completamente indurita', '2–3 settimane')]
 for a, b in TT:
