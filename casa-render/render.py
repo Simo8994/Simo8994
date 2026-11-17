@@ -163,13 +163,14 @@ elif SCHEME == 'sabbia':
     MAT['k_base'] = node_mat('k_base', srgb(0xb7a283), 0.65); MAT['k_tall'] = node_mat('k_tall', srgb(0xddd3c3), 0.62)
 STILE = os.environ.get('CASA_STILE') == 'foto'  # cucina tortora + calacatta oro, camera con nicchia LED, parete TV a listelli
 if STILE:
-    MAT['k_base'] = node_mat('k_base', srgb(0x8f857c), 0.6); MAT['k_tall'] = MAT['k_base']
+    MAT['k_base'] = node_mat('k_base', srgb(0x86776b), 0.6); MAT['k_tall'] = MAT['k_base']
     MAT['taj'] = node_mat('taj', (0.9, 0.88, 0.84), 0.2, tex='calacatta_oro', scale=1.2)
     MAT['taupe'] = MAT['k_base']; MAT['listello'] = node_mat('listello', srgb(0xb08a62), 0.55, tex='oak', scale=0.6)
     MAT['carta'] = node_mat('carta', srgb(0xc9cfd1), 0.9); MAT['letto'] = node_mat('letto', srgb(0xc4bdb2), 0.95)
     MAT['testata'] = node_mat('testata', srgb(0x7a7066), 0.9); MAT['petrolio'] = node_mat('petrolio', srgb(0x3f6f73), 0.85)
     MAT['comod'] = node_mat('comod', srgb(0x6d8f92), 0.55); MAT['rame'] = node_mat('rame', srgb(0xb87350), 0.25, 1.0)
-    MAT['tortora_tv'] = node_mat('tortora_tv', srgb(0xa59a8d), 0.6)
+    MAT['tortora_tv'] = node_mat('tortora_tv', srgb(0x7f6c58), 0.6)
+    MAT['grigio_tv'] = node_mat('grigio_tv', srgb(0xa0978c), 0.85); MAT['wall'] = node_mat('wall', srgb(0xeee3d9), 0.85)  # colori delle foto
 if SCHEME: MAT['gola'] = MAT['k_base']
 MAT['champ'] = node_mat('champ', srgb(0xb89c74), 0.35, 0.7)
 RULES = [['LED','led'],['Parete_TV_Cartongesso','oliva'],['Panca_Cuscino','pelle'],['Panca','walnut'],['Matrimoniale_Cuscini','linen'],['Poltrona','pink'],['Tappeto_Gioco','sage'],['Termo','anthr'],['Divano','fabric'],['Chaise','fabric'],['Cuscin','pillow'],['Tappeto','rug'],
@@ -317,10 +318,13 @@ if STILE:
     _, _, tx0, ty0, _, tx1, ty1, _ = BR['Mobiletto_TV_Sospeso']; WX = 351; A, Bw = 143, 292
     box(WX - .5, A, 0, WX, Bw, 270, 'seam')
     y = A + 1
-    while y + 3.5 <= Bw: box(WX - 2.5, y, 0, WX - .5, y + 3.5, 270, 'listello'); y += 6
-    box(WX - 45, A, 30, WX - 2.5, Bw, 62, 'tortora_tv')
-    for yy in (A + (Bw - A) / 3, A + 2 * (Bw - A) / 3): box(WX - 45.3, yy - .2, 30, WX - 45, yy + .2, 62, 'seam')
-    box(WX - 40, A + 2, 29.4, WX - 6, Bw - 2, 30, 'led'); box(WX - 3, A, .4, WX - 2.5, Bw, 12, 'led')
+    LB = Bw - 30  # ultimi 30 cm verso la porta: muro grigio caldo con termostato e interruttori
+    box(WX - .6, LB, 0, WX - .5, Bw, 270, 'grigio_tv')
+    while y + 3.5 <= LB: box(WX - 2.5, y, 0, WX - .5, y + 3.5, 270, 'listello'); y += 6
+    box(WX - 45, A, 30, WX - 2.5, LB, 62, 'tortora_tv')
+    for yy in (A + (LB - A) / 3, A + 2 * (LB - A) / 3): box(WX - 45.3, yy - .2, 30, WX - 45, yy + .2, 62, 'seam')
+    box(WX - 40, A + 2, 29.4, WX - 6, LB - 2, 30, 'led'); box(WX - 3, A, .4, WX - 2.5, LB, 12, 'led')
+    box(WX - 1.2, LB + 12, 150, WX - .6, LB + 20, 160, 'white'); box(WX - 1.2, LB + 12, 105, WX - .6, LB + 20, 113, 'white')  # termostato e placca
 # blackout roller blinds (cream) dropping from a box above each opening; d = +1/-1 direction into the room
 def blind(wall, c, d, a, b, top, low):
     if wall == 'x':
