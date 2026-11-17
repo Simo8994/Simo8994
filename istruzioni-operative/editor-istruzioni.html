@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editor Istruzioni Operative</title>
+<style>
+:root{--bg:#eef0f3;--panel:#fff;--ink:#1d2330;--muted:#667;--line:#d5d9e0;--acc:#1f5fbf;--grey:#e6e6e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+header.bar{position:sticky;top:0;z-index:5;background:#1d2330;color:#fff;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 12px}
+header.bar b{margin-right:auto;font-size:15px}
+button{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 10px;border-radius:5px;cursor:pointer}
+button:hover{border-color:var(--acc)}
+header.bar button{background:#2d3547;color:#fff;border-color:#45506a}
+header.bar button.pri{background:var(--acc);border-color:var(--acc)}
+.wrap{display:grid;grid-template-columns:minmax(340px,520px) 1fr;gap:14px;padding:14px}
+@media(max-width:1000px){.wrap{grid-template-columns:1fr}}
+.ed{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;height:calc(100vh - 80px);overflow:auto}
+.ed h3{margin:16px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:3px}
+.ed h3:first-child{margin-top:0}
+label{display:block;font-size:12px;color:var(--muted);margin:6px 0 2px}
+input,textarea{width:100%;font:inherit;padding:5px 7px;border:1px solid var(--line);border-radius:5px}
+textarea{resize:vertical;min-height:34px}
+.row{display:flex;gap:6px}.row>*{flex:1}
+.list .it{display:flex;gap:4px;align-items:flex-start;margin-bottom:4px}
+.list .it .n{width:22px;padding-top:6px;color:var(--muted);text-align:right;flex:none}
+.list .it textarea{min-height:32px}
+.list .it .tn{width:70px;flex:none}
+.mini{padding:3px 6px;font-size:12px;flex:none}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}
+.chips button{font-size:12px;padding:2px 7px;background:#f3f6fb}
+.drop{border:2px dashed var(--line);border-radius:8px;padding:14px;text-align:center;color:var(--muted);cursor:pointer}
+.drop.on{border-color:var(--acc);background:#eef4ff}
+.ph{display:flex;gap:6px;align-items:center;margin-top:6px}
+.ph img{width:80px;height:60px;object-fit:cover;border:1px solid var(--line)}
+.hint{font-size:12px;color:var(--muted)}
+/* ---- anteprima A4 ---- */
+.pv{overflow:auto;height:calc(100vh - 80px)}
+.page{width:210mm;min-height:297mm;margin:0 auto;background:#fff;padding:12mm 10mm;box-shadow:0 2px 10px rgba(0,0,0,.15);color:#000;font-family:Calibri,Arial,sans-serif;font-size:11pt}
+.page table{width:100%;border-collapse:collapse}
+.page td{border:1px solid #000;padding:1px 5px;vertical-align:middle}
+.hdr td{height:16mm}
+.hdr .logo{width:44%;text-align:center}
+.hdr .logo img{max-height:14mm;max-width:100%}
+.hdr .tit b{font-size:13pt;display:block}
+.hdr .pr{width:12%;text-align:center;font-size:9pt}
+.info{margin-top:6mm}
+.info td:first-child:not([colspan]){width:33%;font-weight:bold}
+.info .g{background:var(--grey)}
+.info .alert{color:#c00;font-weight:bold}
+.sec{text-align:center;font-weight:bold;background:#fff}
+.body{padding:4mm 6mm!important;vertical-align:top!important}
+.body ol{margin:0 0 3mm;padding-left:8mm;list-style:none;counter-reset:n}
+.body li{margin:1mm 0;counter-increment:n;position:relative}
+.body li::before{content:counter(n) ")";position:absolute;left:-7mm}
+.body .tools{font-weight:bold;font-size:10pt;margin-top:1mm}
+.body .pt{margin:3mm 0;text-align:center;break-inside:avoid}
+.body .pt img{max-width:100%;max-height:150mm}
+.body .pt div{font-size:9pt;font-style:italic}
+.par{white-space:pre-wrap;min-height:6mm}
+.foot{width:85%!important;margin:6mm auto 0;font-size:9pt}
+.foot td{text-align:center}
+.foot .h td{font-weight:bold}
+.fcap{text-align:center;font-size:9pt;margin-top:8mm}
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  header.bar,.ed{display:none}
+  .wrap{display:block;padding:0}
+  .pv{height:auto;overflow:visible}
+  .page{box-shadow:none;margin:0}
+}
+</style>
+</head>
+<body>
+<header class="bar">
+  <b>Istruzioni Operative</b>
+  <button id="bNew">Nuova</button>
+  <button id="bOpen">Apri…</button>
+  <button id="bSave">Salva .json</button>
+  <button id="bRev" title="Revisione +1 e data aggiornata">Nuova revisione</button>
+  <button id="bPaste">Importa testo</button>
+  <button id="bPrint" class="pri">Stampa / PDF</button>
+  <input type="file" id="fOpen" accept=".json" hidden>
+</header>
+
+<div class="wrap">
+<div class="ed" id="ed">
+  <h3>Intestazione</h3>
+  <div class="row">
+    <div><label>Titolo</label><input data-k="titolo"></div>
+    <div><label>Sottotitolo / modulo</label><input data-k="sottotitolo"></div>
+  </div>
+  <div class="row">
+    <div><label>Codice PR</label><input data-k="pr"></div>
+    <div><label>Pagina</label><input data-k="pagina"></div>
+    <div><label>Logo</label><button id="bLogo" style="width:100%">Carica logo</button><input type="file" id="fLogo" accept="image/*" hidden></div>
+  </div>
+
+  <h3>Dati articolo</h3>
+  <label>Codice articolo</label><input data-k="articolo">
+  <div class="row">
+    <div><label>Codice CAD</label><input data-k="cad" placeholder="040.0501.05"></div>
+    <div style="flex:.4"><label>Rev.</label><input data-k="rev" placeholder="00"></div>
+    <div style="flex:.4"><label>Fase</label><input data-k="fase" placeholder="30"></div>
+  </div>
+  <label>Descrizione fase</label><input data-k="descFase" placeholder="Fresatura con Versamatic">
+  <label>Codice CAD + fase (automatico, modificabile)</label>
+  <div class="row"><input data-k="cadFase"><button class="mini" id="bCad" title="Ricomponi">↻</button></div>
+  <div class="row">
+    <div><label>Data creazione</label><input data-k="dataCreazione"></div>
+    <div><label>Ultimo salvataggio</label><input data-k="dataSalv"></div>
+  </div>
+  <label>ALERT!!</label><input data-k="alert">
+  <label>Parametri macchina</label><textarea data-k="parametri" rows="2"></textarea>
+
+  <h3>Passi operativi</h3>
+  <div class="hint">Formattazione: **grassetto**, __sottolineato__. Ctrl+Invio = nuovo passo.</div>
+  <div class="chips" id="chips"></div>
+  <div class="list" id="steps"></div>
+  <button id="addStep">+ Passo</button>
+  <button id="addChip" title="Salva il testo di un passo come frase rapida">+ Frase rapida</button>
+
+  <h3>Lista utensili</h3>
+  <div class="list" id="tools"></div>
+  <button id="addTool">+ Utensile</button>
+
+  <h3>Foto</h3>
+  <div class="drop" id="drop">Trascina qui le foto, clicca, oppure <b>Ctrl+V</b> per incollare</div>
+  <input type="file" id="fPh" accept="image/*" multiple hidden>
+  <div id="photos"></div>
+
+  <h3>Piè di pagina</h3>
+  <div class="row">
+    <div><label>Mod</label><input data-k="mod"></div>
+    <div><label>UserName</label><input data-k="user"></div>
+  </div>
+  <p class="hint">La bozza si salva da sola nel browser. Usa "Salva .json" per archiviare e riaprire l'istruzione in futuro.</p>
+</div>
+
+<div class="pv"><div class="page" id="page"></div></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const pad=n=>String(n).padStart(2,'0');
+const now=()=>{const d=new Date();return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`};
+const ymd=()=>{const d=new Date();return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`};
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+const DEF_CHIPS=["Posizionare la morsa come da foto.","Prendere il pezzo in morsa.","Chiudere bene il pezzo in morsa.","X0 su ganascia fissa, Y0 in centro al pezzo, Z0 sopra la parte grezza del pezzo.","Programma ","Controllare le quote del primo pezzo."];
+function blank(){return{titolo:"ISTRUZIONE OPERATIVA",sottotitolo:"Q93.00 attrezzaggi",pr:"PR--",pagina:"Pag. n.1 di 1",logo:LS.get('io_logo',""),
+ articolo:"",cad:"",rev:"00",fase:"",descFase:"",cadFase:"",dataCreazione:now(),dataSalv:now(),alert:"",parametri:"",
+ steps:[""],tools:[],photos:[],mod:"Q93.00",user:LS.get('io_user',"")}}
+let D=LS.get('io_draft',null)||blank();
+let chips=LS.get('io_chips',DEF_CHIPS);
+
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/__(.+?)__/g,'<u>$1</u>').replace(/\n/g,'<br>');
+function composeCad(){const p=[D.cad];if(D.rev!=="")p.push('rev.'+D.rev);if(D.fase)p.push('fase '+D.fase);let s=p.filter(Boolean).join('_');if(D.descFase)s+='_'+D.descFase;if(s)s+=' '+ymd();return s}
+
+/* ---------- render editor ---------- */
+function bindFields(){document.querySelectorAll('[data-k]').forEach(el=>{el.value=D[el.dataset.k]??"";el.oninput=()=>{D[el.dataset.k]=el.value;
+ if(['cad','rev','fase','descFase'].includes(el.dataset.k)){D.cadFase=composeCad();$('[data-k=cadFase]').value=D.cadFase}
+ if(el.dataset.k==='user')LS.set('io_user',el.value);upd()}})}
+function renderChips(){$('#chips').innerHTML="";chips.forEach((c,i)=>{const b=document.createElement('button');b.textContent=c.length>38?c.slice(0,36)+'…':c;b.title=c+'\n(clic destro = elimina)';
+ b.onclick=()=>{const e=D.steps.findIndex(s=>!s.trim());if(e>=0)D.steps[e]=c;else D.steps.push(c);renderSteps();upd()};
+ b.oncontextmenu=ev=>{ev.preventDefault();if(confirm('Eliminare la frase rapida?')){chips.splice(i,1);LS.set('io_chips',chips);renderChips()}};$('#chips').append(b)})}
+function mvBtns(arr,i,re){const f=document.createDocumentFragment();[['↑',-1],['↓',1]].forEach(([t,d])=>{const b=document.createElement('button');b.className='mini';b.textContent=t;
+ b.onclick=()=>{const j=i+d;if(j<0||j>=arr.length)return;[arr[i],arr[j]]=[arr[j],arr[i]];re();upd()};f.append(b)});
+ const x=document.createElement('button');x.className='mini';x.textContent='✕';x.onclick=()=>{arr.splice(i,1);re();upd()};f.append(x);return f}
+function renderSteps(){const w=$('#steps');w.innerHTML="";D.steps.forEach((s,i)=>{const d=document.createElement('div');d.className='it';
+ d.innerHTML=`<span class="n">${i+1})</span>`;const t=document.createElement('textarea');t.rows=1;t.value=s;
+ t.oninput=()=>{D.steps[i]=t.value;upd()};
+ t.onkeydown=e=>{if(e.key==='Enter'&&e.ctrlKey){e.preventDefault();D.steps.splice(i+1,0,"");renderSteps();upd();w.querySelectorAll('textarea')[i+1].focus()}};
+ d.append(t,mvBtns(D.steps,i,renderSteps));w.append(d)})}
+function renderTools(){const w=$('#tools');w.innerHTML="";D.tools.forEach((t,i)=>{const d=document.createElement('div');d.className='it';
+ const a=document.createElement('input');a.className='tn';a.placeholder='T29';a.value=t.t;a.oninput=()=>{t.t=a.value;upd()};
+ const b=document.createElement('input');b.placeholder='FRESA A.V Ø50 4T';b.value=t.d;b.oninput=()=>{t.d=b.value;upd()};
+ const o=document.createElement('button');o.className='mini';o.textContent='Ø';o.title='Inserisci Ø';o.onclick=()=>{t.d+='Ø';b.value=t.d;b.focus();upd()};
+ d.append(a,b,o,mvBtns(D.tools,i,renderTools));w.append(d)})}
+function renderPhotos(){const w=$('#photos');w.innerHTML="";D.photos.forEach((p,i)=>{const d=document.createElement('div');d.className='ph';
+ d.innerHTML=`<img src="${p.src}">`;const c=document.createElement('input');c.placeholder='Didascalia (opz.)';c.value=p.cap||"";c.oninput=()=>{p.cap=c.value;upd()};
+ const r=document.createElement('button');r.className='mini';r.textContent='⟳';r.title='Ruota 90°';r.onclick=async()=>{p.src=await rotate(p.src);renderPhotos();upd()};
+ d.append(c,r,mvBtns(D.photos,i,renderPhotos));w.append(d)})}
+function renderAll(){bindFields();renderChips();renderSteps();renderTools();renderPhotos();upd()}
+
+/* ---------- anteprima ---------- */
+function upd(){
+ const steps=D.steps.filter(s=>s.trim());const tools=D.tools.filter(t=>t.t||t.d);
+ let li=steps.map(s=>`<li>${fmt(s)}</li>`).join('');
+ if(tools.length)li+=`<li>Lista utensili:<div class="tools">${tools.map(t=>esc((t.t+' '+t.d).trim())).join('<br>')}</div></li>`;
+ $('#page').innerHTML=`
+ <table class="hdr"><tr><td class="logo">${D.logo?`<img src="${D.logo}">`:''}</td>
+  <td class="tit"><b>${esc(D.titolo)}</b>${esc(D.sottotitolo)}</td>
+  <td class="pr"><b>${esc(D.pr)}</b><br>${esc(D.pagina)}</td></tr></table>
+ <table class="info">
+  <tr><td>Codice articolo</td><td>${esc(D.articolo)}</td></tr>
+  <tr><td>Codice CAD + fase</td><td class="g">${esc(D.cadFase)}</td></tr>
+  <tr><td>Data aggiornamento</td><td>${esc(D.dataCreazione)}${D.dataSalv?' - ultimo salvataggio '+esc(D.dataSalv):''}</td></tr>
+  <tr><td>ALERT!!</td><td class="alert">${esc(D.alert)}</td></tr>
+  <tr><td colspan="2" class="sec">Parametri macchina</td></tr>
+  <tr><td colspan="2" class="par">${esc(D.parametri)}</td></tr>
+  <tr><td colspan="2" class="sec">Foto o disegni o annotazioni, ecc..</td></tr>
+  <tr><td colspan="2" class="body">${li?`<ol>${li}</ol>`:''}
+   ${D.photos.map(p=>`<div class="pt"><img src="${p.src}">${p.cap?`<div>${esc(p.cap)}</div>`:''}</div>`).join('')}</td></tr>
+ </table>
+ <div class="fcap">A solo uso interno</div>
+ <table class="foot"><tr class="h"><td>Mod</td><td>Data e ora ultimo salvataggio</td><td>UserName</td></tr>
+  <tr><td>${esc(D.mod)}</td><td>${esc(D.dataSalv)}</td><td>${esc(D.user)}</td></tr></table>`;
+ LS.set('io_draft',D);
+}
+
+/* ---------- immagini ---------- */
+function loadImg(src){return new Promise((ok,ko)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=ko;i.src=src})}
+async function compress(file,max=1600){const url=URL.createObjectURL(file);const i=await loadImg(url);URL.revokeObjectURL(url);
+ const k=Math.min(1,max/Math.max(i.width,i.height));const c=document.createElement('canvas');c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);
+ c.getContext('2d').drawImage(i,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.85)}
+async function rotate(src){const i=await loadImg(src);const c=document.createElement('canvas');c.width=i.height;c.height=i.width;const x=c.getContext('2d');
+ x.translate(c.width/2,c.height/2);x.rotate(Math.PI/2);x.drawImage(i,-i.width/2,-i.height/2);return c.toDataURL('image/jpeg',.9)}
+async function addFiles(files){for(const f of files){if(!f.type.startsWith('image/'))continue;D.photos.push({src:await compress(f),cap:""})}renderPhotos();upd()}
+const drop=$('#drop');drop.onclick=()=>$('#fPh').click();$('#fPh').onchange=e=>{addFiles(e.target.files);e.target.value=""};
+drop.ondragover=e=>{e.preventDefault();drop.classList.add('on')};drop.ondragleave=()=>drop.classList.remove('on');
+drop.ondrop=e=>{e.preventDefault();drop.classList.remove('on');addFiles(e.dataTransfer.files)};
+document.addEventListener('paste',e=>{const f=[...e.clipboardData.items].filter(i=>i.type.startsWith('image/')).map(i=>i.getAsFile());if(f.length){e.preventDefault();addFiles(f)}});
+$('#bLogo').onclick=()=>$('#fLogo').click();
+$('#fLogo').onchange=async e=>{const f=e.target.files[0];if(!f)return;D.logo=await compress(f,600);LS.set('io_logo',D.logo);upd()};
+
+/* ---------- import testo grezzo ---------- */
+function importText(txt){const steps=[],tools=[];let inTools=false;
+ const field=(re,k)=>{const m=txt.match(re);if(m)D[k]=m[1].trim()};
+ field(/Codice articolo[:\s]+(\S+)/i,'articolo');field(/Codice CAD \+ fase[:\s]+(.+)/i,'cadFase');field(/ALERT!*[:\s]+(.+)/i,'alert');
+ for(let l of txt.split(/\r?\n/)){l=l.trim();if(!l||/^(Codice|Data aggiornamento|ALERT|Parametri macchina|Foto o disegni)/i.test(l))continue;
+  let m;
+  if((m=l.match(/^(T\d+)\s+(.*)$/i))){tools.push({t:m[1].toUpperCase(),d:m[2].replace(/\b0(?=\d)/g,'Ø')});inTools=true;continue}
+  if((m=l.match(/^\d+\s*[\)\.\-]\s*(.*)$/))){if(/^lista utensili/i.test(m[1])){inTools=true;continue}inTools=false;steps.push(m[1]);continue}
+  if(/^lista utensili/i.test(l)){inTools=true;continue}
+  if(!inTools&&steps.length)steps[steps.length-1]+=' '+l;else if(!inTools)steps.push(l)}
+ if(steps.length)D.steps=steps;if(tools.length)D.tools=tools;renderAll()}
+$('#bPaste').onclick=()=>{const t=prompt('Incolla il testo (passi numerati "1) ...", utensili "T29 ...", ecc.).\nSe è lungo, incollalo tutto su una riga: verrà diviso sui numeri.');
+ if(t)importText(t.includes('\n')?t:t.replace(/\s(?=\d+\)\s)/g,'\n').replace(/\s(?=T\d+\s)/g,'\n'))};
+
+/* ---------- azioni ---------- */
+$('#bCad').onclick=()=>{D.cadFase=composeCad();$('[data-k=cadFase]').value=D.cadFase;upd()};
+$('#addStep').onclick=()=>{D.steps.push("");renderSteps();upd();const t=$('#steps').querySelectorAll('textarea');t[t.length-1].focus()};
+$('#addTool').onclick=()=>{D.tools.push({t:"T",d:""});renderTools();upd()};
+$('#addChip').onclick=()=>{const t=prompt('Testo della frase rapida:',D.steps.filter(Boolean).slice(-1)[0]||"");if(t){chips.push(t);LS.set('io_chips',chips);renderChips()}};
+$('#bNew').onclick=()=>{if(confirm('Nuova istruzione? La bozza attuale verrà sostituita (salvala prima se serve).')){D=blank();renderAll()}};
+$('#bRev').onclick=()=>{const r=parseInt(D.rev||"0",10);D.rev=pad(isNaN(r)?0:r+1);D.dataSalv=now();D.cadFase=composeCad();renderAll()};
+function fname(){return (`IO_${D.articolo||'senza-codice'}_fase${D.fase||''}_rev${D.rev||''}`).replace(/[^\w.\-]+/g,'_')}
+$('#bSave').onclick=()=>{D.dataSalv=now();renderAll();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D)],{type:'application/json'}));a.download=fname()+'.json';a.click()};
+$('#bOpen').onclick=()=>$('#fOpen').click();
+$('#fOpen').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{D=Object.assign(blank(),JSON.parse(t));renderAll()}catch(err){alert('File non valido')}});e.target.value=""};
+$('#bPrint').onclick=()=>{D.dataSalv=now();renderAll();const t=document.title;document.title=fname();window.print();document.title=t};
+
+renderAll();
+</script>
+</body>
+</html>
