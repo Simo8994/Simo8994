@@ -37,6 +37,7 @@ def apply(rows):
     out = []
     for g, n, x0, y0, z0, x1, y1, z1 in rows:
         if n == 'Boiserie_Doghe_Noce': continue  # parete TV: solo muro bianco, niente listelli
+        if n.startswith('Panca'): continue  # niente panca: due sedie al suo posto (aggiunte sotto)
         if n == 'Parete_Nord_Camere':  # muro nord a gradino: matrimoniale 560, cameretta 599
             out.append([g, n + '_Matrimoniale', 377, 560, z0, 798, 573, z1]); out.append([g, n + '_Cameretta', 785, 599, z0, 1191, 612, z1]); continue
         fx, fy = maps(g, n, (x0 + x1) / 2 if not n.startswith(STRETCH) else x0, y0)
@@ -53,6 +54,8 @@ def apply(rows):
         if n == 'Parete_Est_Ingresso_Porta_Corridoio': y0 = -192
         if n in ('Parete_Camera1_Camera2', 'Parete_Est_Esterna'): y1 = 612
         out.append([g, n, x0, y0, z0, x1, y1, z1])
+    for i, (ya, yb) in enumerate(((300, 340), (370, 410))):
+        out.append(['Sog', f'Sedia_Pranzo_{i + 2}', 317, ya, 0, 357, yb, 46])
     return out
 
 
