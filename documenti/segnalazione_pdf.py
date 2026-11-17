@@ -19,7 +19,7 @@ def head(p):
     c.setFillColor(white); c.setFont('DVB', 15); c.drawString(M, H - 32, 'Allegato fotografico – muffa e umidità')
     c.setFont('DV', 8.5); c.drawString(M, H - 48, 'Condominio Monte Bianco, Via Monte Zebio 23/27, Thiene – unità al piano terra [scala/interno]')
     if p == 1:
-        c.setFillColor(HexColor('#a3402f')); c.setFont('DVB', 9); c.drawString(M, H - 76, 'Tutti i muri fotografati sono muri perimetrali che danno sull\'esterno dell\'edificio (parti comuni).')
+        c.setFillColor(HexColor('#a3402f')); c.setFont('DVB', 9); c.drawString(M, H - 76, 'Tutti i muri fotografati sono muri perimetrali che danno sull\'esterno dell\'edificio.')
     c.setFillColor(MUTED); c.setFont('DV', 7.5); c.drawString(M, 22, 'Data delle foto: ' + (sys.argv[3] if len(sys.argv) > 3 else '____________')); c.drawRightString(W - M, 22, f'Pagina {p}')
 for p in range(2):
     head(p + 1); y = H - 90
