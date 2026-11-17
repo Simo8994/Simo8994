@@ -480,6 +480,19 @@ if V2:
         t = i / 40; a = i * 2.39
         bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=6, radius=2.2 * S, location=((PX + 7 * math.cos(a)) * S, (PY_ + 7 * math.sin(a)) * S, (147 - 40 * t * t) * S))
         o = bpy.context.object; o.scale = (1.4, 1, .3); o.rotation_euler = (1.2 * math.sin(a), 1.2 * math.cos(a), a); o.data.materials.append(MAT['leaf'])
+if STILE and CT:  # come la foto: pensili fino al soffitto sul lato finestra e sopra le colonne, mensole aperte con LED accanto alla finestra
+    box(0, 455, 147, 35, 525, 219, 'k_tall'); box(0, 455, 219, 35, 560, 270, 'k_tall'); box(0, 525, 219, 122, 560, 270, 'k_tall')
+    front('x', 35, 1, 455, 525, 147, 219, vs=(490,), gola=False); front('x', 35, 1, 455, 560, 219, 270, vs=(490, 525), gola=False)
+    front('y', 525, -1, 0, 122, 219, 270, vs=(61,), gola=False)
+    box(2, 457, 146.4, 33, 523, 147, 'led')
+    for z in (150, 190):
+        box(0, 400, z, 26, 455, z + 3, 'k_tall'); box(2, 402, z - .6, 24, 453, z, 'led')
+    cyl_pts((12, 412, 153), (12, 412, 165), 4, 'white', 24); cyl_pts((12, 424, 153), (12, 424, 162), 4, 'white', 24); cyl_pts((12, 440, 153), (12, 440, 168), 4.5, 'beige', 24)
+    box(4, 425, 193, 22, 445, 199, 'white')
+    cyl_pts((13, 412, 193), (13, 412, 205), 6, 'pot', 24, 5)
+    for k in range(9):
+        a_ = k * 0.7; bpy.ops.mesh.primitive_uv_sphere_add(radius=0.05, location=(0.13 + 0.06 * math.cos(a_), 4.12 + 0.06 * math.sin(a_), 2.08 - 0.04 * (k % 3)))
+        o = bpy.context.object; o.scale = (1.4, 1, .35); o.data.materials.append(MAT['leaf'])
 if not os.environ.get('CASA_NOCEIL'): box(-27 if MIS else -13, -215, 270, 1191 if MIS else 1217, 612 if MIS else 573, 275, 'wall')
 # world sky + sun
 w = bpy.data.worlds.new('w'); sc.world = w; w.use_nodes = True
