@@ -1,5 +1,5 @@
 """Allegato fotografico per l'amministratore. python3 segnalazione_pdf.py out.pdf cartella_foto"""
-import sys, datetime
+import os, sys, datetime
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
@@ -17,7 +17,7 @@ FOTO = [(sys.argv[2] + '/01_cucina_vista.jpg', 'Foto 1 – Cucina, vista general
 def head(p):
     c.setFillColor(ACC); c.rect(0, H - 60, W, 60, fill=1, stroke=0)
     c.setFillColor(white); c.setFont('DVB', 15); c.drawString(M, H - 32, 'Allegato fotografico – muffa e umidità')
-    c.setFont('DV', 8.5); c.drawString(M, H - 48, 'Condominio Monte Bianco, Via Monte Zebio 23/27, Thiene – unità al piano terra [scala/interno]')
+    c.setFont('DV', 8.5); c.drawString(M, H - 48, os.environ.get('UNITA', '[indirizzo e unità]'))
     if p == 1:
         c.setFillColor(HexColor('#a3402f')); c.setFont('DVB', 9); c.drawString(M, H - 76, 'Tutti i muri fotografati sono muri perimetrali che danno sull\'esterno dell\'edificio.')
     c.setFillColor(MUTED); c.setFont('DV', 7.5); c.drawString(M, 22, 'Data delle foto: ' + (sys.argv[3] if len(sys.argv) > 3 else '____________')); c.drawRightString(W - M, 22, f'Pagina {p}')
