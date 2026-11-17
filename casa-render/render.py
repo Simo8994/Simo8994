@@ -431,7 +431,7 @@ if V2:
         t = i / 40; a = i * 2.39
         bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=6, radius=2.2 * S, location=((PX + 7 * math.cos(a)) * S, (PY_ + 7 * math.sin(a)) * S, (147 - 40 * t * t) * S))
         o = bpy.context.object; o.scale = (1.4, 1, .3); o.rotation_euler = (1.2 * math.sin(a), 1.2 * math.cos(a), a); o.data.materials.append(MAT['leaf'])
-if not os.environ.get('CASA_NOCEIL'): box(-27 if MIS else -13, -215, 270, 1227 if MIS else 1217, 573, 275, 'wall')
+if not os.environ.get('CASA_NOCEIL'): box(-27 if MIS else -13, -215, 270, 1191 if MIS else 1217, 612 if MIS else 573, 275, 'wall')
 # world sky + sun
 w = bpy.data.worlds.new('w'); sc.world = w; w.use_nodes = True
 sky = w.node_tree.nodes.new('ShaderNodeTexSky'); sky.sky_type = 'MULTIPLE_SCATTERING' if hasattr(sky, 'sky_type') and 'MULTIPLE_SCATTERING' in [i.identifier for i in sky.bl_rna.properties['sky_type'].enum_items] else sky.sky_type
