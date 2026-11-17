@@ -11,7 +11,7 @@ Option Explicit
 ' ====== DA IMPOSTARE (una volta sola) ======
 Private Const MODELLO_Q93 As String = "C:\PERCORSO\Modelli Poli\Q93.00 istruzione operativa per attrezzaggi.docx"
 Private Const CARTELLA_WORD As String = "C:\PERCORSO\attrezzaggi per paola\"
-Private Const CARTELLA_PDF As String = ""      ' vuoto = stessa cartella del Word
+Private Const CARTELLA_PDF As String = "C:\PERCORSO\Istruzioni operative\"   ' cartella dei PDF (vuoto = stessa del Word)
 Private Const DESTINATARIO As String = ""      ' indirizzo e-mail dell'ufficio tecnico (es. Mohammed)
 Private Const MIN_KB_FOTO As Long = 30         ' immagini piu' piccole (loghi nelle firme) vengono ignorate
 Private Const LARGH_MAX_CM As Single = 17      ' dimensione massima foto nel documento
@@ -105,7 +105,11 @@ Public Sub CreaIstruzioneDaEmail()
     Next
 
     ' --- salva Word col nome standard + aggiorna campi ---
-    percorsoDoc = CARTELLA_WORD & nome & ".docx"
+    If Dir(Cartella(CARTELLA_WORD), vbDirectory) = "" Then MsgBox "Cartella Word non trovata:" & vbCrLf & CARTELLA_WORD, vbCritical, TITOLO: GoTo Annulla
+    If CARTELLA_PDF <> "" Then
+        If Dir(Cartella(CARTELLA_PDF), vbDirectory) = "" Then MsgBox "Cartella PDF non trovata:" & vbCrLf & CARTELLA_PDF, vbCritical, TITOLO: GoTo Annulla
+    End If
+    percorsoDoc = Cartella(CARTELLA_WORD) & nome & ".docx"
     If Dir(percorsoDoc) <> "" Then
         If MsgBox("Esiste gia':" & vbCrLf & percorsoDoc & vbCrLf & "Sovrascrivere?", vbYesNo + vbExclamation, TITOLO) = vbNo Then GoTo Fine
     End If
@@ -125,7 +129,7 @@ Public Sub CreaIstruzioneDaEmail()
     doc.Save
     AggiornaCampi doc            ' SAVEDATE aggiornato al salvataggio appena fatto
     doc.Save
-    percorsoPdf = IIf(CARTELLA_PDF = "", CARTELLA_WORD, CARTELLA_PDF) & nome & ".pdf"
+    percorsoPdf = Cartella(IIf(CARTELLA_PDF = "", CARTELLA_WORD, CARTELLA_PDF)) & nome & ".pdf"
     doc.ExportAsFixedFormat OutputFileName:=percorsoPdf, ExportFormat:=17
 
     With Application.CreateItem(0)
@@ -283,6 +287,11 @@ Private Function NomeSenzaEstensione(ByVal p As String) As String
     p = Mid(p, InStrRev(p, "\") + 1)
     If InStrRev(p, ".") > 0 Then p = Left(p, InStrRev(p, ".") - 1)
     NomeSenzaEstensione = p
+End Function
+
+Private Function Cartella(ByVal p As String) As String
+    If Right(p, 1) <> "\" Then p = p & "\"
+    Cartella = p
 End Function
 
 Private Function PulisciNome(ByVal s As String) As String

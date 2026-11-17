@@ -5,8 +5,8 @@
 2. Menu **File > Importa file…** e scegli `IstruzioniOperative.bas`.
 3. In cima al modulo imposta:
    - `MODELLO_Q93`: percorso del modello Q93.00 in "Modelli Poli"
-   - `CARTELLA_WORD`: cartella dove salvare i Word (il percorso deve finire con `\`)
-   - `CARTELLA_PDF`: lascialo vuoto per salvare il PDF nella stessa cartella del Word
+   - `CARTELLA_WORD`: cartella dove salvare i Word
+   - `CARTELLA_PDF`: cartella dei PDF, anche diversa da quella dei Word (vuoto = stessa cartella del Word)
    - `DESTINATARIO`: e-mail dell'ufficio tecnico
 4. Salva e chiudi l'editor.
 5. Aggiungi il pulsante: **File > Opzioni > Barra multifunzione** (oppure "Barra di accesso rapido"), categoria **Macro**, voce `CreaIstruzioneDaEmail`, poi **Aggiungi**.
