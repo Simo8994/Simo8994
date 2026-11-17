@@ -65,6 +65,13 @@ def node_mat(name, base, rough=0.5, metal=0.0, transm=0.0, emit=None, tex=None, 
             e = cr.color_ramp.elements; e[0].position = 0.0; e[0].color = (0.80, 0.75, 0.66, 1); e[1].position = 1.0; e[1].color = (0.77, 0.71, 0.61, 1)
             for pos, col in ((0.47, (0.80, 0.75, 0.66, 1)), (0.5, (0.56, 0.47, 0.35, 1)), (0.53, (0.79, 0.73, 0.64, 1))):
                 el = e.new(pos); el.color = col
+        elif tex == 'calacatta_oro':
+            # Calacatta gold: bright white with long gold-taupe veins
+            nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 1.6; nz.inputs['Detail'].default_value = 9; nz.inputs['Distortion'].default_value = 2.2
+            nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
+            e = cr.color_ramp.elements; e[0].position = 0.0; e[0].color = (0.90, 0.88, 0.84, 1); e[1].position = 1.0; e[1].color = (0.88, 0.86, 0.82, 1)
+            for pos, col in ((0.492, (0.90, 0.88, 0.84, 1)), (0.5, (0.55, 0.40, 0.20, 1)), (0.508, (0.89, 0.87, 0.83, 1))):
+                el = e.new(pos); el.color = col
         elif tex == 'nero_oro':
             nz = nt.nodes.new('ShaderNodeTexNoise'); nz.inputs['Scale'].default_value = 1.5; nz.inputs['Detail'].default_value = 8; nz.inputs['Distortion'].default_value = 2.5
             nt.links.new(mp.outputs['Vector'], nz.inputs['Vector']); nt.links.new(nz.outputs['Fac'], cr.inputs['Fac'])
@@ -154,6 +161,15 @@ elif SCHEME == 'contratto':  # Arredo3 order PALUE2962: Wega/Time lacquered matt
     MAT['k_base'] = node_mat('k_base', srgb(0xe6dccb), 0.6); MAT['k_tall'] = node_mat('k_tall', srgb(0xe8dfcf), 0.6)
 elif SCHEME == 'sabbia':
     MAT['k_base'] = node_mat('k_base', srgb(0xb7a283), 0.65); MAT['k_tall'] = node_mat('k_tall', srgb(0xddd3c3), 0.62)
+STILE = os.environ.get('CASA_STILE') == 'foto'  # cucina tortora + calacatta oro, camera con nicchia LED, parete TV a listelli
+if STILE:
+    MAT['k_base'] = node_mat('k_base', srgb(0x8f857c), 0.6); MAT['k_tall'] = MAT['k_base']
+    MAT['taj'] = node_mat('taj', (0.9, 0.88, 0.84), 0.2, tex='calacatta_oro', scale=1.2)
+    MAT['taupe'] = MAT['k_base']; MAT['listello'] = node_mat('listello', srgb(0xb08a62), 0.55, tex='oak', scale=0.6)
+    MAT['carta'] = node_mat('carta', srgb(0xc9cfd1), 0.9); MAT['letto'] = node_mat('letto', srgb(0xc4bdb2), 0.95)
+    MAT['testata'] = node_mat('testata', srgb(0x7a7066), 0.9); MAT['petrolio'] = node_mat('petrolio', srgb(0x3f6f73), 0.85)
+    MAT['comod'] = node_mat('comod', srgb(0x6d8f92), 0.55); MAT['rame'] = node_mat('rame', srgb(0xb87350), 0.25, 1.0)
+    MAT['tortora_tv'] = node_mat('tortora_tv', srgb(0xa59a8d), 0.6)
 if SCHEME: MAT['gola'] = MAT['k_base']
 MAT['champ'] = node_mat('champ', srgb(0xb89c74), 0.35, 0.7)
 RULES = [['LED','led'],['Parete_TV_Cartongesso','oliva'],['Panca_Cuscino','pelle'],['Panca','walnut'],['Matrimoniale_Cuscini','linen'],['Poltrona','pink'],['Tappeto_Gioco','sage'],['Termo','anthr'],['Divano','fabric'],['Chaise','fabric'],['Cuscin','pillow'],['Tappeto','rug'],
@@ -221,6 +237,10 @@ elif CT:  # contract: corner sink base L157 at the peninsula, 60 dishwasher, cor
         nr.append([g, n, x0, y0, z0, x1, y1, z1])
     rows = nr
     for q in ((0, 357, 0, 53, 560, 10), (62, 505, 0, 242, 560, 10), (60, 297, 0, PL - 3, 353, 10)): box(*q, 'steel')  # aluminium plinth
+if STILE:
+    SKIP = ('Matrimoniale_Testiera_Noce', 'Comodino_1', 'Comodino_2', 'Mobiletto_TV_Sospeso', 'Matrimoniale_Letto', 'Matrimoniale_Cuscini')
+    BR = {r[1]: r for r in rows}; rows = [r for r in rows if r[1] not in SKIP]
+    rows = [[g, n, x0 - 4, y0, z0, x1 - 4, y1, z1] if n == 'TV_55' else [g, n, x0, y0, z0, x1, y1, z1] for g, n, x0, y0, z0, x1, y1, z1 in rows]  # TV davanti ai listelli
 for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if n.startswith('Parete') and 'TV' not in n: wall(n, x0, y0, x1, y1); continue
     if n.startswith('Albero'):
@@ -277,6 +297,30 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if 'Induzione' in n: m = 'black'
     elif g == 'Cuc' and m in ('walnut', 'anthr', 'beige'): m = 'k_tall' if 'Colonna' in n else 'k_base'
     box(x0, y0, z0, x1, y1, max(z1, z0 + .5), m, n)
+if STILE:
+    # --- camera: nicchia con carta da parati piume, veletta in cartongesso con LED, letto imbottito, comodini sospesi, lampade a sospensione rame
+    _, _, bx0, by0, _, bx1, by1, _ = BR['Matrimoniale_Letto']; cy = (by0 + by1) / 2; W0, W1 = cy - 150, cy + 150; X = 377
+    box(X, W0, 0, X + .6, W1, 175, 'carta')
+    box(X, W0 - 20, 175, X + 18, W1 + 20, 270, 'wall'); box(X + 2, W0, 174.4, X + 16, W1, 175, 'led')
+    box(X + 12, cy - 95, 0, X + 22, cy + 95, 110, 'testata')
+    box(X + 22, cy - 92, 0, X + 222, cy + 92, 32, 'letto'); box(X + 22, cy - 90, 32, X + 220, cy + 90, 52, 'linen')
+    box(X + 25, cy - 80, 52, X + 60, cy - 8, 66, 'letto'); box(X + 25, cy + 8, 52, X + 60, cy + 80, 66, 'letto')
+    box(X + 150, cy - 93, 44, X + 200, cy + 93, 53.5, 'petrolio')
+    for sgn in (-1, 1):
+        y0n = cy + sgn * 95 + (0 if sgn > 0 else -45); y1n = y0n + 45
+        box(X + .6, y0n, 42, X + 40, y1n, 58, 'comod')
+        px, py = X + 22, (y0n + y1n) / 2
+        cyl_pts((px, py, 125), (px, py, 270), .25, 'nero', 6); cyl_pts((px, py, 108), (px, py, 125), 7, 'rame', 32, 2); cyl_pts((px, py, 107.5), (px, py, 108.2), 6, 'led', 24)
+    box(X + 140, W0 + 40, 266, X + 143, W1 - 40, 270, 'nero')  # binario faretti
+    for yy in (W0 + 70, W1 - 70): cyl_pts((X + 141.5, yy, 266), (X + 141.5, yy, 252), 3.5, 'nero', 16)
+    # --- parete TV: listelli in rovere retroilluminati, mobile sospeso tortora a 3 cassetti
+    _, _, tx0, ty0, _, tx1, ty1, _ = BR['Mobiletto_TV_Sospeso']; WX = 351; A, Bw = 143, 292
+    box(WX - .5, A, 0, WX, Bw, 270, 'seam')
+    y = A + 1
+    while y + 3.5 <= Bw: box(WX - 2.5, y, 0, WX - .5, y + 3.5, 270, 'listello'); y += 6
+    box(WX - 45, A, 30, WX - 2.5, Bw, 62, 'tortora_tv')
+    for yy in (A + (Bw - A) / 3, A + 2 * (Bw - A) / 3): box(WX - 45.3, yy - .2, 30, WX - 45, yy + .2, 62, 'seam')
+    box(WX - 40, A + 2, 29.4, WX - 6, Bw - 2, 30, 'led'); box(WX - 3, A, .4, WX - 2.5, Bw, 12, 'led')
 # blackout roller blinds (cream) dropping from a box above each opening; d = +1/-1 direction into the room
 def blind(wall, c, d, a, b, top, low):
     if wall == 'x':
@@ -313,7 +357,8 @@ else:
     box(0, 525, 150, 62, 560, 270, 'k_tall'); box(62, 525, 150, 122, 560, 270, 'k_tall')  # wall unit left of the oven column
 box(0, 394.5, 90, 1.2, 560, 150, 'taj')  # Taj Mahal stoneware backsplash, same slab as the top
 FY = 472 if V2 else 457 if CT else 425
-cyl_pts((15, FY, 90), (15, FY, 120), .9, 'white'); cyl_pts((15, FY, 120), (28, FY, 120), .9, 'white')
+FM = 'nero' if STILE else 'white'  # black faucet in the photo style
+cyl_pts((15, FY, 90), (15, FY, 120), .9, FM); cyl_pts((15, FY, 120), (28, FY, 120), .9, FM)
 # downdraft extractor integrated in the induction hob (replaces the suspended hood)
 DY = 25 if V2 else -5 if CT else 0
 DX = 40 if V2 else 0

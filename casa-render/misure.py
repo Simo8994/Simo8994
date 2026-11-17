@@ -45,6 +45,7 @@ def apply(rows):
         else:
             cx, cy = (x0 + x1) / 2, (y0 + y1) / 2; dx, dy = fx(cx) - cx, fy(cy) - cy
             x0, x1, y0, y1 = x0 + dx, x1 + dx, y0 + dy, y1 + dy
+        if n == 'Armadio_Matrimoniale': x0, x1 = 725, 785  # contro il muro della cameretta
         if n == 'Parete_Sud_Soggiorno': y0, y1 = -27, -14
         if n == 'Pavimento_Zona_Giorno': y0 = -14
         if n == 'Parete_Gradino_Portafinestra': y1 = -14
