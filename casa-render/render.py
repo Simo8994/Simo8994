@@ -7,6 +7,9 @@ cam = [float(v) for v in args[0].split(',')]; FOV = float(args[1]); OUT = args[2
 SAMPLES = int(args[3]) if len(args) > 3 else 96; W = int(args[4]) if len(args) > 4 else 1280; H = int(args[5]) if len(args) > 5 else 800
 import os
 rows = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'casa.json')))
+MIS = bool(os.environ.get('CASA_MISURE'))  # real laser measurements (misure.py)
+if MIS:
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import misure; rows = misure.apply(rows)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 sc = bpy.context.scene; S = 0.01
 
@@ -164,6 +167,7 @@ def mat_for(n):
     return 'grey'
 OPEN = [[-13,294.5,0,394.5,100,240],[-13,63,0,163,100,240],[244,560,344,573,0,240],[179,-165,192,-65,0,240],[450,560,550,573,0,240],[640,560,740,573,0,240],[845,560,945,573,0,240],[1204,100,1217,200,100,200],
  [432,50,445,130,0,210],[660,143,740,156,0,210],[850,250,930,263,0,210],[934,63,946,143,0,210],[522,40,602,53,0,210],[840,143,920,156,0,210]]
+if MIS: OPEN = [misure.opening(o) for o in OPEN]
 portals = []
 def wall(n, x0, y0, x1, y1):
     horiz = (x1 - x0) >= (y1 - y0)
@@ -266,6 +270,10 @@ for g, n, x0, y0, z0, x1, y1, z1 in rows:
     if n.startswith('Lavello'): box(x0, y0, z0 - 1, x1, y1, z1 + .3, 'nero'); continue
     if n == 'Penisola_Base': x0 = 60
     m = mat_for(n)
+    if MIS and n == 'Parete_TV_Cartongesso': m = 'wall'  # parete TV bianca
+    if MIS and n == 'Mobiletto_TV_Sospeso':
+        if 'rovere_tv' not in MAT: MAT['rovere_tv'] = node_mat('rovere_tv', srgb(0xb8916a), 0.55, tex='oak', scale=0.6)
+        m = 'rovere_tv'
     if 'Induzione' in n: m = 'black'
     elif g == 'Cuc' and m in ('walnut', 'anthr', 'beige'): m = 'k_tall' if 'Colonna' in n else 'k_base'
     box(x0, y0, z0, x1, y1, max(z1, z0 + .5), m, n)
@@ -277,7 +285,7 @@ def blind(wall, c, d, a, b, top, low):
         box(a-1, min(c, c+8*d), top, b+1, max(c, c+8*d), top+10, 'beige'); box(a, min(c+4*d, c+4.6*d), low, b, max(c+4*d, c+4.6*d), top, 'tenda'); box(a, min(c+3.5*d, c+5*d), low-3, b, max(c+3.5*d, c+5*d), low, 'nero')
 for args in [('x', 0, 1, 294.5, 394.5, 242, 130),     # kitchen window
              ('x', 0, 1, 63, 163, 242, 130),        # living window
-             ('x', 192, 1, -165, -65, 242, 34),    # entrance patio door
+             ('x', 192, 1, -151, -51, 242, 34) if MIS else ('x', 192, 1, -165, -65, 242, 34),    # entrance patio door
              ('y', 560, -1, 244, 344, 242, 34)]:   # kitchen patio door
     if V2 and args[3] == 294.5:  # white roller blind fully down, covering the whole window frame
         box(0, 294.2, 250, 10, 401, 260, 'white'); box(5, 294.5, 97, 5.6, 400.5, 250, 'tenda_w'); box(4.5, 294.5, 94, 6.5, 400.5, 97, 'white'); continue
@@ -423,7 +431,7 @@ if V2:
         t = i / 40; a = i * 2.39
         bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=6, radius=2.2 * S, location=((PX + 7 * math.cos(a)) * S, (PY_ + 7 * math.sin(a)) * S, (147 - 40 * t * t) * S))
         o = bpy.context.object; o.scale = (1.4, 1, .3); o.rotation_euler = (1.2 * math.sin(a), 1.2 * math.cos(a), a); o.data.materials.append(MAT['leaf'])
-if not os.environ.get('CASA_NOCEIL'): box(-13, -215, 270, 1217, 573, 275, 'wall')
+if not os.environ.get('CASA_NOCEIL'): box(-27 if MIS else -13, -215, 270, 1227 if MIS else 1217, 573, 275, 'wall')
 # world sky + sun
 w = bpy.data.worlds.new('w'); sc.world = w; w.use_nodes = True
 sky = w.node_tree.nodes.new('ShaderNodeTexSky'); sky.sky_type = 'MULTIPLE_SCATTERING' if hasattr(sky, 'sky_type') and 'MULTIPLE_SCATTERING' in [i.identifier for i in sky.bl_rna.properties['sky_type'].enum_items] else sky.sky_type
@@ -440,6 +448,7 @@ for horiz, a, b, s, h, x0, y0, x1, y1 in portals:
         if x0 < 100: o.location = ((x0-2)*S, (a+b)/2*S, (s+h)/2*S); o.rotation_euler = (math.radians(90), 0, math.radians(-90))
         else: o.location = ((x1+2)*S, (a+b)/2*S, (s+h)/2*S); o.rotation_euler = (math.radians(90), 0, math.radians(90))
 for x, y, z, e in ((125, 324, 150, 6), (262, 365, 240, 10), (150, 150, 262, 12), (300, 220, 262, 8), (596, 350, 262, 14), (1015, 410, 262, 10), (312, -100, 262, 8), (1110, 150, 262, 8)):
+    if MIS: x, y = misure.pt(x, y)
     L = bpy.data.lights.new('spot', 'POINT'); L.energy = e * (1.2 if NIGHT else 4); L.color = (1, 0.82, 0.62); L.shadow_soft_size = 0.08
     o = bpy.data.objects.new('spot', L); coll.objects.link(o); o.location = (x*S, y*S, z*S)
 if NIGHT:  # evening: recessed spots, under-cabinet strip and pendants actually light the room
