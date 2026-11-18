@@ -9,6 +9,20 @@ Obiettivo: da un'immagine d'interni ottenere un video verticale (9:16, 1080x1920
 che sembri girato da un videomaker d'interni: apertura larga, 3–5 dettagli (lampade, materiali,
 porte, letto, top), chiusura larga. Tutto gratis, senza servizi a pagamento salvo approvazione.
 
+## 0. Modalità consigliata: video AI vero (stile Instagram)
+Per un risultato da reel serio la camera deve muoversi davvero nella stanza:
+- **Clip AI da un'immagine**: `mcp__Ok__dynamic_space`, space `zerogpu-aoti/wan2-2-fp8da-aoti-faster`
+  (Wan 2.2 image-to-video, gratis con quota ZeroGPU di circa 1–2 clip ogni qualche ora).
+  `input_image` = URL raw GitHub con SHA del commit; `duration_seconds` 3,5; `steps` 6; `seed` 42.
+  Prompt di movimento, uno per clip: "Smooth slow cinematic camera dolly forward into the <room>,
+  gimbal shot, interior design video, steady motion, warm soft light, nothing in the room changes"
+  (varianti: truck left/right, orbit, tilt down on the pendant lamps).
+- **Trasformazione prima → dopo**: space `mcp-tools/wan-2-2-first-last-frame` con
+  `start_image_pil` = foto reale della stanza e `end_image_pil` = render dallo stesso punto di vista.
+- Scarica gli mp4 con curl in `banana-output/interior-build/<nome>/` e montali in ordine:
+  gancio (prima → dopo) → 1 clip per stanza → dettaglio → chiusura, con titolo breve in sovrimpressione.
+Se la quota è finita, dillo all'utente con l'orario di ripristino e usa intanto la modalità sotto.
+
 ## 1. Raccogli il materiale
 - Immagini dell'utente (foto o render) oppure i render della casa in `banana-output/misure/`
   (`flux_*.jpg` fotorealistici, `stile_*.jpg` Blender).
